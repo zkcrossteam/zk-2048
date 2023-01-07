@@ -1,0 +1,11 @@
+@import '../styles/common.scss';
+
+.scroll-300{
+    max-height: 300px;
+    overflow-y:scroll;
+}
+
+.scroll-200{
+    max-height: 200px;
+    overflow-y:scroll;
+}

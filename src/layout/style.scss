@@ -1,0 +1,38 @@
+div.loading {
+}
+
+nav .modal-btn {
+  display: inline-block;
+}
+
+div.board-row{
+
+}
+
+div.content {
+  width:400px;
+  margin:auto;
+}
+
+div.board-cell{
+  display: inline-block;
+  height:99px;
+  width:99px;
+  border:1px solid gray;
+}
+
+div.board-cell-selected{
+  display: inline-block;
+  height:99px;
+  width:99px;
+  border:1px solid black;
+  background-color: greenyellow;
+}
+
+div.board-cell-value{
+  display: inline-block;
+  height:99px;
+  width:99px;
+  border:1px solid black;
+  background-color: green;
+}

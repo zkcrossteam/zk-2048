@@ -1,0 +1,3 @@
+[submodule "zkWasm-C"]
+	path = zkWasm-C
+	url = git@github.com:DelphinusLab/zkWasm-C.git

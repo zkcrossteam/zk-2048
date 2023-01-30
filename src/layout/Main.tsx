@@ -108,14 +108,10 @@ export function Main() {
   }
 
   function cellClass(index:number) {
-    if (index === focus) {
-      return "board-cell-selected";
+    if (board[index] === 0) {
+      return "board-cell"
     } else {
-      if (board[index] === 0) {
-        return "board-cell"
-      } else {
-        return `board-cell-${board[index]}`
-      }
+      return `board-cell-${board[index]}`
     }
   }
 
@@ -133,7 +129,12 @@ export function Main() {
     {[...Array(4)].map((_, r) => {
       return (<div className="board-row">
         {[...Array(4)].map((_, c) => {
-          return <div className={cellClass(r*4+c)} onClick={() => toggleSelect(r*4+c)}></div>
+          let index = r*4+c;
+          return <div className={`${cellClass(r*4+c)} board-cell-out`} onClick={() => toggleSelect(r*4+c)}>
+            {
+                index === focus && <div></div>
+            }
+          </div>
         })}
       </div>)
     })}

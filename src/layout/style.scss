@@ -29,12 +29,12 @@ div.board-cell{
   margin-right:10px;
 }
 
-div.board-cell-selected{
+div.board-cell-out div{
   display: inline-block;
   height:87px;
   width:87px;
-  margin-right:10px;
-  background-color: greenyellow;
+  background-image: url("../images/select.png");
+  background-size: contain;
 }
 
 div.board-cell-1 {

@@ -14,7 +14,7 @@ all: g1024.wasm
 sdk.wasm:
 	sh $(SDKDIR)/sdk/scripts/build.sh sdk.wasm
 
-g1024.wasm: $(CFILES ) sdk.wasm
+g1024.wasm: $(CFILES) sdk.wasm
 	$(CLANG) -o $@ $(CFILES) sdk.wasm $(FLAGS) $(CFLAGS)
 
 

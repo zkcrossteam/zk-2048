@@ -17,9 +17,12 @@ export default async function () {
       'env': {
         'memory': new Memory({ initial: 10, limit: 100 }),
         'table': new Table({ initial: 0, element: 'anyfunc' }),
-        'abort': () => { console.err("abort in wasm!"); },
-        'require': (b) => {if(!b){console.error("require failed");} },
-        'wasm_input': (b) => {console.error("require failed")}
+        'abort': () => {console.error("abort in wasm!"); throw new Error("Unsupported wasm api: abort");},
+        'require': (b) => {if(!b){console.error("require failed"); throw new Error("Require failed");}},
+        'wasm_input': () => {
+          console.error("wasm_input should not been called in non-zkwasm mode");
+          throw new Error("Unsupported wasm api: wasm_input");
+        }
       }
     });
     console.log("module loaded", module);  // "3

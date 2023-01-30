@@ -1,6 +1,5 @@
 #include <stdint.h>
-unsigned long long wasm_input(int);
-void require(int);
+#include <zkwasmsdk.h>
 
 
 int board[16] = {
@@ -11,6 +10,55 @@ int board[16] = {
 };
 
 int currency = 20;
+
+__attribute__((visibility("default")))
+void setBoard(int index, int b) {
+  board[index] = b;
+}
+
+__attribute__((visibility("default")))
+int getBoard(int index) {
+  return board[index];
+}
+
+__attribute__((visibility("default")))
+void setCurrency(int n) {
+  currency = n;
+}
+
+__attribute__((visibility("default")))
+int getCurrency(int n) {
+  return currency;
+}
+
+void random_fill() {
+  int total = 0;
+  int sum = 0;
+  int min = 16;
+  for (int i=0; i<16; i++) {
+    sum += board[i];
+    if (board[i] ==0) {
+      total +=1;
+    } else  if (min > board[i]) {
+      min = board[i];
+    }
+  };
+  if (total==0) {
+    return;
+  }
+  int c = sum%total;
+  //int r = sum%total;
+  for (int i=0; i<16; i++) {
+    if (board[i] == 0) {
+      if (c==0) {
+          board[i] = 1;
+          return;
+      } else {
+        c--;
+      }
+    }
+  }
+}
 
 void reward(int k) {
   if (k>4) {
@@ -200,46 +248,6 @@ void bottom(void) {
 }
 
 __attribute__((visibility("default")))
-void randomFill() {
-  int total = 0;
-  int sum = 0;
-  int min = 16;
-  for (int i=0; i<16; i++) {
-    sum += board[i];
-    if (board[i] ==0) {
-      total +=1;
-    } else  if (min > board[i]) {
-      min = board[i];
-    }
-  };
-  if (total==0) {
-    return;
-  }
-  int c = sum%total;
-  //int r = sum%total;
-  for (int i=0; i<16; i++) {
-    if (board[i] == 0) {
-      if (c==0) {
-          board[i] = 1;
-          return;
-      } else {
-        c--;
-      }
-    }
-  }
-}
-
-__attribute__((visibility("default")))
-void setCurrency(int n) {
-  currency = n;
-}
-
-__attribute__((visibility("default")))
-int getCurrency(int n) {
-  return currency;
-}
-
-__attribute__((visibility("default")))
 void sell(int n) {
   require(n>=0);
   require(n<16);
@@ -264,25 +272,35 @@ void step(int direction) {
   } else if(direction == 3) {
     right();
   }
+  random_fill();
 }
 
+enum Command {
+  TOP = 0,
+  LEFT,
+  BOTTOM,
+  RIGHT,
+  SELL,
+};
 
-
-__attribute__((visibility("default")))
-void setBoard(int index, int b) {
-  board[index] = b;
-}
-
-__attribute__((visibility("default")))
-int getBoard(int index) {
-  return board[index];
-}
+uint8_t cmd_buf[1024];
 
 __attribute__((visibility("default")))
 int zkmain() {
-   for (int i=0; i<10; i++) {
-       uint32_t s = (uint32_t)wasm_input(1);
-       step(s);
+   int len = (int)wasm_input(1);
+   int cursor = 0;
+   read_bytes_from_u64(cmd_buf, len);
+   while (cursor < len) {
+     if (cmd_buf[cursor] <= 3) {
+       step(cmd_buf[cursor]);
+       cursor++;
+     } else {
+       // This needs to be sell
+       cursor++;
+       int cell_index = cmd_buf[cursor];
+       sell(cell_index);
+       cursor++;
+     }
    }
    return 0;
 }

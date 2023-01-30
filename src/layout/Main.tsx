@@ -31,16 +31,12 @@ export function Main() {
 
   function arrowFunction(event:KeyboardEvent) {
     if (event.key === "ArrowUp") {
-      appendCommand([0]);
       step(0);
     } else if (event.key == "ArrowLeft") {
-      appendCommand([1]);
       step(1);
     } else if (event.key == "ArrowDown") {
-      appendCommand([2]);
       step(2);
     } else if (event.key == "ArrowRight") {
-      appendCommand([3]);
       step(3);
     }
   }
@@ -51,7 +47,7 @@ export function Main() {
         board[i] = ins.getBoard(i);
       }
       setBoard([...board]);
-      ins.setCurrency(40);
+      //ins.setCurrency(40);
       setCurrency(ins.getCurrency());
     });
     document.addEventListener("keydown", arrowFunction, false);
@@ -61,7 +57,7 @@ export function Main() {
   }, [])
 
   function getURI() {
-    let uri = `${commands.length}:i64 0x`;
+    let uri = `${commands.length}:i64-0x`;
     for (var c of commands) {
       uri = uri + "0" + c.toString(16);
     };
@@ -82,6 +78,7 @@ export function Main() {
     }
     setBoard([...board]);
     setCurrency(ins.getCurrency())
+    appendCommand([k]);
   }
 
   async function toggleSelect(focus: number) {
@@ -146,6 +143,7 @@ export function Main() {
     <Row className="pt-4">
     <QRCodeSVG value={getURI()} />
     </Row>
+    {getURI()}
   </Container>);
 }
 

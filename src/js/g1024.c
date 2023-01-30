@@ -289,7 +289,7 @@ __attribute__((visibility("default")))
 int zkmain() {
    int len = (int)wasm_input(1);
    int cursor = 0;
-   read_bytes_from_u64(cmd_buf, len);
+   read_bytes_from_u64(cmd_buf, len, 0);
    while (cursor < len) {
      if (cmd_buf[cursor] <= 3) {
        step(cmd_buf[cursor]);

@@ -1,19 +1,20 @@
 import React, { createRef, useEffect, useRef, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
-import { loadStatus, selectTasks, tasksLoaded, addProvingTask, addNewWasmImage } from "../data/statusSlice";
+import { loadStatus, selectTasks, tasksLoaded, addProvingTask } from "../data/statusSlice";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {QRCodeSVG} from 'qrcode.react';
 import initGameInstance from "../js/g1024";
+import History from "../components/History";
+import { NewProveTask } from "../modals/addNewProveTask";
+
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 import "./style.scss";
 import "bootswatch/dist/slate/bootstrap.min.css";
 
-import {
-  loginL1AccountAsync,
-  selectL1Account,
-} from "../data/accountSlice";
 import { Container } from 'react-bootstrap';
+import { MainNavBar } from '../components/Nav';
 
 
 export function Main() {
@@ -55,6 +56,16 @@ export function Main() {
       document.removeEventListener("keydown", arrowFunction, false);
     };
   }, [])
+
+  function getWitness() {
+    let wit = `0x`;
+    for (var c of commands) {
+      wit = wit + "0" + c.toString(16);
+    };
+    wit = wit +":bytes-packed";
+    return wit;
+
+  }
 
   function getURI() {
     let uri = `${commands.length}:i64-0x`;
@@ -116,35 +127,49 @@ export function Main() {
   }
 
   return (
-    <Container className="justify-content-center'">
-    <Row>
-        <Col>use keyboard up, down, left, right to play</Col>
-        <Col>currency: {currency} </Col>
-        <Col>total steps: {commands.length} </Col>
-        <Col><button onClick={()=>sell()}> Sell </button></Col>
-    </Row>
-    <Row>
-      <Col>
-    <div className="content">
-    {[...Array(4)].map((_, r) => {
-      return (<div className="board-row">
-        {[...Array(4)].map((_, c) => {
-          let index = r*4+c;
-          return <div className={`${cellClass(r*4+c)} board-cell-out`} onClick={() => toggleSelect(r*4+c)}>
-            {
-                index === focus && <div></div>
-            }
-          </div>
-        })}
-      </div>)
-    })}
-    </div>
-    </Col>
-    </Row>
-    <Row className="pt-4">
-    <QRCodeSVG value={getURI()} />
-    </Row>
-    {getURI()}
-  </Container>);
+    <>
+      <MainNavBar></MainNavBar>
+      <Container className="justify-content-center'">
+        <Row className="justify-content-md-center mt-3">
+          <Col lg="2">currency: {currency} </Col>
+          <Col lg="2">total steps: {commands.length} </Col>
+          <Col lg="1"><button onClick={() => sell()}> Sell </button></Col>
+        </Row>
+        <Row className="mt-3">
+          <Col>
+            <div className="content">
+              {[...Array(4)].map((_, r) => {
+                return (<div className="board-row">
+                  {[...Array(4)].map((_, c) => {
+                    let index = r * 4 + c;
+                    return <div className={`${cellClass(r * 4 + c)} board-cell-out`} onClick={() => toggleSelect(r * 4 + c)}>
+                      {
+                        index === focus && <div></div>
+                      }
+                    </div>
+                  })}
+                </div>)
+              })}
+            </div>
+          </Col>
+        </Row>
+        <Row className="justify-content-md-center">
+          <Col lg="5" className="mt-3">use keyboard up, down, left, right to play and redeme your price by providing your game playing.</Col>
+        </Row>
+        <Row className="pt-4">
+          <QRCodeSVG value={getURI()} />
+        </Row>
+        <Row className="justify-content-md-center">
+          <Col lg="5" className="mt-3">{getURI()}</Col>
+          <Col lg="1">
+              <NewProveTask md5="B540BE293CE6C108BCE629BAC91625A4"
+                inputs={`${commands.length}:i64`}
+                witness={getWitness()}
+              ></NewProveTask></Col>
+        </Row>
+      </Container>
+      <History md5="B540BE293CE6C108BCE629BAC91625A4"></History>
+    </>
+  );
 }
 

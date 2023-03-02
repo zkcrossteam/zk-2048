@@ -2,11 +2,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
 import {
   Statistics,
-  DeployTask,
-  ProvingTask,
+  DeployParams,
+  ProvingParams,
   StatusState,
   QueryParams,
-  AddWasmImageTask
+  WithSignature,
 } from "zkwasm-service-helper";
 
 const initialState: StatusState = {
@@ -24,7 +24,7 @@ export const loadStatus = createAsyncThunk(
   "status/fetchStatus",
   async (query: QueryParams, thunkApi) => {
     let state = thunkApi.getState() as RootState;
-    let helper = state.endpoint.zkwasmTaskHelper;
+    let helper = state.endpoint.zkWasmServiceHelper;
     let tasks = await helper.loadTasks(query);
     return tasks;
   }
@@ -32,9 +32,9 @@ export const loadStatus = createAsyncThunk(
 
 export const addProvingTask = createAsyncThunk(
   "status/addProveTask",
-  async (task: ProvingTask, thunkApi) => {
+  async (task: WithSignature<ProvingParams>, thunkApi) => {
     let state = thunkApi.getState() as RootState;
-    let helper = state.endpoint.zkwasmTaskHelper;
+    let helper = state.endpoint.zkWasmServiceHelper;
     let response = await helper.addProvingTask(task);
     return response;
   }
@@ -50,8 +50,6 @@ export const statusSlice = createSlice({
       state.tasks = d.payload.tasks;
       state.loaded = d.payload.loaded;
     },
-    sudo: (state, d) => {
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -63,10 +61,7 @@ export const statusSlice = createSlice({
   },
 });
 
-export const { updateState, sudo
-} = statusSlice.actions;
-
+export const { updateState } = statusSlice.actions;
 export const selectTasks = (state:RootState) => state.status.tasks;
 export const tasksLoaded = (state:RootState) => state.status.loaded;
-
 export default statusSlice.reducer;

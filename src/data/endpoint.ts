@@ -1,13 +1,11 @@
 import {
-  ZkWasmServiceTaskHelper,
-  ZkWasmServiceImageHelper,
+  ZkWasmServiceHelper,
 } from "zkwasm-service-helper";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, store } from "../app/store";
 
 export const resturl = "http://zkwasm-explorer.delphinuslab.com:8080";
-export const zkwasmTaskHelper = new ZkWasmServiceTaskHelper(resturl, "", "");
-export const zkwasmImageHelper = new ZkWasmServiceImageHelper(resturl, "", "");
+export const zkwasmHelper = new ZkWasmServiceHelper(resturl, "", "");
 export interface Endpoint {
   url: string;
   nickname: string;
@@ -37,17 +35,11 @@ function getLastUsedEndpoint() {
 }
 
 const initialState: {
-  zkwasmTaskHelper: ZkWasmServiceTaskHelper;
-  zkwasmImageHelper: ZkWasmServiceImageHelper;
+  zkWasmServiceHelper: ZkWasmServiceHelper;
   currentEndpoint: Endpoint;
   endpointList: Endpoint[];
 } = {
-  zkwasmTaskHelper: new ZkWasmServiceTaskHelper(
-    getLastUsedEndpoint().url,
-    "",
-    ""
-  ),
-  zkwasmImageHelper: new ZkWasmServiceImageHelper(
+  zkWasmServiceHelper: new ZkWasmServiceHelper(
     getLastUsedEndpoint().url,
     "",
     ""
@@ -64,12 +56,7 @@ export const endpointSlice = createSlice({
       //add updated array to local storage
       localStorage.setItem("lastUsedEndpoint", JSON.stringify(d.payload));
       state.currentEndpoint = d.payload;
-      state.zkwasmTaskHelper = new ZkWasmServiceTaskHelper(
-        d.payload.url,
-        "",
-        ""
-      );
-      state.zkwasmImageHelper = new ZkWasmServiceImageHelper(
+      state.zkWasmServiceHelper = new ZkWasmServiceHelper(
         d.payload.url,
         "",
         ""
@@ -89,10 +76,9 @@ export const selectEndpointList = (state: RootState) =>
   state.endpoint.endpointList;
 export const selectCurrentEndpoint = (state: RootState) =>
   state.endpoint.currentEndpoint;
-export const selectZkWasmTaskHelper = (state: RootState) =>
-  state.endpoint.zkwasmTaskHelper;
-export const selectZkWasmImageHelper = (state: RootState) =>
-  state.endpoint.zkwasmImageHelper;
+export const selectZkWasmServiceHelper = (state: RootState) =>
+  state.endpoint.zkWasmServiceHelper;
+
 
 export default endpointSlice.reducer;
 

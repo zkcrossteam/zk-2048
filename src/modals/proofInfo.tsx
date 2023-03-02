@@ -13,7 +13,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import {
   selectL1Account,
 } from "../data/accountSlice";
-import { zkwasmImageHelper } from '../data/endpoint';
+import { zkwasmHelper } from '../data/endpoint';
 import { Inputs } from "../utils/inputs";
 
 
@@ -30,7 +30,7 @@ export function ProofInfoModal(info:ProofInfoProps) {
   async function testverify() {
     if (account) {
       let web3 = account.web3!;
-      let image = await zkwasmImageHelper.queryImage(info.task.md5);
+      let image = await zkwasmHelper.queryImage(info.task.md5);
       if (image.deployment.length>0) {
         let address = image.deployment[0].address;
         let verify_contract = new web3.eth.Contract(contract_abi.abi, address, {

@@ -14,13 +14,40 @@ import {
 } from "./base";
 import { addProvingTask, loadStatus, selectTasks } from "../data/statusSlice";
 import { loginL1AccountAsync, selectL1Account } from "../data/accountSlice";
+import { withBrowerWeb3, DelphinusWeb3 } from "web3subscriber/src/client";
 
 import "./style.scss";
+
+import {
+  ProvingParams,
+  ZkWasmUtil,
+  WithSignature,
+} from "zkwasm-service-helper";
 
 interface NewWASMImageProps {
   md5: string;
   inputs: string;
   witness: string;
+}
+
+export async function signMessage(message: string) {
+  let signature = await withBrowerWeb3(async (web3: DelphinusWeb3) => {
+    let provider = web3.web3Instance.currentProvider;
+    if (!provider) {
+      throw new Error("No provider found!");
+    }
+    const accounts = await web3.web3Instance.eth.getAccounts();
+    const account = accounts[0];
+    const msg = web3.web3Instance.utils.utf8ToHex(message);
+    const msgParams = [msg, account];
+    //TODO: type this properly
+    const sig = await (provider as any).request({
+      method: "personal_sign",
+      params: msgParams,
+    });
+    return sig;
+  });
+  return signature;
 }
 
 export function NewProveTask(props: NewWASMImageProps) {
@@ -32,15 +59,41 @@ export function NewProveTask(props: NewWASMImageProps) {
     ModalStatus.PreConfirm
   );
 
-  const addNewProveTask = function () {
-    let info = {
-      user_address: account!.address,
+  const prepareNewProveTask = async function () {
+    let info: ProvingParams = {
+      user_address: account!.address.toLowerCase(),
       md5: props.md5,
       public_inputs: [props.inputs],
       private_inputs: [props.witness],
     };
-    dispatch(addProvingTask(info))
-      .unwrap()
+
+    let msgString = ZkWasmUtil.createProvingSignMessage(info);
+
+    let signature: string;
+    try {
+      setMessage("Waiting for signature...");
+      signature = await signMessage(msgString);
+      setMessage("Submitting new prove task...");
+    } catch (e: unknown) {
+      console.log("error signing message", e);
+      setStatus(ModalStatus.PreConfirm);
+      setMessage("Error signing message");
+      throw Error("Unsigned Transaction");
+    }
+
+    let task: WithSignature<ProvingParams> = {
+      ...info,
+      signature: signature,
+    };
+
+    return task;
+  }
+
+  const addNewProveTask = async function () {
+    let task = await prepareNewProveTask();
+
+    dispatch(addProvingTask(task))
+    .unwrap()
       .then((res) => {
         setStatus(ModalStatus.PostConfirm);
       })

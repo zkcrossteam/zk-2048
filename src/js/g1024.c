@@ -67,6 +67,7 @@ void reward(int k) {
 }
 
 void left(void) {
+#pragma clang loop unroll(full)
   for (int r=0; r<4; r++) {
     int cur = r*4;
     int scan = 0;
@@ -113,6 +114,7 @@ void left(void) {
 }
 
 void right(void) {
+#pragma clang loop unroll(full)
   for (int r=0; r<4; r++) {
     int scan = 0;
     int cur = r*4+3;
@@ -158,6 +160,7 @@ void right(void) {
 }
 
 void top(void) {
+#pragma clang loop unroll(full)
   for (int c=0; c<4; c++) {
 
     int cur = c;
@@ -203,6 +206,7 @@ void top(void) {
 }
 
 void bottom(void) {
+#pragma clang loop unroll(full)
   for (int c=0; c<4; c++) {
     int cur = 12 + c;
     int scan = 0;

@@ -196,7 +196,6 @@ void bottom(void) {
 #pragma clang loop unroll(full)
   for (int c=0; c<4; c++) {
     int cur = 12 + c;
-    int scan = 0;
 
     /* remove all zeros */
     for (int i=3; i>=0; i--) {
@@ -204,10 +203,9 @@ void bottom(void) {
       if (board[current]!=0) {
         board[cur] = board[current];
         cur = cur-4;
-        scan ++;
       }
     }
-    for (; scan<4; scan++) {
+    while (cur>=0) {
         board[cur] = 0;
         cur = cur - 4;
     }
@@ -215,8 +213,7 @@ void bottom(void) {
 
     /* patch pairs  */
     cur = 12 + c;
-    scan = 0;
-    for (int s=3; s>=0; scan++) {
+    for (int s=3; s>=0;) {
       int current = s*4 + c;
       int next = current - 4;
       if (s!=0 && board[current] == board[next]) {
@@ -231,7 +228,7 @@ void bottom(void) {
         s = s - 1;
       }
     }
-    for (; scan<4; scan++) {
+    while (cur >= 0) {
         board[cur] = 0;
         cur = cur - 4;
     }

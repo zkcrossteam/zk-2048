@@ -70,7 +70,6 @@ void left(void) {
 #pragma clang loop unroll(full)
   for (int r=0; r<4; r++) {
     int cur = r*4;
-    int scan = 0;
 
     /* remove all zeros */
     for (int i=0; i<4; i++) {
@@ -78,37 +77,33 @@ void left(void) {
       if (board[current]!=0) {
         board[cur] = board[current];
         cur = cur+1;
-        scan ++;
       }
     }
-    for (; scan<4; scan++) {
+    for (; cur<r*4+4; cur++) {
         board[cur] = 0;
-        cur = cur+1;
     }
 
 
     /* patch pairs */
-    scan = 0;
     cur = r*4;
-    for (int s=0; s<4; scan++) {
+    for (int s=0; s<4; ) {
       int current = r*4 + s;
       int next = current + 1;
       if (s!=3 && board[current] == board[next]) {
         int r = board[current];
         reward(r);
         board[cur] = r+1;
-        cur = cur + 1;
+	++cur;
         s = s + 2;
       } else {
         board[cur] = board[current];
-        cur = cur + 1;
+	++cur;
         s = s + 1;
       }
     }
     // Fill zero for the rest
-    for (; scan<4; scan++) {
+    for (; cur<r*4+4; cur++) {
         board[cur] = 0;
-        cur = cur+1;
     }
   }
 }

@@ -154,7 +154,6 @@ void top(void) {
   for (int c=0; c<4; c++) {
 
     int cur = c;
-    int scan = 0;
 
     /* remove all zeros */
     for (int i=0; i<4; i++) {
@@ -162,17 +161,15 @@ void top(void) {
       if (board[current]!=0) {
         board[cur] = board[current];
         cur = cur+4;
-        scan ++;
       }
     }
-    for (; scan<4; scan++) {
+    while (cur < 16) {
         board[cur] = 0;
         cur = cur + 4;
     }
 
     cur = c;
-    scan = 0;
-    for (int s=0; s<4; scan++) {
+    for (int s=0; s<4; ) {
       int current = s*4 + c;
       int next = current + 4;
       if (s!=3 && board[current] == board[next]) {
@@ -188,7 +185,7 @@ void top(void) {
       }
     }
     // Fill zero for the rest
-    for (; scan<4; scan++) {
+    while (cur<16) {
         board[cur] = 0;
         cur = cur + 4;
     }

@@ -1,0 +1,112 @@
+.navbar {
+  background-color: var(--navbar-bg);
+  border: none;
+  color: var(--blue-text-color) !important;
+
+  .navbar-brand {
+    border: none;
+  }
+  .navbar-text {
+    font-family: "Allerta";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 0.15em;
+
+    color: var(--blue-text-color) !important;
+  }
+  .nav-link {
+    border: none;
+
+    font-family: "Allerta";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 40px;
+    letter-spacing: 0.15em;
+    text-align: center;
+    color: var(--blue-text-color) !important;
+    transition: 0.3s all ease;
+
+    &:hover,
+    &:focus {
+      background-image: none;
+      border: none;
+      background-color: var(--button-hover);
+    }
+  }
+  .divider {
+    border-left: 2px solid #546f80;
+    height: 40px;
+    margin: auto 10px;
+    @media (max-width: 992px) {
+      display: none;
+    }
+  }
+
+  .action-items {
+    margin-left: 100px;
+  }
+
+  .restart-button {
+    cursor: pointer;
+    &:hover {
+      filter: brightness(0) saturate(100%) invert(98%) sepia(31%) saturate(396%)
+        hue-rotate(312deg) brightness(103%) contrast(89%);
+    }
+  }
+}
+
+.currency-display {
+  background-color: var(--button-main);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-family: "Be Vietnam";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+
+  color: var(--blue-text-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .tag {
+    font-family: "Be Vietnam";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+
+    color: var(--blue-text-color);
+    position: relative;
+    top: -5px;
+  }
+  .value {
+    min-width: 50px;
+    font-family: "Be Vietnam";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: end;
+    color: var(--blue-text-color);
+  }
+}
+
+.table {
+  border: 2px solid var(--table-border-color);
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 23px;
+  text-align: center;
+
+  color: #b5e5eb;
+  th,
+  td {
+    border: 2px solid var(--table-border-color);
+  }
+  td {
+    font-size: 14px;
+  }
+}

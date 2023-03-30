@@ -24,6 +24,12 @@ div.board-row {
   margin-bottom: 10px;
 }
 
+.game-width {
+  --game-width: 500px;
+
+  max-width: var(--game-width) !important;
+}
+
 div.content {
   padding-left: 12px;
   padding-top: 15px;
@@ -194,6 +200,7 @@ div.board-cell-16 {
   background-image: url("../images/16.png");
   background-size: contain;
 }
+
 .overflow-breakword {
   overflow-wrap: break-word;
 }
@@ -232,6 +239,7 @@ div.board-cell-16 {
 .game-inputs {
   background-color: var(--navbar-bg);
   border-radius: 15px;
+  width: 500px !important;
 }
 
 .sell-button {

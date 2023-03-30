@@ -17,6 +17,7 @@ import {
 
 import logo from "../images/logo.png";
 import Restart from "../images/restart.png";
+import HomeIcon from "../images/home-icon.png";
 
 interface IProps {
   currency: number;
@@ -39,12 +40,13 @@ export function MainNavBar(props: IProps) {
           <img src={logo} height="30" alt="logo"></img>
         </Navbar.Brand>
         <Nav.Item className="action-items d-flex">
+          <img src={HomeIcon} height="30" alt="restart" className="me-2 "></img>
           <img
             src={Restart}
             height="30"
             alt="restart"
             className="me-2 restart-button"
-            onClick={() => props.handleRestart()}
+            onClick={() => props.handleRestart}
           ></img>
           <CurrencyDisplay value={props.currency}></CurrencyDisplay>
         </Nav.Item>

@@ -49,13 +49,13 @@ export function Main() {
 
   function arrowFunction(event: KeyboardEvent) {
     event.preventDefault();
-    if (event.key === "ArrowUp") {
+    if (event.key === "ArrowUp" || event.key === "w") {
       step(0);
-    } else if (event.key == "ArrowLeft") {
+    } else if (event.key == "ArrowLeft" || event.key === "a") {
       step(1);
-    } else if (event.key == "ArrowDown") {
+    } else if (event.key == "ArrowDown" || event.key === "s") {
       step(2);
-    } else if (event.key == "ArrowRight") {
+    } else if (event.key == "ArrowRight" || event.key === "d") {
       step(3);
     }
   }
@@ -149,7 +149,7 @@ export function Main() {
   async function step(k: number) {
     let ins = await initGameInstance();
     if (ins.getCurrency() == 0) {
-      alert("not enough current to proceed!");
+      alert("not enough currency to proceed!");
       return;
     }
     setFocus(-1);
@@ -201,18 +201,18 @@ export function Main() {
       return `board-cell-${board[index]}`;
     }
   }
-  console.log(highscore);
+
   return (
     <>
       <MainNavBar currency={currency} handleRestart={restartGame}></MainNavBar>
       <Container className="justify-content-center mb-4">
-        <Row className="justify-content-md-center  m-auto mt-3 w-50">
-          <Col className="d-flex justify-content-center align-items-center">
+        <Row className="justify-content-md-center  m-auto mt-3">
+          <Col className="d-flex justify-content-between align-items-center p-0 game-width">
             <img src={Title} height="40px" alt="title" className="me-4" />
             <CurrencyDisplay
               tag="Best"
               value={highscore}
-              className="high-score mx-4"
+              className="high-score mx-2"
             ></CurrencyDisplay>
             <button onClick={() => sell()} className="sell-button ms-2">
               Sell
@@ -224,13 +224,14 @@ export function Main() {
             <div className="content">
               {[...Array(4)].map((_, r) => {
                 return (
-                  <div className="board-row">
+                  <div className="board-row" key={r}>
                     {[...Array(4)].map((_, c) => {
                       let index = r * 4 + c;
                       return (
                         <div
                           className={`${cellClass(r * 4 + c)} board-cell-out`}
-                          onClick={() => toggleSelect(r * 4 + c)}
+                          onClick={() => toggleSelect(index)}
+                          key={index}
                         >
                           {index === focus && <div></div>}
                         </div>
@@ -242,8 +243,8 @@ export function Main() {
             </div>
           </Col>
         </Row>
-        <Row className="game-inputs justify-content-md-center overflow-breakword my-4 py-2 w-50 mx-auto">
-          <Col>
+        <Row className="justify-content-center overflow-breakword my-4">
+          <Col sm={7} className="game-inputs py-2">
             <div>
               <i
                 className="bi bi-eye me-2 cursor-pointer"
@@ -276,7 +277,7 @@ export function Main() {
               <Row className="justify-content-md-center">
                 <Col>
                   <NewProveTask
-                    md5="B540BE293CE6C108BCE629BAC91625A4"
+                    md5="972F4B23D8DC9A79C63DE5B079302DA9"
                     inputs={`${commands.length}:i64`}
                     witness={getWitness()}
                   ></NewProveTask>
@@ -301,7 +302,7 @@ export function Main() {
             </Row>
             <Row className="game-info mt-4">
               <Row>
-                This game is 99999999 times played. Feel free to share with the
+                This has been played 99999999 times. Feel free to share with the
                 friends. Thank You.
               </Row>
               <Row>
@@ -310,9 +311,10 @@ export function Main() {
               </Row>
               <Row>
                 HOW TO PLAY: Use your arrow keys or W A S D to move the tiles.
-                When two tiles with the same icon touch, they merge into one
-                tile with same icon they summed to one! When you make the
-                highest tile, you could sell the highest tile for currency.
+                Each time you move, one currency unit is deducted. When two
+                tiles with the same icon touch, they merge into one tile with
+                same icon they summed to one! When you make the highest tile,
+                you can sell the highest tile for currency.
               </Row>
               <Row className="my-4">
                 <div className="d-flex align-items-center justify-content-center">
@@ -341,7 +343,7 @@ export function Main() {
           </Col>
         </Row>
       </Container>
-      <History md5="B540BE293CE6C108BCE629BAC91625A4"></History>
+      <History md5="972F4B23D8DC9A79C63DE5B079302DA9"></History>
     </>
   );
 }

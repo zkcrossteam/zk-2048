@@ -3,6 +3,12 @@
   border: none;
   color: var(--blue-text-color) !important;
 
+  .navbar-collapse {
+    @media (min-width: 992px) {
+      flex-grow: 0;
+    }
+  }
+
   .navbar-brand {
     border: none;
   }
@@ -45,7 +51,8 @@
   }
 
   .action-items {
-    margin-left: 100px;
+    width: 500px;
+    padding: 0 20px;
   }
 
   .restart-button {

@@ -1,10 +1,8 @@
-import {
-  ZkWasmServiceHelper,
-} from "zkwasm-service-helper";
+import { ZkWasmServiceHelper } from "zkwasm-service-helper";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, store } from "../app/store";
 
-export const resturl = "http://zkwasm-explorer.delphinuslab.com:8080";
+export const resturl = "http://20.118.165.94:8090";
 export const zkwasmHelper = new ZkWasmServiceHelper(resturl, "", "");
 export interface Endpoint {
   url: string;
@@ -79,9 +77,4 @@ export const selectCurrentEndpoint = (state: RootState) =>
 export const selectZkWasmServiceHelper = (state: RootState) =>
   state.endpoint.zkWasmServiceHelper;
 
-
 export default endpointSlice.reducer;
-
-
-
-

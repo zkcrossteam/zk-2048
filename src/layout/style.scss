@@ -1,182 +1,272 @@
-div.loading {
+@font-face {
+  font-family: "Be Vietnam";
+  src: url(../fonts/BeVietnamPro-Regular.ttf);
+}
+
+@font-face {
+  font-family: "Allerta";
+  src: url(../fonts/Allerta-Regular.ttf);
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url(../fonts/Inter-Regular.ttf);
 }
 
 nav .modal-btn {
   display: inline-block;
 }
 
-div.board-row{
-  padding:0px;
-  margin:0px;
-  height:87px;
-  margin-bottom:10px;
+div.board-row {
+  padding: 0px;
+  margin: 0px;
+  height: var(--cell-size);
+  margin-bottom: 10px;
+}
+
+.game-width {
+  --game-width: 500px;
+
+  max-width: var(--game-width) !important;
 }
 
 div.content {
-  padding-left:10px;
-  padding-top:11px;
-  margin:auto;
-  width:400px;
-  height:400px;
-  background-size: 400px 400px;
+  padding-left: 12px;
+  padding-top: 15px;
+  margin: auto;
+  width: 500px;
+  height: 500px;
+  background-size: 500px 500px;
   background-image: url("../images/bg.png");
+  --cell-size: 110px;
+  --cell-margin: 12px;
 }
 
-div.board-cell{
+div.board-cell {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
 }
 
-div.board-cell-out div{
+div.board-cell-out div {
   display: inline-block;
-  height:87px;
-  width:87px;
-  background-image: url("../images/select.png");
-  background-size: contain;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  border: 3px solid white;
+  border-radius: 5px;
 }
 
 div.board-cell-1 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/1.png");
   background-size: contain;
 }
 
 div.board-cell-2 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/2.png");
   background-size: contain;
 }
 
 div.board-cell-3 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/3.png");
   background-size: contain;
 }
 
 div.board-cell-4 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/4.png");
   background-size: contain;
 }
 
 div.board-cell-5 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/5.png");
   background-size: contain;
 }
 
 div.board-cell-6 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/6.png");
   background-size: contain;
 }
 
 div.board-cell-7 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/7.png");
   background-size: contain;
 }
 
 div.board-cell-8 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/8.png");
   background-size: contain;
 }
 
 div.board-cell-9 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/9.png");
   background-size: contain;
 }
 
 div.board-cell-10 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/10.png");
   background-size: contain;
 }
 
 div.board-cell-11 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/11.png");
   background-size: contain;
 }
 
 div.board-cell-12 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/12.png");
   background-size: contain;
 }
 
 div.board-cell-13 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/13.png");
   background-size: contain;
 }
 
 div.board-cell-14 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/14.png");
   background-size: contain;
 }
 
 div.board-cell-15 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/15.png");
   background-size: contain;
 }
 
 div.board-cell-16 {
   display: inline-block;
-  height:87px;
-  width:87px;
-  margin-right:10px;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  margin-right: var(--cell-margin);
   background-image: url("../images/16.png");
   background-size: contain;
+}
+
+.overflow-breakword {
+  overflow-wrap: break-word;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+.qr-code {
+  font-family: "Be Vietnam";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+  color: var(--blue-text-color);
+  justify-content: center;
+  align-items: center;
+
+  .qr-msg {
+    min-width: 200px;
+    max-width: 350px;
+  }
+}
+
+.game-info {
+  font-family: "Be Vietnam";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 42px;
+  color: var(--blue-text-color);
+}
+
+.game-icon {
+  width: 50px;
+  height: 50px;
+}
+.game-inputs {
+  background-color: var(--navbar-bg);
+  border-radius: 15px;
+  width: 500px !important;
+}
+
+.sell-button {
+  border: none;
+  background-color: var(--button-main);
+  padding: 5px 30px;
+  border-radius: 5px;
+  color: var(--info-text-color);
+  font-family: "Be Vietnam";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  transition: 0.3s all ease;
+  &:hover {
+    background-color: var(--button-hover);
+  }
+}
+
+.high-score {
+  min-width: 175px;
+  span {
+    color: var(--info-text-color) !important;
+  }
+  .tag {
+    font-size: 16px !important;
+  }
+  .value {
+    font-size: 24px !important;
+  }
 }

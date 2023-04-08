@@ -1,10 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useState } from "react";
-import {
-  Container,
-  Form,
-  Spinner,
-} from "react-bootstrap";
+import { Container, Form, Spinner } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   ModalCommon,
@@ -87,13 +83,13 @@ export function NewProveTask(props: NewWASMImageProps) {
     };
 
     return task;
-  }
+  };
 
   const addNewProveTask = async function () {
     let task = await prepareNewProveTask();
 
     dispatch(addProvingTask(task))
-    .unwrap()
+      .unwrap()
       .then((res) => {
         setStatus(ModalStatus.PostConfirm);
       })
@@ -104,16 +100,14 @@ export function NewProveTask(props: NewWASMImageProps) {
       })
       .finally(() => {
         let query = {
-            user_address: account!.address,
-            md5: props.md5,
-            id: "",
-            tasktype: "Prove",
-            taskstatus: "",
+          user_address: account!.address,
+          md5: props.md5,
+          id: "",
+          tasktype: "Prove",
+          taskstatus: "",
         };
         console.log("update", query);
-        dispatch(
-          loadStatus(query)
-        )
+        dispatch(loadStatus(query));
       });
   };
 
@@ -158,7 +152,7 @@ export function NewProveTask(props: NewWASMImageProps) {
   );
 
   let modalprops: ModalCommonProps = {
-    btnLabel: "Submit",
+    btnLabel: <button className="sell-button">Submit Proof</button>,
     title: "Submit Your Game Play",
     childrenClass: "",
     handleConfirm: function (): void {

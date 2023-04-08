@@ -67,9 +67,9 @@ void reward(int k) {
 }
 
 void left(void) {
+#pragma clang loop unroll(full)
   for (int r=0; r<4; r++) {
     int cur = r*4;
-    int scan = 0;
 
     /* remove all zeros */
     for (int i=0; i<4; i++) {
@@ -77,44 +77,40 @@ void left(void) {
       if (board[current]!=0) {
         board[cur] = board[current];
         cur = cur+1;
-        scan ++;
       }
     }
-    for (; scan<4; scan++) {
+    for (; cur<r*4+4; cur++) {
         board[cur] = 0;
-        cur = cur+1;
     }
 
 
     /* patch pairs */
-    scan = 0;
     cur = r*4;
-    for (int s=0; s<4; scan++) {
+    for (int s=0; s<4; ) {
       int current = r*4 + s;
       int next = current + 1;
       if (s!=3 && board[current] == board[next]) {
         int r = board[current];
         reward(r);
         board[cur] = r+1;
-        cur = cur + 1;
+	++cur;
         s = s + 2;
       } else {
         board[cur] = board[current];
-        cur = cur + 1;
+	++cur;
         s = s + 1;
       }
     }
     // Fill zero for the rest
-    for (; scan<4; scan++) {
+    for (; cur<r*4+4; cur++) {
         board[cur] = 0;
-        cur = cur+1;
     }
   }
 }
 
 void right(void) {
+#pragma clang loop unroll(full)
   for (int r=0; r<4; r++) {
-    int scan = 0;
     int cur = r*4+3;
 
     /* remove all zeros */
@@ -123,18 +119,15 @@ void right(void) {
       if (board[current]!=0) {
         board[cur] = board[current];
         cur = cur-1;
-        scan ++;
       }
     }
-    for (; scan<4; scan++) {
+    for (; cur>=r*4; cur--) {
         board[cur] = 0;
-        cur = cur - 1;
     }
 
     /* patch pairs */
-    scan = 0;
     cur = r*4 + 3;
-    for (int s=3; s>=0; scan++) {
+    for (int s=3; s>=0; ) {
       int current = r*4+s;
       int next = current-1;
       if (s!=0 && board[current] == board[next]) {
@@ -150,18 +143,17 @@ void right(void) {
       }
     }
     // Fill zero for the rest
-    for (; scan<4; scan++) {
+    for (; cur>=r*4; cur--) {
         board[cur] = 0;
-        cur = cur - 1;
     }
   }
 }
 
 void top(void) {
+#pragma clang loop unroll(full)
   for (int c=0; c<4; c++) {
 
     int cur = c;
-    int scan = 0;
 
     /* remove all zeros */
     for (int i=0; i<4; i++) {
@@ -169,17 +161,15 @@ void top(void) {
       if (board[current]!=0) {
         board[cur] = board[current];
         cur = cur+4;
-        scan ++;
       }
     }
-    for (; scan<4; scan++) {
+    while (cur < 16) {
         board[cur] = 0;
         cur = cur + 4;
     }
 
     cur = c;
-    scan = 0;
-    for (int s=0; s<4; scan++) {
+    for (int s=0; s<4; ) {
       int current = s*4 + c;
       int next = current + 4;
       if (s!=3 && board[current] == board[next]) {
@@ -195,7 +185,7 @@ void top(void) {
       }
     }
     // Fill zero for the rest
-    for (; scan<4; scan++) {
+    while (cur<16) {
         board[cur] = 0;
         cur = cur + 4;
     }
@@ -203,9 +193,9 @@ void top(void) {
 }
 
 void bottom(void) {
+#pragma clang loop unroll(full)
   for (int c=0; c<4; c++) {
     int cur = 12 + c;
-    int scan = 0;
 
     /* remove all zeros */
     for (int i=3; i>=0; i--) {
@@ -213,10 +203,9 @@ void bottom(void) {
       if (board[current]!=0) {
         board[cur] = board[current];
         cur = cur-4;
-        scan ++;
       }
     }
-    for (; scan<4; scan++) {
+    while (cur>=0) {
         board[cur] = 0;
         cur = cur - 4;
     }
@@ -224,8 +213,7 @@ void bottom(void) {
 
     /* patch pairs  */
     cur = 12 + c;
-    scan = 0;
-    for (int s=3; s>=0; scan++) {
+    for (int s=3; s>=0;) {
       int current = s*4 + c;
       int next = current - 4;
       if (s!=0 && board[current] == board[next]) {
@@ -240,7 +228,7 @@ void bottom(void) {
         s = s - 1;
       }
     }
-    for (; scan<4; scan++) {
+    while (cur >= 0) {
         board[cur] = 0;
         cur = cur - 4;
     }

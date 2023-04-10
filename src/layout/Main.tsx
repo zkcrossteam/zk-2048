@@ -277,7 +277,7 @@ export function Main() {
               <Row className="justify-content-md-center">
                 <Col>
                   <NewProveTask
-                    md5="972F4B23D8DC9A79C63DE5B079302DA9"
+                    md5="77DA9B5A42FABD295FD67CCDBDF2E348"
                     inputs={`${commands.length}:i64`}
                     witness={getWitness()}
                   ></NewProveTask>
@@ -302,15 +302,7 @@ export function Main() {
             </Row>
             <Row className="game-info mt-4">
               <Row>
-                This has been played 99999999 times. Feel free to share with the
-                friends. Thank You.
-              </Row>
-              <Row>
-                OUR 2048 GAME IS LOGIC & PROBLEM SOLVING GAME AND YOU CAN WIN
-                REAL MONEY WITH IT!
-              </Row>
-              <Row>
-                HOW TO PLAY: Use your arrow keys or W A S D to move the tiles.
+                HOW TO PLAY: Use your arrow keys to move the tiles.
                 Each time you move, one currency unit is deducted. When two
                 tiles with the same icon touch, they merge into one tile with
                 same icon they summed to one! When you make the highest tile,
@@ -337,13 +329,13 @@ export function Main() {
               </Row>
               <Row>
                 Game is based on Saming's 2048 and conceptually similar to
-                Threes by Asher Vollmer. Created by ZK wasm
+                Threes by Asher Vollmer.
               </Row>
             </Row>
           </Col>
         </Row>
       </Container>
-      <History md5="972F4B23D8DC9A79C63DE5B079302DA9"></History>
+      <History md5="77DA9B5A42FABD295FD67CCDBDF2E348"></History>
     </>
   );
 }

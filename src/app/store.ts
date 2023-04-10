@@ -15,8 +15,7 @@ export const store = configureStore({
         ignoredPaths: [
           "acccount/fetchAccount/fulfilled",
           "account.l1Account.web3",
-          "endpoint.zkwasmTaskHelper",
-          "endpoint.zkwasmImageHelper",
+          "endpoint.zkWasmServiceHelper",
         ],
       },
     }),

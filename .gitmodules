@@ -1,3 +1,6 @@
 [submodule "zkWasm-C"]
 	path = zkWasm-C
 	url = git@github.com:zkcrossteam/zkWasm-C.git
+[submodule "emsdk"]
+	path = emsdk
+	url = https://github.com/emscripten-core/emsdk.git

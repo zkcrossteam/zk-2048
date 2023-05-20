@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { Card, Container, Row, Col, Table, Spinner } from "react-bootstrap";
-import { loadStatus, selectTasks} from "../data/statusSlice";
-import { ProofInfoModal } from "../modals/proofInfo";
+import { useEffect } from "react";
+import { Container, Table } from "react-bootstrap";
 
-import {
-  selectL1Account,
-} from "../data/accountSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { loadStatus, selectTasks } from "../data/statusSlice";
+import { selectL1Account } from "../data/accountSlice";
+import { ProofInfoModal } from "../modals/proofInfo";
 
 export interface UserHistoryProps {
   md5: string;
@@ -14,19 +12,16 @@ export interface UserHistoryProps {
 
 export default function ImageDetail(props: UserHistoryProps) {
   const dispatch = useAppDispatch();
-  let account = useAppSelector(selectL1Account);
+  const account = useAppSelector(selectL1Account);
   const query = {
     md5: props.md5,
-    user_address: account? account!.address:"",
+    user_address: account?.address || "",
     id: "",
     tasktype: "Prove",
     taskstatus: "",
   };
 
-  // UI Loading states
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string | null>(null);
-  let tasks = useAppSelector(selectTasks);
+  const tasks = useAppSelector(selectTasks);
 
   useEffect(() => {
     if (account) {
@@ -35,39 +30,35 @@ export default function ImageDetail(props: UserHistoryProps) {
   }, [account]);
 
   return (
-      <Container className="proofs">
-            <Table bordered className="rounded">
-              <thead>
-                <tr>
-                  <th>Task ID</th>
-                  <th>Submitted by</th>
-                  <th>Status</th>
-                  <th>Proof Details</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tasks.map((d) => {
-                  return (
-                    <>
-                      <tr key={d._id["$oid"]}>
-                        <td>
-                          <span>{d._id["$oid"]}</span>
-                        </td>
-                        <td>
-                          <span>{d.user_address}</span>
-                        </td>
-                        <td>
-                          <span>{d.status}</span>
-                        </td>
-                        <td>
-                          <ProofInfoModal task={d}></ProofInfoModal>
-                        </td>
-                      </tr>
-                    </>
-                  );
-                })}
-              </tbody>
-            </Table>
-      </Container>
+    <Container className="proofs">
+      <Table bordered className="rounded">
+        <thead>
+          <tr>
+            <th>Task ID</th>
+            <th>Submitted by</th>
+            <th>Status</th>
+            <th>Proof Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tasks?.map((task) => (
+            <tr key={task._id["$oid"]}>
+              <td>
+                <span>{task._id["$oid"]}</span>
+              </td>
+              <td>
+                <span>{task.user_address}</span>
+              </td>
+              <td>
+                <span>{task.status}</span>
+              </td>
+              <td>
+                <ProofInfoModal task={task} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </Container>
   );
 }

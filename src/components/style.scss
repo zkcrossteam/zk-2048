@@ -1,5 +1,4 @@
 .navbar {
-  background-color: var(--navbar-bg);
   border: none;
   color: var(--blue-text-color) !important;
 
@@ -62,41 +61,22 @@
         hue-rotate(312deg) brightness(103%) contrast(89%);
     }
   }
+
+  .connect {
+    background: linear-gradient(90deg, #418dff 1.64%, #4bffdf 98.6%);
+    border-radius: 30px;
+    width: 11rem;
+    height: 3.125rem;
+  }
 }
 
 .currency-display {
-  background-color: var(--button-main);
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-family: "Be Vietnam";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-
-  color: var(--blue-text-color);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  .tag {
-    font-family: "Be Vietnam";
-    font-style: normal;
-    font-weight: 600;
-    font-size: 10px;
-
-    color: var(--blue-text-color);
-    position: relative;
-    top: -5px;
-  }
-  .value {
-    min-width: 50px;
-    font-family: "Be Vietnam";
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    text-align: end;
-    color: var(--blue-text-color);
-  }
+  background: var(--button-gradient);
+  filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.4));
+  border-radius: 40px;
+  width: 17rem;
+  height: 3.125rem;
+  border: 1px solid #418dff;
 }
 
 .table {

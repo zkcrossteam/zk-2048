@@ -8,6 +8,7 @@
     "bootstrap": "^5.1.3",
     "bootstrap-icons": "^1.10.3",
     "bootswatch": "^5.2.3",
+    "classnames": "^2.3.2",
     "concurrently": "^7.0.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
@@ -24,8 +25,8 @@
     "servicehelper": "git+https://github.com/DelphinusLab/service-helper.git",
     "wait-on": "^6.0.1",
     "wasm-pack": "^0.10.3",
-    "zkwasm-service-helper": "git+https://github.com/DelphinusLab/zkWasm-service-helper.git",
-    "web3subscriber": "git+https://github.com/DelphinusLab/delphinus-web3subscriber.git"
+    "web3subscriber": "git+https://github.com/DelphinusLab/delphinus-web3subscriber.git",
+    "zkwasm-service-helper": "git+https://github.com/DelphinusLab/zkWasm-service-helper.git"
   },
   "scripts": {
     "start": "react-app-rewired start",

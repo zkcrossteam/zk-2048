@@ -48,3 +48,44 @@ html {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.border-box {
+  border: 1px solid transparent;
+  position: relative;
+  background-color: #222;
+  background-clip: padding-box;
+
+  .border-content {
+    border-radius: 1rem;
+    background: linear-gradient(
+      180deg,
+      rgba(32, 49, 75, 0.5) 0%,
+      rgba(32, 49, 75, 0) 100%
+    );
+  }
+}
+
+.border-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+  margin: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(65, 141, 255, 0.5) 0%,
+    rgba(52, 67, 113, 0.5) 84.9%
+  );
+}
+
+.container-max {
+  max-width: 35rem !important;
+}
+
+.bg-gradient-blue {
+  background: linear-gradient(90deg, #418dff 1.64%, #4bffdf 98.6%);
+}

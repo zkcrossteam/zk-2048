@@ -3,25 +3,33 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 import "./style.scss";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { QRCodeSVG } from "qrcode.react";
 
-import { useAppSelector, useAppDispatch } from "../app/hooks";
-import { tasksLoaded } from "../data/statusSlice";
 import { CurrencyDisplay } from "../components/Currency";
 import initGameInstance from "../js/g1024";
 import History from "../components/History";
 import { NewProveTask } from "../modals/addNewProveTask";
 import { MainNavBar } from "../components/Nav";
+import { CommonButton } from "../components/CommonButton";
 import One from "../images/1.png";
 import Two from "../images/2.png";
 import Three from "../images/3.png";
 import Four from "../images/4.png";
 import Control from "../images/control.svg";
 
+const DirectionKeys = [
+  "ArrowUp",
+  "ArrowLeft",
+  "ArrowDown",
+  "ArrowRight",
+  "w",
+  "a",
+  "s",
+  "d",
+];
+
 export function Main() {
-  const dispatch = useAppDispatch();
   const [board, setBoard] = useState([
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   ]);
@@ -29,10 +37,8 @@ export function Main() {
   const [currency, setCurrency] = useState(20);
   const [commands, setCommands] = useState<Array<number>>([]);
   const [highscore, setHighscore] = useState(20);
-  const [submitURI, setSubmitURI] = useState("");
 
   const [showInputsAsRaw, setShowInputsAsRaw] = useState(false);
-  let ready = useAppSelector(tasksLoaded);
 
   function appendCommand(cmds: Array<number>) {
     setCommands((commands) => {
@@ -41,15 +47,12 @@ export function Main() {
   }
 
   function arrowFunction(event: KeyboardEvent) {
-    event.preventDefault();
-    if (event.key === "ArrowUp" || event.key === "w") {
-      step(0);
-    } else if (event.key == "ArrowLeft" || event.key === "a") {
-      step(1);
-    } else if (event.key == "ArrowDown" || event.key === "s") {
-      step(2);
-    } else if (event.key == "ArrowRight" || event.key === "d") {
-      step(3);
+    const { key } = event;
+    const index = DirectionKeys.indexOf(key);
+
+    if (index >= 0) {
+      event.preventDefault();
+      step(index % 4);
     }
   }
 
@@ -59,7 +62,6 @@ export function Main() {
         board[i] = ins.getBoard(i);
       }
       setBoard([...board]);
-      //ins.setCurrency(40);
       setCurrency(ins.getCurrency());
     });
     document.addEventListener("keydown", arrowFunction, false);
@@ -69,7 +71,6 @@ export function Main() {
   }, []);
 
   useEffect(() => {
-    //Set highscore
     if (currency > highscore) setHighscore(currency);
   }, [currency]);
 
@@ -141,7 +142,7 @@ export function Main() {
 
   async function step(k: number) {
     let ins = await initGameInstance();
-    if (ins.getCurrency() == 0) {
+    if (ins.getCurrency() === 0) {
       alert("not enough currency to proceed!");
       return;
     }
@@ -161,7 +162,7 @@ export function Main() {
 
   async function sell() {
     let ins = await initGameInstance();
-    if (focus != -1) {
+    if (focus !== -1) {
       let focusValue = ins.getBoard(focus);
       for (var i = 0; i < 16; i++) {
         let compare = ins.getBoard(i);
@@ -171,7 +172,7 @@ export function Main() {
         }
       }
       ins.sell(focus);
-      for (var i = 0; i < 16; i++) {
+      for (let i = 0; i < 16; i++) {
         board[i] = ins.getBoard(i);
       }
       setBoard([...board]);
@@ -183,7 +184,6 @@ export function Main() {
   }
 
   function restartGame() {
-    //reload the window for now
     window.location.reload();
   }
 
@@ -199,14 +199,14 @@ export function Main() {
     <>
       <MainNavBar currency={currency} handleRestart={restartGame}></MainNavBar>
       <Container className="justify-content-center mb-4">
-        <Row className="justify-content-md-center  m-auto mt-3">
+        <Row className="justify-content-md-center m-auto mt-3">
           <Col className="d-flex justify-content-between align-items-center p-0 game-width">
             <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
             <CurrencyDisplay
               className="high-score mx-2"
               tag="Score"
               value={highscore}
-            ></CurrencyDisplay>
+            />
           </Col>
         </Row>
         <Row className="mt-3">
@@ -233,102 +233,86 @@ export function Main() {
             </div>
           </Col>
         </Row>
+
+        <div className="container-max mx-auto d-flex justify-content-between my-3">
+          <CommonButton className="w-50 me-2" border onClick={sell}>
+            Sell
+          </CommonButton>
+          <div className="w-50 ms-2">
+            <NewProveTask
+              md5="77DA9B5A42FABD295FD67CCDBDF2E348"
+              inputs={`${commands.length}:i64`}
+              witness={getWitness()}
+            />
+          </div>
+        </div>
+
         <div className="text-center">
           <img src={Control} alt="#" />
         </div>
+
         <Row className="justify-content-center overflow-breakword my-4">
-          <Col sm={7} className="game-inputs py-2">
-            <div>
-              <i
-                className="bi bi-eye me-2 cursor-pointer"
-                onClick={() => setShowInputsAsRaw(!showInputsAsRaw)}
-              ></i>
-              <span>
-                {showInputsAsRaw ? "Show Commands" : "Show Raw Proof Inputs"}
-              </span>
-            </div>
-            {showInputsAsRaw ? (
-              <>
-                <div>{getURI()}</div>
-              </>
-            ) : (
-              <>
+          <Col lg={6} xs={12} className="game-inputs border-box rounded-4">
+            <Row className="py-3 border-content rounded-4">
+              <Col>
                 <div>
-                  {commands.length == 0 && "No inputs made yet!"}
-                  {displayCommandIcons().map((icon) => {
-                    return icon;
-                  })}
-                </div>
-              </>
-            )}
-          </Col>
-        </Row>
-
-        {commands.length > 0 && (
-          <>
-            <div className="d-flex justify-content-center">
-              <Row className="justify-content-md-center">
-                <Col>
-                  <NewProveTask
-                    md5="77DA9B5A42FABD295FD67CCDBDF2E348"
-                    inputs={`${commands.length}:i64`}
-                    witness={getWitness()}
-                  ></NewProveTask>
-                </Col>
-              </Row>
-            </div>
-          </>
-        )}
-
-        <Row className="justify-content-center">
-          <Col sm={7}>
-            <Row className="pt-4">
-              <Col className="d-flex qr-code">
-                <div>
-                  <QRCodeSVG value={getURI()} />
-                </div>
-
-                <div className="ms-4 qr-msg">
-                  Scan this QR Code to redeem your prize
+                  <button
+                    className="appearance-none ps-0 me-1"
+                    onClick={() => setShowInputsAsRaw(!showInputsAsRaw)}
+                  >
+                    <i className="bi bi-eye" />
+                  </button>
+                  <span>
+                    {showInputsAsRaw
+                      ? "Show Commands"
+                      : "Show Raw Proof Inputs"}
+                  </span>
                 </div>
               </Col>
-            </Row>
-            <Row className="game-info mt-4">
-              <Row>
-                HOW TO PLAY: Use your arrow keys to move the tiles. Each time
-                you move, one currency unit is deducted. When two tiles with the
-                same icon touch, they merge into one tile with same icon they
-                summed to one! When you make the highest tile, you can sell the
-                highest tile for currency.
-              </Row>
-              <Row className="my-4">
-                <div className="d-flex align-items-center justify-content-center">
-                  <img src={One} alt="" className="game-icon" />
-                  <i className="bi bi-plus-lg mx-2"></i>
-                  <img src={One} alt="" className="game-icon" />
-                  <i className="bi bi-arrow-right mx-2"></i>
-                  <img src={Two} alt="" className="game-icon" />
-                  <i className="bi bi-plus-lg mx-2"></i>
-                  <img src={Two} alt="" className="game-icon" />
-                  <i className="bi bi-arrow-right mx-2"></i>
-                  <img src={Three} alt="" className="game-icon" />
-                  <i className="bi bi-plus-lg mx-2"></i>
-                  <img src={Three} alt="" className="game-icon" />
-                  <i className="bi bi-arrow-right mx-2"></i>
-                  <img src={Four} alt="" className="game-icon" />
-                  <i className="bi bi-plus-lg mx-2"></i>
-                  <span>...etc</span>
-                </div>
-              </Row>
-              <Row>
-                Game is based on Saming's 2048 and conceptually similar to
-                Threes by Asher Vollmer.
-              </Row>
+              <Col className="text-end">
+                {showInputsAsRaw ? (
+                  <div>{getURI()}</div>
+                ) : (
+                  <div>
+                    {!commands.length && "No inputs made yet!"}
+                    {displayCommandIcons()}
+                  </div>
+                )}
+              </Col>
             </Row>
           </Col>
         </Row>
+
+        <div className="rounded-4 border-box container-max mx-auto text-center">
+          <div className="border-content py-3">
+            <h2>HOW TO PLAY?</h2>
+            <p className="px-4" style={{ fontSize: "18px" }}>
+              Use your arrow keys to move the tiles. Each time you move, one
+              currency unit is deducted. When two tiles with the same icon
+              touch, they merge into one tile with same icon they summed to one!
+              When you make the highest tile, you can sell the highest tile for
+              currency.
+            </p>
+            <div className="d-flex align-items-center justify-content-center my-3">
+              {[One, Two, Three, Four].map((src, index, { length }) => (
+                <Fragment key={src}>
+                  <img src={src} alt="#" className="game-icon" />
+                  {index + 1 < length && (
+                    <>
+                      <span className="mx-2">+</span>
+                      <img src={src} alt="#" className="game-icon" />
+                      <span className="mx-2">=</span>
+                    </>
+                  )}
+                </Fragment>
+              ))}
+              <span className="ms-2">...</span>
+            </div>
+          </div>
+        </div>
+
+        <History md5="77DA9B5A42FABD295FD67CCDBDF2E348" />
       </Container>
-      <History md5="77DA9B5A42FABD295FD67CCDBDF2E348"></History>
     </>
   );
 }

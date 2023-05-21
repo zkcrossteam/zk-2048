@@ -1,3 +1,5 @@
+@import "../index";
+
 .navbar {
   border: none;
   color: var(--blue-text-color) !important;
@@ -95,5 +97,12 @@
   }
   td {
     font-size: 14px;
+  }
+}
+
+.border-button {
+  @extend .border-box;
+  &:before {
+    background: linear-gradient(90deg, #4da1ff 0%, #4dffdf 100%);
   }
 }

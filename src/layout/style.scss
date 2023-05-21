@@ -1,3 +1,5 @@
+@import "../index";
+
 @font-face {
   font-family: "Be Vietnam";
   src: url(../fonts/BeVietnamPro-Regular.ttf);
@@ -238,25 +240,13 @@ div.board-cell-16 {
   width: 50px;
   height: 50px;
 }
-.game-inputs {
-  background-color: var(--navbar-bg);
-  border-radius: 15px;
-  width: 500px !important;
-}
 
-.sell-button {
-  border: none;
-  background-color: var(--button-main);
-  padding: 5px 30px;
-  border-radius: 5px;
-  color: var(--info-text-color);
-  font-family: "Be Vietnam";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  transition: 0.3s all ease;
-  &:hover {
-    background-color: var(--button-hover);
+.game-inputs {
+  border-radius: 20px;
+  max-width: 560px !important;
+  color: #4e78b8;
+  .border-content {
+    border-radius: 20px;
   }
 }
 

@@ -91,12 +91,10 @@ export function ProofInfoModal(info: ProofInfoProps) {
     </>
   );
   let props: ModalCommonProps = {
-    btnLabel: <i className="bi bi-eye cursor-pointer"></i>,
-    title: "Proof Information",
+    btnLabel: <button className="appearance-none">Click to show</button>,
+    title: ["Proof ", "Information"],
     childrenClass: "",
-    handleConfirm: function (): void {
-      testverify();
-    },
+    onConfirm: testverify,
     valid: true,
     status: ModalStatus.PreConfirm,
     children: taskproof,

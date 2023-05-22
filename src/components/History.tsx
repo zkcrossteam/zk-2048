@@ -1,10 +1,14 @@
 import { useEffect } from "react";
-import { Container, Table } from "react-bootstrap";
+import { Table, Image } from "react-bootstrap";
+import classNames from "classnames";
 
+import { CommonBg } from "./CommonBg";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { loadStatus, selectTasks } from "../data/statusSlice";
 import { selectL1Account } from "../data/accountSlice";
 import { ProofInfoModal } from "../modals/proofInfo";
+import { shortenString } from "../utils/string";
+import User from "../images/people.svg";
 
 export interface UserHistoryProps {
   md5: string;
@@ -13,28 +17,26 @@ export interface UserHistoryProps {
 export default function ImageDetail(props: UserHistoryProps) {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectL1Account);
-  const query = {
-    md5: props.md5,
-    user_address: account?.address || "",
-    id: "",
-    tasktype: "Prove",
-    taskstatus: "",
-  };
-
   const tasks = useAppSelector(selectTasks);
 
   useEffect(() => {
-    if (account) {
-      dispatch(loadStatus(query));
-    }
+    dispatch(
+      loadStatus({
+        md5: props.md5,
+        user_address: account?.address || "",
+        id: "",
+        tasktype: "Prove",
+        taskstatus: "",
+      })
+    );
   }, [account]);
 
   return (
-    <Container className="proofs">
-      <Table bordered className="rounded">
+    <CommonBg>
+      <Table className="rounded">
         <thead>
           <tr>
-            <th>Task ID</th>
+            <th className="ps-lg-5">Task ID</th>
             <th>Submitted by</th>
             <th>Status</th>
             <th>Proof Details</th>
@@ -43,13 +45,28 @@ export default function ImageDetail(props: UserHistoryProps) {
         <tbody>
           {tasks?.map((task) => (
             <tr key={task._id["$oid"]}>
-              <td>
-                <span>{task._id["$oid"]}</span>
+              <td className="ps-lg-5">
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`https://zkwasm-explorer.delphinuslab.com/image/${task._id["$oid"]}`}
+                >
+                  {shortenString(task._id["$oid"])}
+                </a>
               </td>
               <td>
-                <span>{task.user_address}</span>
+                <Image className="me-2" src={User} />
+                {shortenString(task.user_address)}
               </td>
-              <td>
+              <td
+                className={classNames({
+                  "text-success": task.status === "Done",
+                })}
+              >
+                <Image
+                  className="me-2"
+                  src={`/${task.status.toLowerCase()}.png`}
+                />
                 <span>{task.status}</span>
               </td>
               <td>
@@ -59,6 +76,6 @@ export default function ImageDetail(props: UserHistoryProps) {
           ))}
         </tbody>
       </Table>
-    </Container>
+    </CommonBg>
   );
 }

@@ -49,6 +49,19 @@ html {
   -webkit-text-fill-color: transparent;
 }
 
+.common-card-bg-box {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background-image: linear-gradient(180deg, #151f33, #070b18),
+    linear-gradient(180deg, #418dff, #344371);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+.common-card-bg-box label {
+  color: #4e78b8;
+}
+
 .border-box {
   border: 1px solid transparent;
   position: relative;

@@ -48,15 +48,14 @@ export const statusSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(loadStatus.fulfilled, (state, c) => {
-      console.log("payload", c.payload);
-      state.tasks = c.payload;
+    builder.addCase(loadStatus.fulfilled, (state, { payload }) => {
+      state.tasks = payload;
       state.loaded = true;
     });
   },
 });
 
 export const { updateState } = statusSlice.actions;
-export const selectTasks = (state: RootState) => state.status.tasks;
-export const tasksLoaded = (state: RootState) => state.status.loaded;
+export const selectTasks = ({ status }: RootState) => status.tasks;
+export const tasksLoaded = ({ status }: RootState) => status.loaded;
 export default statusSlice.reducer;

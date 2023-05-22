@@ -30,21 +30,15 @@ const DirectionKeys = [
 ];
 
 export function Main() {
-  const [board, setBoard] = useState([
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  ]);
+  const [board, setBoard] = useState(Array(12).fill(0));
   const [focus, setFocus] = useState(-1);
   const [currency, setCurrency] = useState(20);
-  const [commands, setCommands] = useState<Array<number>>([]);
+  const [commands, setCommands] = useState<number[]>([]);
   const [highscore, setHighscore] = useState(20);
-
   const [showInputsAsRaw, setShowInputsAsRaw] = useState(false);
 
-  function appendCommand(cmds: Array<number>) {
-    setCommands((commands) => {
-      return [...commands.concat(cmds)];
-    });
-  }
+  const appendCommand = (cmds: number[]) =>
+    setCommands((commands) => [...commands, ...cmds]);
 
   function arrowFunction(event: KeyboardEvent) {
     const { key } = event;
@@ -74,23 +68,15 @@ export function Main() {
     if (currency > highscore) setHighscore(currency);
   }, [currency]);
 
-  function getWitness() {
-    let wit = `0x`;
-    for (var c of commands) {
-      wit = wit + "0" + c.toString(16);
-    }
-    wit = wit + ":bytes-packed";
-    return wit;
-  }
+  const getWitness = () =>
+    `0x${commands.map((command) =>
+      command.toString(16).padStart(2, "0")
+    )}:bytes-packed`;
 
-  function getURI() {
-    let uri = `${commands.length}:i64-0x`;
-    for (var c of commands) {
-      uri = uri + "0" + c.toString(16);
-    }
-    uri = uri + ":bytes-packed";
-    return uri;
-  }
+  const getURI = () =>
+    `${commands.length}:i64-0x${commands.map((command) =>
+      command.toString(16).padStart(2, "0")
+    )}:bytes-packed`;
 
   function displayCommandIcons() {
     let icons = [];
@@ -196,123 +182,121 @@ export function Main() {
   }
 
   return (
-    <>
+    <Container className="justify-content-center mb-4">
       <MainNavBar currency={currency} handleRestart={restartGame}></MainNavBar>
-      <Container className="justify-content-center mb-4">
-        <Row className="justify-content-md-center m-auto mt-3">
-          <Col className="d-flex justify-content-between align-items-center p-0 game-width">
-            <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
-            <CurrencyDisplay
-              className="high-score mx-2"
-              tag="Score"
-              value={highscore}
-            />
-          </Col>
-        </Row>
-        <Row className="mt-3">
-          <Col>
-            <div className="content">
-              {[...Array(4)].map((_, r) => {
-                return (
-                  <div className="board-row" key={r}>
-                    {[...Array(4)].map((_, c) => {
-                      let index = r * 4 + c;
-                      return (
-                        <div
-                          className={`${cellClass(r * 4 + c)} board-cell-out`}
-                          onClick={() => toggleSelect(index)}
-                          key={index}
-                        >
-                          {index === focus && <div></div>}
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
-          </Col>
-        </Row>
 
-        <div className="container-max mx-auto d-flex justify-content-between my-3">
-          <CommonButton className="w-50 me-2" border onClick={sell}>
-            Sell
-          </CommonButton>
-          <div className="w-50 ms-2">
-            <NewProveTask
-              md5="77DA9B5A42FABD295FD67CCDBDF2E348"
-              inputs={`${commands.length}:i64`}
-              witness={getWitness()}
-            />
+      <Row className="justify-content-md-center m-auto mt-3">
+        <Col className="d-flex justify-content-between align-items-center p-0 game-width">
+          <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
+          <CurrencyDisplay
+            className="high-score mx-2"
+            tag="Score"
+            value={highscore}
+          />
+        </Col>
+      </Row>
+
+      <Row className="mt-3">
+        <Col>
+          <div className="content">
+            {Array.from(new Array(4), (_, r) => (
+              <div className="board-row" key={r}>
+                {Array.from(new Array(4), (_, c) => {
+                  const index = r * 4 + c;
+
+                  return (
+                    <div
+                      key={index}
+                      className={`${cellClass(index)} board-cell-out`}
+                      onClick={() => toggleSelect(index)}
+                    >
+                      {index === focus && <div />}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
           </div>
-        </div>
+        </Col>
+      </Row>
 
-        <div className="text-center">
-          <img src={Control} alt="#" />
+      <div className="container-max mx-auto d-flex justify-content-between my-3">
+        <CommonButton className="w-50 me-2" border onClick={sell}>
+          Sell
+        </CommonButton>
+        <div className="w-50 ms-2">
+          <NewProveTask
+            md5="77DA9B5A42FABD295FD67CCDBDF2E348"
+            inputs={`${commands.length}:i64`}
+            witness={getWitness()}
+          />
         </div>
+      </div>
 
-        <Row className="justify-content-center overflow-breakword my-4">
-          <Col lg={6} xs={12} className="game-inputs border-box rounded-4">
-            <Row className="py-3 border-content rounded-4">
-              <Col>
+      <div className="text-center">
+        <img src={Control} alt="#" />
+      </div>
+
+      <Row className="justify-content-center overflow-breakword my-4">
+        <Col lg={6} xs={12} className="game-inputs border-box rounded-4">
+          <Row className="py-3 border-content rounded-4">
+            <Col>
+              <div>
+                <button
+                  className="appearance-none ps-0 me-1"
+                  onClick={() => setShowInputsAsRaw(!showInputsAsRaw)}
+                >
+                  <i className="bi bi-eye" />
+                </button>
+                <span>
+                  {showInputsAsRaw ? "Show Commands" : "Show Raw Proof Inputs"}
+                </span>
+              </div>
+            </Col>
+            <Col className="text-end">
+              {showInputsAsRaw ? (
+                <div>{getURI()}</div>
+              ) : (
                 <div>
-                  <button
-                    className="appearance-none ps-0 me-1"
-                    onClick={() => setShowInputsAsRaw(!showInputsAsRaw)}
-                  >
-                    <i className="bi bi-eye" />
-                  </button>
-                  <span>
-                    {showInputsAsRaw
-                      ? "Show Commands"
-                      : "Show Raw Proof Inputs"}
-                  </span>
+                  {!commands.length && "No inputs made yet!"}
+                  {displayCommandIcons()}
                 </div>
-              </Col>
-              <Col className="text-end">
-                {showInputsAsRaw ? (
-                  <div>{getURI()}</div>
-                ) : (
-                  <div>
-                    {!commands.length && "No inputs made yet!"}
-                    {displayCommandIcons()}
-                  </div>
-                )}
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+              )}
+            </Col>
+          </Row>
+        </Col>
+      </Row>
 
-        <div className="rounded-4 border-box container-max mx-auto text-center">
-          <div className="border-content py-3">
-            <h2>HOW TO PLAY?</h2>
-            <p className="px-4" style={{ fontSize: "18px" }}>
-              Use your arrow keys to move the tiles. Each time you move, one
-              currency unit is deducted. When two tiles with the same icon
-              touch, they merge into one tile with same icon they summed to one!
-              When you make the highest tile, you can sell the highest tile for
-              currency.
-            </p>
-            <div className="d-flex align-items-center justify-content-center my-3">
-              {[One, Two, Three, Four].map((src, index, { length }) => (
-                <Fragment key={src}>
-                  <img src={src} alt="#" className="game-icon" />
-                  {index + 1 < length && (
-                    <>
-                      <span className="mx-2">+</span>
-                      <img src={src} alt="#" className="game-icon" />
-                      <span className="mx-2">=</span>
-                    </>
-                  )}
-                </Fragment>
-              ))}
-              <span className="ms-2">...</span>
-            </div>
+      <div className="rounded-4 border-box container-max mx-auto text-center">
+        <div className="border-content py-3">
+          <h2>HOW TO PLAY?</h2>
+          <p className="px-4" style={{ fontSize: "18px" }}>
+            Use your arrow keys to move the tiles. Each time you move, one
+            currency unit is deducted. When two tiles with the same icon touch,
+            they merge into one tile with same icon they summed to one! When you
+            make the highest tile, you can sell the highest tile for currency.
+          </p>
+          <div className="d-flex align-items-center justify-content-center my-3">
+            {[One, Two, Three, Four].map((src, index, { length }) => (
+              <Fragment key={src}>
+                <img src={src} alt="#" className="game-icon" />
+                {index + 1 < length && (
+                  <>
+                    <span className="mx-2">+</span>
+                    <img src={src} alt="#" className="game-icon" />
+                    <span className="mx-2">=</span>
+                  </>
+                )}
+              </Fragment>
+            ))}
+            <span className="ms-2">...</span>
           </div>
         </div>
+      </div>
 
+      <div className="my-4">
         <History md5="77DA9B5A42FABD295FD67CCDBDF2E348" />
-      </Container>
-    </>
+      </div>
+    </Container>
   );
 }

@@ -1,19 +1,20 @@
-import { useState, ReactNode } from "react";
-import { Button, Modal, Spinner } from "react-bootstrap";
+import { ReactNode, useState } from "react";
+import { CloseButton, Modal, Spinner } from "react-bootstrap";
 
-import { selectL1Account } from "../data/accountSlice";
 import { useAppSelector } from "../app/hooks";
+import { CommonButton } from "../components/CommonButton";
+import { selectL1Account } from "../data/accountSlice";
 import "./style.scss";
 
 export interface ModalCommonProps {
   btnLabel: ReactNode;
-  title: string;
+  title: string[];
   children?: ReactNode;
   childrenClass: string;
   valid: boolean;
-  handleConfirm?: () => void;
-  handleShow?: () => void;
-  handleClose?: () => void;
+  onConfirm?: () => any;
+  onShow?: () => any;
+  onClose?: () => any;
   message: string;
   status: ModalStatus;
   confirmLabel?: ReactNode;
@@ -26,36 +27,46 @@ export enum ModalStatus {
   Error,
 }
 
-export function ModalCommon(props: ModalCommonProps) {
+export const WaitingForResponseBar = () => (
+  <Spinner animation="border" variant="light" />
+);
+
+export const ModalCommon = ({
+  btnLabel,
+  title,
+  children,
+  valid,
+  message,
+  status,
+  confirmLabel,
+  onShow,
+  onClose,
+  onConfirm,
+  ...props
+}: ModalCommonProps) => {
   const [show, setShow] = useState(false);
 
-  let account = useAppSelector(selectL1Account);
+  const account = useAppSelector(selectL1Account);
   const handleClose = () => {
-    if (props.handleClose) {
-      props.handleClose();
-    }
+    onClose?.();
     setShow(false);
   };
   const handleShow = () => {
-    if (props.handleShow) {
-      props.handleShow();
-    }
+    onShow?.();
     setShow(true);
   };
 
-  const Message = () => {
-    if (account?.address === undefined) {
-      return (
-        <div>Please connect your wallet before submitting any requests!</div>
-      );
-    }
-    return <div className="modal-error-msg">{props.message}</div>;
-  };
+  const Message = () =>
+    account?.address ? (
+      <div className="modal-error-msg">{message}</div>
+    ) : (
+      <div>Please connect your wallet before submitting any requests!</div>
+    );
 
   return (
     <>
       <div className="modal-btn" onClick={handleShow}>
-        {props.btnLabel}
+        {btnLabel}
       </div>
       <Modal
         show={show}
@@ -65,35 +76,34 @@ export function ModalCommon(props: ModalCommonProps) {
         dialogClassName="modal-90w"
         role="dialog"
       >
-        <Modal.Header>{props.title}</Modal.Header>
-        <Modal.Body className="show-grid">{props.children}</Modal.Body>
-        <Modal.Footer>
-          <Message></Message>
+        <div className="common-card-bg-box">
+          <Modal.Header>
+            <Modal.Title className="w-100 text-center fs-3">
+              <span className="gradient-content">{title[0]}</span>
+              <span>{title[1]}</span>
+            </Modal.Title>
+            <CloseButton onClick={handleClose} />
+          </Modal.Header>
+          <Modal.Body className="show-grid">{children}</Modal.Body>
+          <Modal.Footer className="flex-column">
+            <Message />
 
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          {props.handleConfirm && props.status === ModalStatus.PreConfirm && (
-            <Button
-              variant="primary"
-              disabled={props.valid !== true || account?.address === undefined}
-              onClick={props.handleConfirm}
-            >
-              {props.confirmLabel}
-            </Button>
-          )}
-          <WaitingForResponseBar></WaitingForResponseBar>
-        </Modal.Footer>
+            {onConfirm && status === ModalStatus.PreConfirm && (
+              <CommonButton
+                className="px-5 py-2"
+                border
+                disabled={!valid || !account?.address}
+                onClick={onConfirm}
+              >
+                <span className="gradient-content">
+                  {!show && <WaitingForResponseBar />}
+                  {confirmLabel}
+                </span>
+              </CommonButton>
+            )}
+          </Modal.Footer>
+        </div>
       </Modal>
     </>
   );
-}
-
-export function WaitingForResponseBar() {
-  let wfr = false;
-  if (wfr) {
-    return <Spinner animation="border" variant="light"></Spinner>;
-  } else {
-    return <></>;
-  }
-}
+};

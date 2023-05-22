@@ -1,26 +1,25 @@
 import { ZkWasmServiceHelper } from "zkwasm-service-helper";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState, store } from "../app/store";
+import { RootState } from "../app/store";
 
 export const resturl = "http://129.146.114.145:8080";
 export const zkwasmHelper = new ZkWasmServiceHelper(resturl, "", "");
+export const storageKey = "customURLs";
+
+export const defaultEndpoint: Endpoint = {
+  url: resturl,
+  nickname: "Default",
+};
+
 export interface Endpoint {
   url: string;
   nickname: string;
 }
 
-export const storageKey = "customURLs";
-export const defaultEndpoint: Endpoint = {
-  url: resturl,
-  nickname: "Default",
-};
 function customEndpoints() {
-  //Get custom endpoint array from local storage
-  let endpoints = localStorage.getItem(storageKey);
-  if (endpoints) {
-    return JSON.parse(endpoints) as Endpoint[];
-  }
-  return [];
+  const endpoints = localStorage[storageKey];
+
+  return endpoints ? (JSON.parse(endpoints) as Endpoint[]) : [];
 }
 
 function getLastUsedEndpoint() {
@@ -50,31 +49,29 @@ export const endpointSlice = createSlice({
   name: "endpoint",
   initialState,
   reducers: {
-    updateCurrentEndpoint: (state, d: PayloadAction<Endpoint>) => {
+    updateCurrentEndpoint: (state, { payload }: PayloadAction<Endpoint>) => {
       //add updated array to local storage
-      localStorage.setItem("lastUsedEndpoint", JSON.stringify(d.payload));
-      state.currentEndpoint = d.payload;
-      state.zkWasmServiceHelper = new ZkWasmServiceHelper(
-        d.payload.url,
-        "",
-        ""
-      );
+      localStorage.setItem("lastUsedEndpoint", JSON.stringify(payload));
+      state.currentEndpoint = payload;
+      state.zkWasmServiceHelper = new ZkWasmServiceHelper(payload.url, "", "");
     },
-    setEndpointList: (state, d) => {
+    setEndpointList: (state, { payload }) => {
       //add updated array to local storage
-      localStorage.setItem(storageKey, JSON.stringify(d.payload));
-      state.endpointList = d.payload;
+      localStorage.setItem(storageKey, JSON.stringify(payload));
+      state.endpointList = payload;
     },
   },
 });
 
 export const { updateCurrentEndpoint, setEndpointList } = endpointSlice.actions;
 
-export const selectEndpointList = (state: RootState) =>
-  state.endpoint.endpointList;
-export const selectCurrentEndpoint = (state: RootState) =>
-  state.endpoint.currentEndpoint;
-export const selectZkWasmServiceHelper = (state: RootState) =>
-  state.endpoint.zkWasmServiceHelper;
+export const selectEndpointList = ({ endpoint: { endpointList } }: RootState) =>
+  endpointList;
+export const selectCurrentEndpoint = ({
+  endpoint: { currentEndpoint },
+}: RootState) => currentEndpoint;
+export const selectZkWasmServiceHelper = ({
+  endpoint: { zkWasmServiceHelper },
+}: RootState) => zkWasmServiceHelper;
 
 export default endpointSlice.reducer;

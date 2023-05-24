@@ -1,17 +1,14 @@
-import BN from "bn.js";
+import BN from 'bn.js';
 
-export function Inputs(inputs: Array<string>) {
-  return inputs.join(";");
-}
+export const Inputs = (inputs: string[]) => inputs.join(';');
 
-export function bytesToBN(data:Uint8Array) {
-  let chunksize = 64;
-  let bns = [];
-  for (let i = 0; i < data.length; i += 32) {
-    const chunk = data.slice(i, i + 32);
-    let a = new BN(chunk,'le');
-    bns.push(a);
-    // do whatever
+export function bytesToBN(data: Uint8Array, chunkSize = 32) {
+  const bns: BN[] = [];
+
+  for (let i = 0; i < data.length; i += chunkSize) {
+    const chunk = data.slice(i, i + chunkSize);
+    bns.push(new BN(chunk, 'le'));
   }
+
   return bns;
 }

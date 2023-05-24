@@ -1,4 +1,4 @@
-import { Badge } from "react-bootstrap";
+import { Badge } from 'react-bootstrap';
 
 interface InputsProps {
   inputs: string[];
@@ -6,7 +6,7 @@ interface InputsProps {
 
 export const Inputs = ({ inputs }: InputsProps) => (
   <>
-    {inputs.map((input) => (
+    {inputs.map(input => (
       <Badge bg="primary">{input}</Badge>
     ))}
   </>

@@ -1,36 +1,35 @@
-import "bootswatch/dist/slate/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
+import 'bootswatch/dist/slate/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import './style.scss';
 
-import "./style.scss";
+import { Fragment, useEffect, useState } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 
-import { Fragment, useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-
-import { CurrencyDisplay } from "../components/Currency";
-import initGameInstance from "../js/g1024";
-import History from "../components/History";
-import { NewProveTask } from "../modals/addNewProveTask";
-import { MainNavBar } from "../components/Nav";
-import { CommonButton } from "../components/CommonButton";
-import One from "../images/1.png";
-import Two from "../images/2.png";
-import Three from "../images/3.png";
-import Four from "../images/4.png";
-import Control from "../images/control.svg";
+import { CommonButton } from '../components/CommonButton';
+import { CurrencyDisplay } from '../components/Currency';
+import History from '../components/History';
+import { MainNavBar } from '../components/Nav';
+import One from '../images/1.png';
+import Two from '../images/2.png';
+import Three from '../images/3.png';
+import Four from '../images/4.png';
+import Control from '../images/control.svg';
+import initGameInstance from '../js/g1024';
+import { NewProveTask } from '../modals/addNewProveTask';
 
 const DirectionKeys = [
-  "ArrowUp",
-  "ArrowLeft",
-  "ArrowDown",
-  "ArrowRight",
-  "w",
-  "a",
-  "s",
-  "d",
+  'ArrowUp',
+  'ArrowLeft',
+  'ArrowDown',
+  'ArrowRight',
+  'w',
+  'a',
+  's',
+  'd',
 ];
 
 export function Main() {
-  const [board, setBoard] = useState(Array(12).fill(0));
+  const [board, setBoard] = useState(Array(16).fill(0));
   const [focus, setFocus] = useState(-1);
   const [currency, setCurrency] = useState(20);
   const [commands, setCommands] = useState<number[]>([]);
@@ -38,7 +37,7 @@ export function Main() {
   const [showInputsAsRaw, setShowInputsAsRaw] = useState(false);
 
   const appendCommand = (cmds: number[]) =>
-    setCommands((commands) => [...commands, ...cmds]);
+    setCommands(commands => [...commands, ...cmds]);
 
   function arrowFunction(event: KeyboardEvent) {
     const { key } = event;
@@ -52,16 +51,14 @@ export function Main() {
 
   useEffect(() => {
     initGameInstance().then((ins: any) => {
-      for (var i = 0; i < 16; i++) {
+      for (let i = 0; i < 16; i++) {
         board[i] = ins.getBoard(i);
       }
       setBoard([...board]);
       setCurrency(ins.getCurrency());
     });
-    document.addEventListener("keydown", arrowFunction, false);
-    return () => {
-      document.removeEventListener("keydown", arrowFunction, false);
-    };
+    document.addEventListener('keydown', arrowFunction, false);
+    return () => document.removeEventListener('keydown', arrowFunction, false);
   }, []);
 
   useEffect(() => {
@@ -69,24 +66,24 @@ export function Main() {
   }, [currency]);
 
   const getWitness = () =>
-    `0x${commands.map((command) =>
-      command.toString(16).padStart(2, "0")
+    `0x${commands.map(command =>
+      command.toString(16).padStart(2, '0'),
     )}:bytes-packed`;
 
   const getURI = () =>
-    `${commands.length}:i64-0x${commands.map((command) =>
-      command.toString(16).padStart(2, "0")
+    `${commands.length}:i64-0x${commands.map(command =>
+      command.toString(16).padStart(2, '0'),
     )}:bytes-packed`;
 
   function displayCommandIcons() {
     let icons = [];
-    for (var i = 0; i < commands.length; i++) {
+    for (let i = 0; i < commands.length; i++) {
       let icon = <></>;
       //Check prev is sell, display as number not arrow
       if (i > 0) {
         if (commands[i - 1] === 4 && commands[i - 3] === 4) {
           //Display cell that has been sold
-          if (commands[i - 1] === 4 || commands[i - 2] != 4) {
+          if (commands[i - 1] === 4 || commands[i - 2] !== 4) {
             icon = <span>{commands[i]}</span>;
             icons.push(icon);
             continue;
@@ -127,14 +124,12 @@ export function Main() {
   }
 
   async function step(k: number) {
-    let ins = await initGameInstance();
-    if (ins.getCurrency() === 0) {
-      alert("not enough currency to proceed!");
-      return;
-    }
+    const ins = await initGameInstance();
+    if (!ins.getCurrency()) return alert('not enough currency to proceed!');
+
     setFocus(-1);
     ins.step(k);
-    for (var i = 0; i < 16; i++) {
+    for (let i = 0; i < 16; i++) {
       board[i] = ins.getBoard(i);
     }
     setBoard([...board]);
@@ -147,15 +142,12 @@ export function Main() {
   }
 
   async function sell() {
-    let ins = await initGameInstance();
+    const ins = await initGameInstance();
     if (focus !== -1) {
       let focusValue = ins.getBoard(focus);
-      for (var i = 0; i < 16; i++) {
-        let compare = ins.getBoard(i);
-        if (compare > focusValue) {
-          alert("can only sell highest value block");
-          return;
-        }
+      for (let i = 0; i < 16; i++) {
+        if (ins.getBoard(i) > focusValue)
+          return alert('can only sell highest value block');
       }
       ins.sell(focus);
       for (let i = 0; i < 16; i++) {
@@ -173,13 +165,8 @@ export function Main() {
     window.location.reload();
   }
 
-  function cellClass(index: number) {
-    if (board[index] === 0) {
-      return "board-cell";
-    } else {
-      return `board-cell-${board[index]}`;
-    }
-  }
+  const cellClass = (index: number) =>
+    board[index] ? `board-cell-${board[index]}` : 'board-cell';
 
   return (
     <Container className="justify-content-center mb-4">
@@ -188,11 +175,7 @@ export function Main() {
       <Row className="justify-content-md-center m-auto mt-3">
         <Col className="d-flex justify-content-between align-items-center p-0 game-width">
           <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
-          <CurrencyDisplay
-            className="high-score mx-2"
-            tag="Score"
-            value={highscore}
-          />
+          <CurrencyDisplay tag="Score" value={highscore} />
         </Col>
       </Row>
 
@@ -249,7 +232,7 @@ export function Main() {
                   <i className="bi bi-eye" />
                 </button>
                 <span>
-                  {showInputsAsRaw ? "Show Commands" : "Show Raw Proof Inputs"}
+                  {showInputsAsRaw ? 'Show Commands' : 'Show Raw Proof Inputs'}
                 </span>
               </div>
             </Col>
@@ -258,7 +241,7 @@ export function Main() {
                 <div>{getURI()}</div>
               ) : (
                 <div>
-                  {!commands.length && "No inputs made yet!"}
+                  {!commands.length && 'No inputs made yet!'}
                   {displayCommandIcons()}
                 </div>
               )}
@@ -270,7 +253,7 @@ export function Main() {
       <div className="rounded-4 border-box container-max mx-auto text-center">
         <div className="border-content py-3">
           <h2>HOW TO PLAY?</h2>
-          <p className="px-4" style={{ fontSize: "18px" }}>
+          <p className="px-4" style={{ fontSize: '18px' }}>
             Use your arrow keys to move the tiles. Each time you move, one
             currency unit is deducted. When two tiles with the same icon touch,
             they merge into one tile with same icon they summed to one! When you

@@ -1,13 +1,14 @@
-import { ReactNode, useState } from "react";
-import { CloseButton, Modal, Spinner } from "react-bootstrap";
+import './style.scss';
 
-import { useAppSelector } from "../app/hooks";
-import { CommonButton } from "../components/CommonButton";
-import { selectL1Account } from "../data/accountSlice";
-import "./style.scss";
+import { ReactNode, useState } from 'react';
+import { CloseButton, Modal, Spinner } from 'react-bootstrap';
+
+import { useAppSelector } from '../app/hooks';
+import { CommonButton } from '../components/CommonButton';
+import { selectL1Account } from '../data/accountSlice';
 
 export interface ModalCommonProps {
-  btnLabel: ReactNode;
+  buttonLabel: ReactNode;
   title: string[];
   children?: ReactNode;
   childrenClass: string;
@@ -32,7 +33,7 @@ export const WaitingForResponseBar = () => (
 );
 
 export const ModalCommon = ({
-  btnLabel,
+  buttonLabel,
   title,
   children,
   valid,
@@ -66,7 +67,7 @@ export const ModalCommon = ({
   return (
     <>
       <div className="modal-btn" onClick={handleShow}>
-        {btnLabel}
+        {buttonLabel}
       </div>
       <Modal
         show={show}

@@ -1,43 +1,30 @@
-import { createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import { RootState } from '../app/store';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-interface SysEvent {
-}
+interface SysEvent {}
 
 export interface DynamicState {
-    events: Array<SysEvent>;
+  events: SysEvent[];
 }
 
 const initialState: DynamicState = {
-    events: [],
-}
-
+  events: [],
+};
 
 export const updateDynamic = createAsyncThunk(
   'dynamic/updateDynamicState',
-  async (account:string, thunkApi) => {
-    return "";
-  }
+  (account: string, thunkApi) => '',
 );
-
-function timeout(ms:number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 
 export const dynamicSlice = createSlice({
   name: 'dynamic',
   initialState,
   reducers: {
-    setTasksList: (state, d) => {
-    },
+    setTasksList: (state, d) => {},
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(updateDynamic.fulfilled, (meta: DynamicState, c) => {
-      })
-
-  },
+  extraReducers: builder =>
+    builder.addCase(updateDynamic.fulfilled, (meta: DynamicState, c) => {}),
 });
-export const {setTasksList} = dynamicSlice.actions;
+
+export const { setTasksList } = dynamicSlice.actions;
+
 export default dynamicSlice.reducer;

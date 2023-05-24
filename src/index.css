@@ -3,18 +3,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-black) !important;
-  background: url("./images/bg.png") no-repeat;
+  background: url('./images/bg.png') no-repeat;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
 #root,
 body,
 html {
-  --bs-body-font-family: "Chakra Petch", sans-serif;
+  --bs-body-font-family: 'Chakra Petch', sans-serif;
   --bg-blue: #405461;
   --bg-black: #05050f;
   --navbar-bg: #32414b;

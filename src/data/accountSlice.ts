@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { withBrowerWeb3 } from "web3subscriber/src/client";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { withBrowerWeb3 } from 'web3subscriber/src/client';
 
-export interface L1AccountInfo extends Record<"address" | "chainId", string> {
+export interface L1AccountInfo extends Record<'address' | 'chainId', string> {
   web3: any;
 }
 
@@ -10,7 +10,7 @@ const loginL1Account = () =>
 
 export interface AccountState {
   l1Account?: L1AccountInfo;
-  status: "Loading" | "Ready";
+  status: 'Loading' | 'Ready';
 }
 
 export interface State {
@@ -18,7 +18,7 @@ export interface State {
 }
 
 const initialState: AccountState = {
-  status: "Loading",
+  status: 'Loading',
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -27,25 +27,25 @@ const initialState: AccountState = {
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
 export const loginL1AccountAsync = createAsyncThunk(
-  "acccount/fetchAccount",
-  loginL1Account
+  'acccount/fetchAccount',
+  loginL1Account,
 );
 
 export const accountSlice = createSlice({
-  name: "account",
+  name: 'account',
   initialState,
   reducers: {
     setL1Account: (state, { payload }) => {
       state.l1Account!.address = payload;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(loginL1AccountAsync.pending, (state) => {
-        state.status = "Loading";
+      .addCase(loginL1AccountAsync.pending, state => {
+        state.status = 'Loading';
       })
       .addCase(loginL1AccountAsync.fulfilled, (state, { payload }) => {
-        state.status = "Ready";
+        state.status = 'Ready';
         state.l1Account = payload;
       });
   },

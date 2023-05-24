@@ -1,20 +1,20 @@
-import { useEffect } from "react";
-import { Table, Image } from "react-bootstrap";
-import classNames from "classnames";
+import classNames from 'classnames';
+import { useEffect } from 'react';
+import { Image, Table } from 'react-bootstrap';
 
-import { CommonBg } from "./CommonBg";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { loadStatus, selectTasks } from "../data/statusSlice";
-import { selectL1Account } from "../data/accountSlice";
-import { ProofInfoModal } from "../modals/proofInfo";
-import { shortenString } from "../utils/string";
-import User from "../images/people.svg";
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { selectL1Account } from '../data/accountSlice';
+import { loadStatus, selectTasks } from '../data/statusSlice';
+import User from '../images/people.svg';
+import { ProofInfoModal } from '../modals/proofInfo';
+import { shortenString } from '../utils/string';
+import { CommonBg } from './CommonBg';
 
 export interface UserHistoryProps {
   md5: string;
 }
 
-export default function ImageDetail(props: UserHistoryProps) {
+export default function ImageDetail({ md5 }: UserHistoryProps) {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectL1Account);
   const tasks = useAppSelector(selectTasks);
@@ -22,12 +22,12 @@ export default function ImageDetail(props: UserHistoryProps) {
   useEffect(() => {
     dispatch(
       loadStatus({
-        md5: props.md5,
-        user_address: account?.address || "",
-        id: "",
-        tasktype: "Prove",
-        taskstatus: "",
-      })
+        md5,
+        user_address: account?.address || '',
+        id: '',
+        tasktype: 'Prove',
+        taskstatus: '',
+      }),
     );
   }, [account]);
 
@@ -43,15 +43,15 @@ export default function ImageDetail(props: UserHistoryProps) {
           </tr>
         </thead>
         <tbody>
-          {tasks?.map((task) => (
-            <tr key={task._id["$oid"]}>
+          {tasks?.map(task => (
+            <tr key={task._id['$oid']}>
               <td className="ps-lg-5">
                 <a
                   target="_blank"
                   rel="noreferrer"
-                  href={`https://zkwasm-explorer.delphinuslab.com/image/${task._id["$oid"]}`}
+                  href={`https://zkwasm-explorer.delphinuslab.com/image/${task._id['$oid']}`}
                 >
-                  {shortenString(task._id["$oid"])}
+                  {shortenString(task._id['$oid'])}
                 </a>
               </td>
               <td>
@@ -60,7 +60,7 @@ export default function ImageDetail(props: UserHistoryProps) {
               </td>
               <td
                 className={classNames({
-                  "text-success": task.status === "Done",
+                  'text-success': task.status === 'Done',
                 })}
               >
                 <Image

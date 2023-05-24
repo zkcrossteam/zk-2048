@@ -1,49 +1,47 @@
-import { FC, useState } from "react";
-import { Container, Form } from "react-bootstrap";
-import { withBrowerWeb3, DelphinusWeb3 } from "web3subscriber/src/client";
+import './style.scss';
+
+import { FC, useState } from 'react';
+import { Container, Form } from 'react-bootstrap';
+import { DelphinusWeb3, withBrowerWeb3 } from 'web3subscriber/src/client';
 import {
   ProvingParams,
-  ZkWasmUtil,
   WithSignature,
-} from "zkwasm-service-helper";
-import { CommonButton } from "../components/CommonButton";
+  ZkWasmUtil,
+} from 'zkwasm-service-helper';
 
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { ModalCommon, ModalCommonProps, ModalStatus } from "./base";
-import { CommonBg } from "../components/CommonBg";
-import { addProvingTask, loadStatus } from "../data/statusSlice";
-import { selectL1Account } from "../data/accountSlice";
-import "./style.scss";
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { CommonBg } from '../components/CommonBg';
+import { CommonButton } from '../components/CommonButton';
+import { selectL1Account } from '../data/accountSlice';
+import { addProvingTask, loadStatus } from '../data/statusSlice';
+import { ModalCommon, ModalCommonProps, ModalStatus } from './base';
 
-interface NewWASMImageProps {
-  md5: string;
-  inputs: string;
-  witness: string;
-}
+type NewWASMImageProps = Record<'md5' | 'inputs' | 'witness', string>;
 
-export async function signMessage(message: string) {
-  const signature = await withBrowerWeb3(async (web3: DelphinusWeb3) => {
-    const { currentProvider } = web3.web3Instance;
-    if (!currentProvider) {
-      throw new Error("No provider found!");
-    }
-    const [account] = await web3.web3Instance.eth.getAccounts();
-    const msg = web3.web3Instance.utils.utf8ToHex(message);
-    const sig = await (currentProvider as any).request({
-      method: "personal_sign",
-      params: [msg, account],
-    });
+export function signMessage(message: string) {
+  return withBrowerWeb3(
+    async ({
+      web3Instance: { currentProvider, eth, utils },
+    }: DelphinusWeb3) => {
+      if (!currentProvider) {
+        throw new Error('No provider found!');
+      }
 
-    return sig;
-  });
+      const [account] = await eth.getAccounts();
+      const msg = utils.utf8ToHex(message);
 
-  return signature;
+      return (currentProvider as any).request({
+        method: 'personal_sign',
+        params: [msg, account],
+      });
+    },
+  );
 }
 
 export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectL1Account);
-  const [message, setMessage] = useState<string>("");
+  const [message, setMessage] = useState<string>('');
   const [status, setStatus] = useState<ModalStatus>(ModalStatus.PreConfirm);
 
   const prepareNewProveTask = async function () {
@@ -58,14 +56,14 @@ export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
 
     let signature: string;
     try {
-      setMessage("Waiting for signature...");
+      setMessage('Waiting for signature...');
       signature = await signMessage(msgString);
-      setMessage("Submitting new prove task...");
+      setMessage('Submitting new prove task...');
     } catch (e: unknown) {
-      console.log("error signing message", e);
+      console.log('error signing message', e);
       setStatus(ModalStatus.PreConfirm);
-      setMessage("Error signing message");
-      throw Error("Unsigned Transaction");
+      setMessage('Error signing message');
+      throw Error('Unsigned Transaction');
     }
 
     const task: WithSignature<ProvingParams> = {
@@ -77,15 +75,15 @@ export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
   };
 
   const addNewProveTask = async function () {
-    let task = await prepareNewProveTask();
+    const task = await prepareNewProveTask();
 
     try {
       await dispatch(addProvingTask(task)).unwrap();
 
       setStatus(ModalStatus.PostConfirm);
     } catch (error) {
-      console.log("new prove task error", error);
-      setMessage("Error creating new prove task.");
+      console.log('new prove task error', error);
+      setMessage('Error creating new prove task.');
       setStatus(ModalStatus.PreConfirm);
     }
 
@@ -93,14 +91,14 @@ export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
       loadStatus({
         user_address: account!.address,
         md5,
-        id: "",
-        tasktype: "Prove",
-        taskstatus: "",
-      })
+        id: '',
+        tasktype: 'Prove',
+        taskstatus: '',
+      }),
     );
   };
 
-  const FormGroup: FC<Record<"label" | "value", string>> = ({
+  const FormGroup: FC<Record<'label' | 'value', string>> = ({
     label,
     value,
   }) => (
@@ -122,17 +120,18 @@ export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
     </>
   );
 
-  let modalprops: ModalCommonProps = {
-    btnLabel: <CommonButton className="w-100">Submit ZK Proof</CommonButton>,
-    title: ["Submit ", "Your Game Play"],
-    childrenClass: "",
+  const modalprops: ModalCommonProps = {
+    buttonLabel: <CommonButton className="w-100">Submit ZK Proof</CommonButton>,
+    title: ['Submit ', 'Your Game Play'],
+    childrenClass: '',
     onConfirm: addNewProveTask,
     onClose: () => setStatus(ModalStatus.PreConfirm),
     children: content,
     valid: true,
     message: message,
     status: status,
-    confirmLabel: "Confirm",
+    confirmLabel: 'Confirm',
   };
+
   return ModalCommon(modalprops);
 }

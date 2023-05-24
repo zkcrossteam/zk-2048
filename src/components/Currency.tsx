@@ -1,6 +1,6 @@
-import { FC } from "react";
+import './style.scss';
 
-import "./style.scss";
+import { FC } from 'react';
 
 interface CurrencyDisplayProps {
   value: number;

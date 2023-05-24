@@ -1,29 +1,18 @@
-import React, {createRef, useState, useEffect, useRef } from 'react';
-import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { loginL1AccountAsync, selectL1Account } from '../data/accountSlice';
 
-import {
-  selectL1Account,
-  loginL1AccountAsync,
-} from "../data/accountSlice";
-
-export function Connect() {
-  let account = useAppSelector(selectL1Account);
+export const Connect = () => {
+  const account = useAppSelector(selectL1Account);
   const dispatch = useAppDispatch();
-  const connect = () => {
-    dispatch(loginL1AccountAsync());
-  };
+  const connect = () => dispatch(loginL1AccountAsync());
 
-  if (!account) {
-    return(
-    <>
+  if (account) return;
+
+  return (
     <div className="connect-account">
-        <div onClick={() => connect()}>connect account</div>
+      <button className="appearance-none" onClick={connect}>
+        connect account
+      </button>
     </div>
-    </>
-    );
-  } else {
-    //console.log("connected", account);
-    return (<></>);
-  }
-
-}
+  );
+};

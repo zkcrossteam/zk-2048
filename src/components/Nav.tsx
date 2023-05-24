@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { useEffect, useState } from 'react';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 
-import { useAppSelector, useAppDispatch } from "../app/hooks";
-import { loginL1AccountAsync, selectL1Account } from "../data/accountSlice";
-import { addressAbbreviation } from "../utils/address";
-import { CurrencyDisplay } from "./Currency";
-import logo from "../images/logo.svg";
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { loginL1AccountAsync, selectL1Account } from '../data/accountSlice';
+import logo from '../images/logo.svg';
+import { addressAbbreviation } from '../utils/address';
+import { CurrencyDisplay } from './Currency';
 
 interface IProps {
   currency: number;
@@ -22,7 +22,7 @@ export function MainNavBar(props: IProps) {
   }, []);
 
   return (
-    <Navbar expand="lg" style={{ zIndex: "1000" }}>
+    <Navbar expand="lg" style={{ zIndex: 1000 }}>
       <Container className="justify-content-md-between">
         <Navbar.Brand href="http://www.delphinuslab.com">
           <img src={logo} height="30" alt="logo"></img>

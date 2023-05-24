@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../app/store';
 import {
-  Statistics,
-  DeployParams,
   ProvingParams,
-  StatusState,
   QueryParams,
+  StatusState,
   WithSignature,
-} from "zkwasm-service-helper";
+} from 'zkwasm-service-helper';
+
+import { RootState } from '../app/store';
 
 const initialState: StatusState = {
   tasks: [],
@@ -21,47 +20,42 @@ const initialState: StatusState = {
 };
 
 export const loadStatus = createAsyncThunk(
-  "status/fetchStatus",
+  'status/fetchStatus',
   async (query: QueryParams, thunkApi) => {
-    let state = thunkApi.getState() as RootState;
-    let helper = state.endpoint.zkWasmServiceHelper;
-    let tasks = await helper.loadTasks(query);
-    return tasks;
-  }
+    const { endpoint } = thunkApi.getState() as RootState;
+    const { data } = await endpoint.zkWasmServiceHelper.loadTasks(query);
+
+    return data;
+  },
 );
 
 export const addProvingTask = createAsyncThunk(
-  "status/addProveTask",
-  async (task: WithSignature<ProvingParams>, thunkApi) => {
-    let state = thunkApi.getState() as RootState;
-    let helper = state.endpoint.zkWasmServiceHelper;
-    let response = await helper.addProvingTask(task);
-    return response;
-  }
+  'status/addProveTask',
+  (task: WithSignature<ProvingParams>, thunkApi) => {
+    const { endpoint } = thunkApi.getState() as RootState;
+
+    return endpoint.zkWasmServiceHelper.addProvingTask(task);
+  },
 );
-
-
 
 export const statusSlice = createSlice({
   name: 'status',
   initialState,
   reducers: {
-    updateState: (state, d) => {
-      state.tasks = d.payload.tasks;
-      state.loaded = d.payload.loaded;
+    updateState: (state, { payload: { tasks, loaded } }) => {
+      state.tasks = tasks;
+      state.loaded = loaded;
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(loadStatus.fulfilled, (state, c) => {
-          console.log("payload", c.payload);
-          state.tasks = c.payload;
-          state.loaded = true;
-      });
+  extraReducers: builder => {
+    builder.addCase(loadStatus.fulfilled, (state, { payload }) => {
+      state.tasks = payload;
+      state.loaded = true;
+    });
   },
 });
 
 export const { updateState } = statusSlice.actions;
-export const selectTasks = (state:RootState) => state.status.tasks;
-export const tasksLoaded = (state:RootState) => state.status.loaded;
+export const selectTasks = ({ status }: RootState) => status.tasks;
+export const tasksLoaded = ({ status }: RootState) => status.loaded;
 export default statusSlice.reducer;

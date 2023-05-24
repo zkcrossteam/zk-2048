@@ -1,11 +1,12 @@
-@import '../styles/common.scss';
+@import "../styles/common.scss";
+@import "../index";
 
-.scroll-300{
-    max-height: 300px;
-    overflow-y:scroll;
+.scroll-300 {
+  max-height: 300px;
+  overflow-y: scroll;
 }
 
-.scroll-200{
-    max-height: 200px;
-    overflow-y:scroll;
+.scroll-200 {
+  max-height: 200px;
+  overflow-y: scroll;
 }

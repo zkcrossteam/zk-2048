@@ -1,4 +1,5 @@
-import { createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+
 import { RootState } from '../app/store';
 
 export interface PanelState {
@@ -14,6 +15,5 @@ const initialState: PanelState = {
 export const panelSlice = createSlice({
   name: 'panel',
   initialState,
-  reducers: {
-  }
+  reducers: {},
 });

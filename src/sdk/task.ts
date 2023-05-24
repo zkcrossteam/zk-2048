@@ -1,27 +1,18 @@
-import BN from "bn.js";
+import BN from 'bn.js';
 
-export interface Task {
-   user_address: string;
-   md5: string;
-   task_type: string;
-   status: string;
-   proof: Uint8Array;
-   instances: Uint8Array;
-   public_inputs: Array<string>;
-   private_inputs: Array<string>;
-   _id: any;
+export interface Task
+  extends Record<'user_address' | 'md5' | 'task_type' | 'status', string>,
+    Record<'proof' | 'instances', Uint8Array>,
+    Record<'public_inputs' | 'private_inputs', string[]> {
+  _id: string;
 }
 
-export interface ProvingTask {
-   user_address: string;
-   md5: string;
-   public_inputs: Array<string>;
-   private_inputs: Array<string>;
-}
+export type ProvingTask = Pick<
+  Task,
+  'user_address' | 'md5' | 'public_inputs' | 'private_inputs'
+>;
 
-export interface VerifyData {
-   proof: Array<BN>;
-   target_instances: Array<BN>;
-   aggregator_instances: Array<BN>;
-   aux_instances: Array<BN>; 
-}
+export type VerifyData = Record<
+  'proof' | 'target_instances' | 'aggregator_instances' | 'aux_instances',
+  BN[]
+>;

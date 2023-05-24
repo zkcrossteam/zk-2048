@@ -1,13 +1,13 @@
-import React from "react";
-interface Prop {
-  inputs: Array<string>;
+import { Badge } from 'react-bootstrap';
+
+interface InputsProps {
+  inputs: string[];
 }
-export function Inputs(prop: Prop) {
-  return (
-    <>{
-    prop.inputs.map((input:string) => {
-      return (<span className="badge bg-primary rounded-pill">{input}</span>);
-    })
-    }</>
-  );
-}
+
+export const Inputs = ({ inputs }: InputsProps) => (
+  <>
+    {inputs.map(input => (
+      <Badge bg="primary">{input}</Badge>
+    ))}
+  </>
+);

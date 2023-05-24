@@ -1,0 +1,9 @@
+{
+  "extends": ["react-app", "prettier"],
+  "plugins": ["simple-import-sort"],
+  "rules": {
+    "react/jsx-no-target-blank": "warn",
+    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": "error"
+  }
+}

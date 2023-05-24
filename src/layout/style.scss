@@ -1,15 +1,17 @@
+@import '../index';
+
 @font-face {
-  font-family: "Be Vietnam";
+  font-family: 'Be Vietnam';
   src: url(../fonts/BeVietnamPro-Regular.ttf);
 }
 
 @font-face {
-  font-family: "Allerta";
+  font-family: 'Allerta';
   src: url(../fonts/Allerta-Regular.ttf);
 }
 
 @font-face {
-  font-family: "Inter";
+  font-family: 'Inter';
   src: url(../fonts/Inter-Regular.ttf);
 }
 
@@ -37,7 +39,9 @@ div.content {
   width: 500px;
   height: 500px;
   background-size: 500px 500px;
-  background-image: url("../images/bg.png");
+  background: linear-gradient(180deg, #20314b 0%, rgba(32, 49, 75, 0) 100%);
+  filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.4));
+  border-radius: 20px;
   --cell-size: 110px;
   --cell-margin: 12px;
 }
@@ -62,7 +66,7 @@ div.board-cell-1 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/1.png");
+  background-image: url('../images/1.png');
   background-size: contain;
 }
 
@@ -71,7 +75,7 @@ div.board-cell-2 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/2.png");
+  background-image: url('../images/2.png');
   background-size: contain;
 }
 
@@ -80,7 +84,7 @@ div.board-cell-3 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/3.png");
+  background-image: url('../images/3.png');
   background-size: contain;
 }
 
@@ -89,7 +93,7 @@ div.board-cell-4 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/4.png");
+  background-image: url('../images/4.png');
   background-size: contain;
 }
 
@@ -98,7 +102,7 @@ div.board-cell-5 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/5.png");
+  background-image: url('../images/5.png');
   background-size: contain;
 }
 
@@ -107,7 +111,7 @@ div.board-cell-6 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/6.png");
+  background-image: url('../images/6.png');
   background-size: contain;
 }
 
@@ -116,7 +120,7 @@ div.board-cell-7 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/7.png");
+  background-image: url('../images/7.png');
   background-size: contain;
 }
 
@@ -125,7 +129,7 @@ div.board-cell-8 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/8.png");
+  background-image: url('../images/8.png');
   background-size: contain;
 }
 
@@ -134,7 +138,7 @@ div.board-cell-9 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/9.png");
+  background-image: url('../images/9.png');
   background-size: contain;
 }
 
@@ -143,7 +147,7 @@ div.board-cell-10 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/10.png");
+  background-image: url('../images/10.png');
   background-size: contain;
 }
 
@@ -152,7 +156,7 @@ div.board-cell-11 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/11.png");
+  background-image: url('../images/11.png');
   background-size: contain;
 }
 
@@ -161,7 +165,7 @@ div.board-cell-12 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/12.png");
+  background-image: url('../images/12.png');
   background-size: contain;
 }
 
@@ -170,7 +174,7 @@ div.board-cell-13 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/13.png");
+  background-image: url('../images/13.png');
   background-size: contain;
 }
 
@@ -179,7 +183,7 @@ div.board-cell-14 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/14.png");
+  background-image: url('../images/14.png');
   background-size: contain;
 }
 
@@ -188,7 +192,7 @@ div.board-cell-15 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/15.png");
+  background-image: url('../images/15.png');
   background-size: contain;
 }
 
@@ -197,7 +201,7 @@ div.board-cell-16 {
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
-  background-image: url("../images/16.png");
+  background-image: url('../images/16.png');
   background-size: contain;
 }
 
@@ -209,7 +213,7 @@ div.board-cell-16 {
   cursor: pointer;
 }
 .qr-code {
-  font-family: "Be Vietnam";
+  font-family: 'Be Vietnam';
   font-style: normal;
   font-weight: 600;
   font-size: 30px;
@@ -224,7 +228,7 @@ div.board-cell-16 {
 }
 
 .game-info {
-  font-family: "Be Vietnam";
+  font-family: 'Be Vietnam';
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -236,37 +240,20 @@ div.board-cell-16 {
   width: 50px;
   height: 50px;
 }
-.game-inputs {
-  background-color: var(--navbar-bg);
-  border-radius: 15px;
-  width: 500px !important;
-}
 
-.sell-button {
-  border: none;
-  background-color: var(--button-main);
-  padding: 5px 30px;
-  border-radius: 5px;
-  color: var(--info-text-color);
-  font-family: "Be Vietnam";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  transition: 0.3s all ease;
-  &:hover {
-    background-color: var(--button-hover);
+.game-inputs {
+  border-radius: 20px;
+  max-width: 560px !important;
+  color: #4e78b8;
+  .border-content {
+    border-radius: 20px;
   }
 }
 
 .high-score {
-  min-width: 175px;
-  span {
-    color: var(--info-text-color) !important;
-  }
-  .tag {
-    font-size: 16px !important;
-  }
-  .value {
-    font-size: 24px !important;
-  }
+  max-width: 11rem;
+}
+
+.icon-2048 {
+  text-shadow: 0px 0px 20px rgba(0, 236, 255, 0.4);
 }

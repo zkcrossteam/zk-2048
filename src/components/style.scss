@@ -1,5 +1,6 @@
+@import '../index';
+
 .navbar {
-  background-color: var(--navbar-bg);
   border: none;
   color: var(--blue-text-color) !important;
 
@@ -13,7 +14,7 @@
     border: none;
   }
   .navbar-text {
-    font-family: "Allerta";
+    font-family: 'Allerta';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -24,7 +25,7 @@
   .nav-link {
     border: none;
 
-    font-family: "Allerta";
+    font-family: 'Allerta';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -62,58 +63,78 @@
         hue-rotate(312deg) brightness(103%) contrast(89%);
     }
   }
+
+  .connect {
+    background: linear-gradient(90deg, #418dff 1.64%, #4bffdf 98.6%);
+    border-radius: 30px;
+    width: 11rem;
+    height: 3.125rem;
+  }
 }
 
 .currency-display {
-  background-color: var(--button-main);
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-family: "Be Vietnam";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
+  background: var(--button-gradient);
+  filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.4));
+  border-radius: 40px;
+  width: 17rem;
+  height: 3.125rem;
+  border: 1px solid #418dff;
+}
 
-  color: var(--blue-text-color);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  .tag {
-    font-family: "Be Vietnam";
-    font-style: normal;
-    font-weight: 600;
-    font-size: 10px;
-
-    color: var(--blue-text-color);
-    position: relative;
-    top: -5px;
-  }
-  .value {
-    min-width: 50px;
-    font-family: "Be Vietnam";
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    text-align: end;
-    color: var(--blue-text-color);
-  }
+.proofTableBg {
+  background: linear-gradient(
+    180deg,
+    rgba(32, 49, 75, 0.5) 0%,
+    rgba(32, 49, 75, 0) 100%
+  );
 }
 
 .table {
-  border: 2px solid var(--table-border-color);
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 19px;
-  line-height: 23px;
-  text-align: center;
+  @extend .proofTableBg;
+  border-radius: 10px;
+  margin-bottom: 0;
 
-  color: #b5e5eb;
-  th,
-  td {
-    border: 2px solid var(--table-border-color);
+  thead {
+    @extend .proofTableBg;
+    height: 66px;
+    border-bottom: 1px #6a6a9f66 solid;
+    box-shadow: 0px 10px 20px 0px #00000066;
+    color: var(--secondary-color) !important;
+    font-weight: 600;
+    font-size: 1.25rem;
+
+    tr th {
+      height: 50px;
+      line-height: 50px;
+
+      &:first-child {
+        border-radius: 10px 0 0 0;
+      }
+
+      &:last-child {
+        border-radius: 0 10px 0 0;
+      }
+    }
   }
-  td {
-    font-size: 14px;
+
+  tbody {
+    font-weight: 500;
+    font-size: 1.125rem;
+
+    th,
+    td {
+      border-style: none;
+
+      img {
+        width: 1rem;
+      }
+    }
+  }
+}
+
+.border-button {
+  @extend .border-box;
+  &:before {
+    background: linear-gradient(90deg, #4da1ff 0%, #4dffdf 100%);
   }
 }

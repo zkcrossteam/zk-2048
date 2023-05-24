@@ -1,19 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { DelphinusWeb3, withBrowerWeb3 } from "web3subscriber/src/client";
+import { withBrowerWeb3 } from 'web3subscriber/src/client';
 
-export interface L1AccountInfo {
-  address: string;
-  chainId: string;
+export interface L1AccountInfo extends Record<'address' | 'chainId', string> {
   web3: any;
 }
 
-async function loginL1Account() {
-  return await withBrowerWeb3(async (web3: DelphinusWeb3) => {
-    let i = await web3.getAccountInfo();
-    return i;
-  });
-}
-
+const loginL1Account = () =>
+  withBrowerWeb3(({ getAccountInfo }) => getAccountInfo());
 
 export interface AccountState {
   l1Account?: L1AccountInfo;
@@ -35,35 +28,34 @@ const initialState: AccountState = {
 // typically used to make async requests.
 export const loginL1AccountAsync = createAsyncThunk(
   'acccount/fetchAccount',
-  async (thunkApi) => {
-    let account = await loginL1Account();
-    return account;
-  }
+  loginL1Account,
 );
 
 export const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
-    setL1Account: (state, account) => {
-      state.l1Account!.address = account.payload;
-    }
+    setL1Account: (state, { payload }) => {
+      state.l1Account!.address = payload;
+    },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(loginL1AccountAsync.pending, (state) => {
+      .addCase(loginL1AccountAsync.pending, state => {
         state.status = 'Loading';
       })
-      .addCase(loginL1AccountAsync.fulfilled, (state, c) => {
+      .addCase(loginL1AccountAsync.fulfilled, (state, { payload }) => {
         state.status = 'Ready';
-        console.log(c);
-        state.l1Account = c.payload;
-      })
-
+        state.l1Account = payload;
+      });
   },
 });
 
-export const selectL1Account = <T extends State>(state: T) => state.account.l1Account;
-export const selectLoginStatus = <T extends State>(state: T) => state.account.status;
+export const selectL1Account = <T extends State>({
+  account: { l1Account },
+}: T) => l1Account;
+export const selectLoginStatus = <T extends State>({
+  account: { status },
+}: T) => status;
 
 export default accountSlice.reducer;

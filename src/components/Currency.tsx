@@ -1,17 +1,24 @@
-interface IProps {
-  tag?: string;
+import './style.scss';
+
+import { FC } from 'react';
+
+interface CurrencyDisplayProps {
   value: number;
+  tag: string;
   className?: string;
 }
 
-export default function CurrencyDisplay(props: IProps) {
-  const { tag = "Currency", value } = props;
-  return (
-    <>
-      <div className={`currency-display ${props.className}`}>
-        <span className="tag">{tag}</span>
-        <span className="value ms-2">{value}</span>
-      </div>
-    </>
-  );
-}
+export const CurrencyDisplay: FC<CurrencyDisplayProps> = ({
+  tag,
+  value,
+  className,
+}) => (
+  <>
+    <div
+      className={`currency-display fs-5 px-3 d-flex justify-content-between align-items-center fw-bold ${className}`}
+    >
+      <span className="text-white">{tag}</span>
+      <span className="gradient-content">{value.toLocaleString()}</span>
+    </div>
+  </>
+);

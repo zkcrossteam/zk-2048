@@ -37,7 +37,7 @@ html {
   appearance: none;
   border: none;
   outline: none;
-  background: transparent;
+  background-color: transparent;
   &::-webkit-search-cancel-button {
     display: none;
   }
@@ -79,7 +79,7 @@ html {
 }
 
 .border-box::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   right: 0;

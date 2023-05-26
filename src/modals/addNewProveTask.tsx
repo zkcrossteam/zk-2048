@@ -89,7 +89,8 @@ export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
         ),
       );
 
-      contract.getWeb3Contract().methods?.verify(0, 100);
+      const verify = contract.getWeb3Contract().methods?.verify(0, 100);
+      console.log('verify', verify);
 
       setMessage('');
       setStatus(ModalStatus.PostConfirm);

@@ -47,6 +47,7 @@ export function register(config?: Config) {
         // Add some additional logging to localhost, pointing developers to the
         // service worker/PWA documentation.
         await navigator.serviceWorker.ready;
+
         console.log(
           'This web app is being served cache-first by a service ' +
             'worker. To learn more, visit https://bit.ly/CRA-PWA',

@@ -39,6 +39,7 @@ export function ProofInfoModal({
         const result = await verify_contract.methods
           .verify(aggregateProof, instancesBN, auxBN, [args])
           .send();
+
         console.log(`verification result: ${result}`);
       }
     } else {

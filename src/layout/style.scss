@@ -46,14 +46,15 @@ div.content {
   --cell-margin: 12px;
 }
 
-div.board-cell {
+.board-cell {
   display: inline-block;
   height: var(--cell-size);
   width: var(--cell-size);
   margin-right: var(--cell-margin);
 }
 
-div.board-cell-out div {
+.board-cell-out span,
+button {
   display: inline-block;
   height: var(--cell-size);
   width: var(--cell-size);
@@ -61,148 +62,15 @@ div.board-cell-out div {
   border-radius: 5px;
 }
 
-div.board-cell-1 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/1.png');
-  background-size: contain;
-}
-
-div.board-cell-2 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/2.png');
-  background-size: contain;
-}
-
-div.board-cell-3 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/3.png');
-  background-size: contain;
-}
-
-div.board-cell-4 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/4.png');
-  background-size: contain;
-}
-
-div.board-cell-5 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/5.png');
-  background-size: contain;
-}
-
-div.board-cell-6 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/6.png');
-  background-size: contain;
-}
-
-div.board-cell-7 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/7.png');
-  background-size: contain;
-}
-
-div.board-cell-8 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/8.png');
-  background-size: contain;
-}
-
-div.board-cell-9 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/9.png');
-  background-size: contain;
-}
-
-div.board-cell-10 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/10.png');
-  background-size: contain;
-}
-
-div.board-cell-11 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/11.png');
-  background-size: contain;
-}
-
-div.board-cell-12 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/12.png');
-  background-size: contain;
-}
-
-div.board-cell-13 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/13.png');
-  background-size: contain;
-}
-
-div.board-cell-14 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/14.png');
-  background-size: contain;
-}
-
-div.board-cell-15 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/15.png');
-  background-size: contain;
-}
-
-div.board-cell-16 {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-  background-image: url('../images/16.png');
-  background-size: contain;
+@for $i from 1 through 17 {
+  .board-cell-#{$i} {
+    display: inline-block;
+    height: var(--cell-size);
+    width: var(--cell-size);
+    margin-right: var(--cell-margin);
+    background-image: url('../images/' + $i + '.png');
+    background-size: contain;
+  }
 }
 
 .overflow-breakword {

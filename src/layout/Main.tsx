@@ -5,10 +5,12 @@ import './style.scss';
 import { Fragment, useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
+import { useAppSelector } from '../app/hooks';
 import { CommonButton } from '../components/CommonButton';
 import { CurrencyDisplay } from '../components/Currency';
 import History from '../components/History';
 import { MainNavBar } from '../components/Nav';
+import { selectL1Account } from '../data/accountSlice';
 import One from '../images/1.png';
 import Two from '../images/2.png';
 import Three from '../images/3.png';
@@ -16,6 +18,7 @@ import Four from '../images/4.png';
 import Control from '../images/control.svg';
 import initGameInstance from '../js/g1024';
 import { NewProveTask } from '../modals/addNewProveTask';
+import { tour } from '../utils/shepherd';
 
 const DirectionKeys = [
   'ArrowUp',
@@ -33,8 +36,9 @@ export function Main() {
   const [focus, setFocus] = useState(-1);
   const [currency, setCurrency] = useState(20);
   const [commands, setCommands] = useState<number[]>([]);
-  const [highscore, setHighscore] = useState(20);
+  const [highscore, setHighscore] = useState(6889);
   const [showInputsAsRaw, setShowInputsAsRaw] = useState(false);
+  const account = useAppSelector(selectL1Account);
 
   const appendCommand = (cmds: number[]) =>
     setCommands(commands => [...commands, ...cmds]);
@@ -63,7 +67,12 @@ export function Main() {
 
   useEffect(() => {
     if (currency > highscore) setHighscore(currency);
-  }, [currency]);
+  }, [currency, highscore]);
+
+  useEffect(() => {
+    if (account) tour.cancel();
+    else tour.start();
+  }, [account]);
 
   const getWitness = () =>
     `0x${commands.map(command =>
@@ -170,38 +179,46 @@ export function Main() {
 
   return (
     <Container className="justify-content-center mb-4">
-      <MainNavBar currency={currency} handleRestart={restartGame}></MainNavBar>
+      <MainNavBar highscore={highscore} />
 
-      <Row className="justify-content-md-center m-auto mt-3">
-        <Col className="d-flex justify-content-between align-items-center p-0 game-width">
-          <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
-          <CurrencyDisplay tag="Score" value={highscore} />
-        </Col>
-      </Row>
+      <div className="lead-step-2">
+        <Row className="justify-content-md-center m-auto mt-3">
+          <Col className="d-flex justify-content-between align-items-center p-0 game-width">
+            <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
+            <CurrencyDisplay tag="Score" value={currency} />
+          </Col>
+        </Row>
 
-      <Row className="mt-3">
-        <Col>
-          <div className="content">
-            {Array.from(new Array(4), (_, r) => (
-              <div className="board-row" key={r}>
-                {Array.from(new Array(4), (_, c) => {
-                  const index = r * 4 + c;
+        <Row className="mt-3">
+          <Col>
+            <div className="content">
+              {Array.from(new Array(4), (_, r) => (
+                <div className="board-row" key={r}>
+                  {Array.from(new Array(4), (_, c) => {
+                    const index = r * 4 + c;
 
-                  return (
-                    <div
-                      key={index}
-                      className={`${cellClass(index)} board-cell-out`}
-                      onClick={() => toggleSelect(index)}
-                    >
-                      {index === focus && <div />}
-                    </div>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-        </Col>
-      </Row>
+                    return (
+                      <button
+                        key={index}
+                        className={`appearance-none ${cellClass(
+                          index,
+                        )} board-cell-out`}
+                        onClick={() => toggleSelect(index)}
+                      >
+                        {index === focus && <span />}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </Col>
+        </Row>
+      </div>
+
+      <div className="text-center lead-step-1">
+        <img src={Control} alt="#" />
+      </div>
 
       <div className="container-max mx-auto d-flex justify-content-between my-3">
         <CommonButton className="w-50 me-2" border onClick={sell}>
@@ -214,10 +231,6 @@ export function Main() {
             witness={getWitness()}
           />
         </div>
-      </div>
-
-      <div className="text-center">
-        <img src={Control} alt="#" />
       </div>
 
       <Row className="justify-content-center overflow-breakword my-4">

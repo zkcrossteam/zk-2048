@@ -5,8 +5,7 @@ export interface L1AccountInfo extends Record<'address' | 'chainId', string> {
   web3: any;
 }
 
-const loginL1Account = () =>
-  withBrowerWeb3(({ getAccountInfo }) => getAccountInfo());
+const loginL1Account = () => withBrowerWeb3(web3 => web3.getAccountInfo());
 
 export interface AccountState {
   l1Account?: L1AccountInfo;

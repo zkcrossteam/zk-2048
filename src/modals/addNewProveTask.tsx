@@ -9,6 +9,7 @@ import {
   ZkWasmUtil,
 } from 'zkwasm-service-helper';
 
+import GameSoulbound from '../abi/GameSoulbound.json';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { CommonBg } from '../components/CommonBg';
 import { CommonButton } from '../components/CommonButton';
@@ -78,8 +79,17 @@ export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
     const task = await prepareNewProveTask();
 
     try {
-      await dispatch(addProvingTask(task)).unwrap();
+      const contract = await withBrowerWeb3(async web3 =>
+        web3.getContract(
+          GameSoulbound,
+          '0x4edf97c6F25Af40EE924940eD55f9786283121a9',
+          task.user_address,
+        ),
+      );
 
+      contract.getWeb3Contract().methods?.verify(0, 100);
+
+      setMessage('');
       setStatus(ModalStatus.PostConfirm);
     } catch (error) {
       console.log('new prove task error', error);

@@ -181,57 +181,55 @@ export function Main() {
     <Container className="justify-content-center mb-4">
       <MainNavBar highscore={highscore} />
 
-      <div className="lead-step-2">
-        <Row className="justify-content-md-center m-auto mt-3">
-          <Col className="d-flex justify-content-between align-items-center p-0 game-width">
-            <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
-            <CurrencyDisplay tag="Score" value={currency} />
-          </Col>
-        </Row>
+      <Row className="mt-3 ">
+        <Col lg={3} />
+        <Col lg={6} xs={12}>
+          <Row className="justify-content-center lead-step-2">
+            <Col className="d-flex justify-content-between align-items-center p-0 game-width">
+              <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
+              <CurrencyDisplay tag="Score" value={currency} />
+            </Col>
+            <Col className="d-flex justify-content-center mt-3">
+              <div className="content">
+                {Array.from(new Array(4), (_, r) => (
+                  <div className="board-row" key={r}>
+                    {Array.from(new Array(4), (_, c) => {
+                      const index = r * 4 + c;
 
-        <Row className="mt-3">
-          <Col lg={3} />
-          <Col className="d-flex justify-content-center" lg={6} xs={12}>
-            <div className="content">
-              {Array.from(new Array(4), (_, r) => (
-                <div className="board-row" key={r}>
-                  {Array.from(new Array(4), (_, c) => {
-                    const index = r * 4 + c;
-
-                    return (
-                      <button
-                        key={index}
-                        className={`appearance-none ${cellClass(
-                          index,
-                        )} board-cell-out`}
-                        onClick={() => toggleSelect(index)}
-                      >
-                        {index === focus && <span />}
-                      </button>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-          </Col>
-          <Col lg={3} xs={12} className="text-center">
-            <img className="lead-step-1" src={Control} alt="#" />
-          </Col>
-        </Row>
-      </div>
-
-      <div className="container-max mx-auto d-flex justify-content-between my-3">
-        <CommonButton className="w-50 me-2" border onClick={sell}>
-          Sell
-        </CommonButton>
-        <div className="w-50 ms-2">
-          <NewProveTask
-            md5="77DA9B5A42FABD295FD67CCDBDF2E348"
-            inputs={`${commands.length}:i64`}
-            witness={getWitness()}
-          />
-        </div>
-      </div>
+                      return (
+                        <button
+                          key={index}
+                          className={`appearance-none ${cellClass(
+                            index,
+                          )} board-cell-out`}
+                          onClick={() => toggleSelect(index)}
+                        >
+                          {index === focus && <span />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            </Col>
+            <Col className="container-max mx-auto d-flex justify-content-between my-3">
+              <CommonButton className="w-50 me-2" border onClick={sell}>
+                Sell
+              </CommonButton>
+              <div className="w-50 ms-2">
+                <NewProveTask
+                  md5="77DA9B5A42FABD295FD67CCDBDF2E348"
+                  inputs={`${commands.length}:i64`}
+                  witness={getWitness()}
+                />
+              </div>
+            </Col>
+          </Row>
+        </Col>
+        <Col lg={3} xs={12} className="text-center">
+          <img className="lead-step-1" src={Control} alt="#" />
+        </Col>
+      </Row>
 
       <Row className="justify-content-center overflow-breakword my-4">
         <Col lg={6} xs={12} className="game-inputs border-box rounded-4">

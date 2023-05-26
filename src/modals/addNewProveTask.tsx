@@ -124,7 +124,6 @@ export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
 
   const content = (
     <Container>
-      {/* {status === ModalStatus.PostConfirm ? ( */}
       {status === ModalStatus.PreConfirm && (
         <>
           <FormGroup label="Image ID (MD5):" value={md5} />
@@ -139,26 +138,22 @@ export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
             <Image src={Success} />
           </div>
           <div className="d-flex justify-content-center">
-            <CommonButton className="px-4" border>
-              <a
-                className="text-decoration-none"
-                href="https://www.larona.io/profile"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View on your Profile
-              </a>
+            <CommonButton
+              className="px-4"
+              border
+              href="https://www.larona.io/profile"
+              target="_blank"
+            >
+              <span className="gradient-content">View on your Profile</span>
             </CommonButton>
           </div>
         </>
       )}
 
       {status === ModalStatus.Error && (
-        <>
-          <div className="d-flex justify-content-center">
-            <Image src={Failed} />
-          </div>
-        </>
+        <div className="d-flex justify-content-center">
+          <Image src={Failed} />
+        </div>
       )}
     </Container>
   );

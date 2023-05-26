@@ -190,7 +190,8 @@ export function Main() {
         </Row>
 
         <Row className="mt-3">
-          <Col>
+          <Col lg={3} />
+          <Col className="d-flex justify-content-center" lg={6} xs={12}>
             <div className="content">
               {Array.from(new Array(4), (_, r) => (
                 <div className="board-row" key={r}>
@@ -213,11 +214,10 @@ export function Main() {
               ))}
             </div>
           </Col>
+          <Col lg={3} xs={12} className="text-center">
+            <img className="lead-step-1" src={Control} alt="#" />
+          </Col>
         </Row>
-      </div>
-
-      <div className="text-center lead-step-1">
-        <img src={Control} alt="#" />
       </div>
 
       <div className="container-max mx-auto d-flex justify-content-between my-3">
@@ -272,7 +272,7 @@ export function Main() {
             they merge into one tile with same icon they summed to one! When you
             make the highest tile, you can sell the highest tile for currency.
           </p>
-          <div className="d-flex align-items-center justify-content-center my-3">
+          <div className="d-flex align-items-center justify-content-center flex-wrap my-3">
             {[One, Two, Three, Four].map((src, index, { length }) => (
               <Fragment key={src}>
                 <img src={src} alt="#" className="game-icon" />

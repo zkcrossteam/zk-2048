@@ -30,15 +30,19 @@ export function MainNavBar({ highscore }: IProps) {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto mt-2">
-            <CurrencyDisplay tag="Best Score" value={highscore} />
+          <Nav className="ms-auto my-2 align-items-center">
+            <CurrencyDisplay
+              className="my-2"
+              tag="Best Score"
+              value={highscore}
+            />
             {account ? (
-              <CommonButton className="ms-4 connect">
+              <CommonButton className="ms-4 connect my-2">
                 {addressAbbreviation(account.address, 4)}
               </CommonButton>
             ) : (
               <CommonButton
-                className="appearance-none ms-4 connect"
+                className="appearance-none ms-4 connect my-2"
                 onClick={() => dispatch(loginL1AccountAsync())}
               >
                 Connect Wallet

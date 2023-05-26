@@ -36,7 +36,7 @@ export function Main() {
   const [focus, setFocus] = useState(-1);
   const [currency, setCurrency] = useState(20);
   const [commands, setCommands] = useState<number[]>([]);
-  const [highscore, setHighscore] = useState(20);
+  const [highscore, setHighscore] = useState(6889);
   const [showInputsAsRaw, setShowInputsAsRaw] = useState(false);
   const account = useAppSelector(selectL1Account);
 
@@ -67,7 +67,7 @@ export function Main() {
 
   useEffect(() => {
     if (currency > highscore) setHighscore(currency);
-  }, [currency]);
+  }, [currency, highscore]);
 
   useEffect(() => {
     if (account) tour.cancel();
@@ -179,13 +179,13 @@ export function Main() {
 
   return (
     <Container className="justify-content-center mb-4">
-      <MainNavBar currency={currency} handleRestart={restartGame}></MainNavBar>
+      <MainNavBar highscore={highscore} />
 
       <div className="lead-step-2">
         <Row className="justify-content-md-center m-auto mt-3">
           <Col className="d-flex justify-content-between align-items-center p-0 game-width">
             <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
-            <CurrencyDisplay tag="Score" value={highscore} />
+            <CurrencyDisplay tag="Score" value={currency} />
           </Col>
         </Row>
 
@@ -218,6 +218,19 @@ export function Main() {
 
       <div className="text-center lead-step-1">
         <img src={Control} alt="#" />
+      </div>
+
+      <div className="container-max mx-auto d-flex justify-content-between my-3">
+        <CommonButton className="w-50 me-2" border onClick={sell}>
+          Sell
+        </CommonButton>
+        <div className="w-50 ms-2">
+          <NewProveTask
+            md5="77DA9B5A42FABD295FD67CCDBDF2E348"
+            inputs={`${commands.length}:i64`}
+            witness={getWitness()}
+          />
+        </div>
       </div>
 
       <Row className="justify-content-center overflow-breakword my-4">

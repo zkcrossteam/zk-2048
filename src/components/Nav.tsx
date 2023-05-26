@@ -1,21 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { loginL1AccountAsync, selectL1Account } from '../data/accountSlice';
 import logo from '../images/logo.svg';
 import { addressAbbreviation } from '../utils/address';
+import { CommonButton } from './CommonButton';
 import { CurrencyDisplay } from './Currency';
 
 interface IProps {
-  currency: number;
-  handleRestart: () => void;
+  highscore: number;
 }
 
-export function MainNavBar(props: IProps) {
+export function MainNavBar({ highscore }: IProps) {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectL1Account);
-  const [maxScore, setMaxScore] = useState(6889);
 
   useEffect(() => {
     dispatch(loginL1AccountAsync());
@@ -32,18 +31,18 @@ export function MainNavBar(props: IProps) {
 
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto mt-2">
-            <CurrencyDisplay tag="Best Score" value={maxScore} />
+            <CurrencyDisplay tag="Best Score" value={highscore} />
             {account ? (
-              <div className="d-flex align-items-center ms-4">
+              <CommonButton className="ms-4 connect">
                 {addressAbbreviation(account.address, 4)}
-              </div>
+              </CommonButton>
             ) : (
-              <button
-                className="appearance-none rounded-pill fs-5 fw-semibold ms-4 text-black connect"
+              <CommonButton
+                className="appearance-none ms-4 connect"
                 onClick={() => dispatch(loginL1AccountAsync())}
               >
                 Connect Wallet
-              </button>
+              </CommonButton>
             )}
           </Nav>
         </Navbar.Collapse>

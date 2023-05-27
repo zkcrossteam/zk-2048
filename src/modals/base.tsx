@@ -9,7 +9,7 @@ import { selectL1Account } from '../data/accountSlice';
 
 export interface ModalCommonProps {
   buttonLabel: ReactNode;
-  title: string[];
+  title: ReactNode;
   children?: ReactNode;
   childrenClass: string;
   valid: boolean;
@@ -80,8 +80,7 @@ export const ModalCommon = ({
         <div className="common-card-bg-box">
           <Modal.Header>
             <Modal.Title className="w-100 text-center fs-3">
-              <span className="gradient-content">{title[0]}</span>
-              <span>{title[1]}</span>
+              {title}
             </Modal.Title>
             <CloseButton onClick={handleClose} />
           </Modal.Header>

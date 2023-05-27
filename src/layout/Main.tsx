@@ -36,7 +36,8 @@ export function Main() {
   const [focus, setFocus] = useState(-1);
   const [currency, setCurrency] = useState(20);
   const [commands, setCommands] = useState<number[]>([]);
-  const [highscore, setHighscore] = useState(6889);
+  const [highscore, setHighscore] = useState(0);
+  const [score, setScore] = useState(0);
   const [showInputsAsRaw, setShowInputsAsRaw] = useState(false);
   const account = useAppSelector(selectL1Account);
 
@@ -66,8 +67,8 @@ export function Main() {
   }, []);
 
   useEffect(() => {
-    if (currency > highscore) setHighscore(currency);
-  }, [currency, highscore]);
+    if (score > highscore) setHighscore(score);
+  }, [score, highscore]);
 
   useEffect(() => {
     if (account) tour.cancel();
@@ -142,6 +143,7 @@ export function Main() {
       board[i] = ins.getBoard(i);
     }
     setBoard([...board]);
+    setScore(board.reduce((prev, cur) => prev + (cur ? 2 ** cur : cur), 0));
     setCurrency(ins.getCurrency());
     appendCommand([k]);
   }
@@ -181,57 +183,56 @@ export function Main() {
     <Container className="justify-content-center mb-4">
       <MainNavBar highscore={highscore} />
 
-      <div className="lead-step-2">
-        <Row className="justify-content-md-center m-auto mt-3">
-          <Col className="d-flex justify-content-between align-items-center p-0 game-width">
-            <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
-            <CurrencyDisplay tag="Score" value={currency} />
-          </Col>
-        </Row>
+      <Row className="mt-3 ">
+        <Col lg={3} />
+        <Col lg={6} xs={12}>
+          <Row className="justify-content-center lead-step-2">
+            <Col className="d-flex justify-content-between align-items-center p-0 game-width">
+              <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
+              <CurrencyDisplay tag="Score" value={score} />
+            </Col>
+            <Col className="d-flex justify-content-center mt-3">
+              <div className="content">
+                {Array.from(new Array(4), (_, r) => (
+                  <div className="board-row" key={r}>
+                    {Array.from(new Array(4), (_, c) => {
+                      const index = r * 4 + c;
 
-        <Row className="mt-3">
-          <Col>
-            <div className="content">
-              {Array.from(new Array(4), (_, r) => (
-                <div className="board-row" key={r}>
-                  {Array.from(new Array(4), (_, c) => {
-                    const index = r * 4 + c;
-
-                    return (
-                      <button
-                        key={index}
-                        className={`appearance-none ${cellClass(
-                          index,
-                        )} board-cell-out`}
-                        onClick={() => toggleSelect(index)}
-                      >
-                        {index === focus && <span />}
-                      </button>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-          </Col>
-        </Row>
-      </div>
-
-      <div className="text-center lead-step-1">
-        <img src={Control} alt="#" />
-      </div>
-
-      <div className="container-max mx-auto d-flex justify-content-between my-3">
-        <CommonButton className="w-50 me-2" border onClick={sell}>
-          Sell
-        </CommonButton>
-        <div className="w-50 ms-2">
-          <NewProveTask
-            md5="77DA9B5A42FABD295FD67CCDBDF2E348"
-            inputs={`${commands.length}:i64`}
-            witness={getWitness()}
-          />
-        </div>
-      </div>
+                      return (
+                        <button
+                          key={index}
+                          className={`appearance-none ${cellClass(
+                            index,
+                          )} board-cell-out`}
+                          onClick={() => toggleSelect(index)}
+                        >
+                          {index === focus && <span />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            </Col>
+            <Col className="container-max mx-auto d-flex justify-content-between my-3">
+              <CommonButton className="w-50 me-2" border onClick={sell}>
+                Sell
+              </CommonButton>
+              <div className="w-50 ms-2">
+                <NewProveTask
+                  md5="77DA9B5A42FABD295FD67CCDBDF2E348"
+                  inputs={`${commands.length}:i64`}
+                  witness={getWitness()}
+                  highscore={highscore}
+                />
+              </div>
+            </Col>
+          </Row>
+        </Col>
+        <Col lg={3} xs={12} className="text-center">
+          <img className="lead-step-1" src={Control} alt="#" />
+        </Col>
+      </Row>
 
       <Row className="justify-content-center overflow-breakword my-4">
         <Col lg={6} xs={12} className="game-inputs border-box rounded-4">
@@ -272,7 +273,7 @@ export function Main() {
             they merge into one tile with same icon they summed to one! When you
             make the highest tile, you can sell the highest tile for currency.
           </p>
-          <div className="d-flex align-items-center justify-content-center my-3">
+          <div className="d-flex align-items-center justify-content-center flex-wrap my-3">
             {[One, Two, Three, Four].map((src, index, { length }) => (
               <Fragment key={src}>
                 <img src={src} alt="#" className="game-icon" />

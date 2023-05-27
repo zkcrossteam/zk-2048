@@ -1,7 +1,8 @@
 import './style.scss';
 
+import { BN } from 'bn.js';
 import { FC, useState } from 'react';
-import { Container, Form } from 'react-bootstrap';
+import { Container, Form, Image } from 'react-bootstrap';
 import { DelphinusWeb3, withBrowerWeb3 } from 'web3subscriber/src/client';
 import {
   ProvingParams,
@@ -14,10 +15,13 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { CommonBg } from '../components/CommonBg';
 import { CommonButton } from '../components/CommonButton';
 import { selectL1Account } from '../data/accountSlice';
-import { addProvingTask, loadStatus } from '../data/statusSlice';
+import { loadStatus } from '../data/statusSlice';
+import Failed from '../images/failed.svg';
+import Success from '../images/success.svg';
 import { ModalCommon, ModalCommonProps, ModalStatus } from './base';
 
-type NewWASMImageProps = Record<'md5' | 'inputs' | 'witness', string>;
+type NewWASMImageProps = Record<'md5' | 'inputs' | 'witness', string> &
+  Record<'highscore', number>;
 
 export function signMessage(message: string) {
   return withBrowerWeb3(
@@ -39,7 +43,12 @@ export function signMessage(message: string) {
   );
 }
 
-export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
+export function NewProveTask({
+  md5,
+  inputs,
+  witness,
+  highscore,
+}: NewWASMImageProps) {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectL1Account);
   const [message, setMessage] = useState<string>('');
@@ -62,8 +71,8 @@ export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
       setMessage('Submitting new prove task...');
     } catch (e: unknown) {
       console.log('error signing message', e);
-      setStatus(ModalStatus.PreConfirm);
-      setMessage('Error signing message');
+      setStatus(ModalStatus.Error);
+      setMessage('Oops! Something went wrong, please try again.');
       throw Error('Unsigned Transaction');
     }
 
@@ -87,14 +96,18 @@ export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
         ),
       );
 
-      contract.getWeb3Contract().methods?.verify(0, 100);
+      const verify = await contract
+        .getWeb3Contract()
+        .methods?.verify(new BN(0), new BN(highscore))
+        .send();
+      console.log('verify', verify);
 
       setMessage('');
       setStatus(ModalStatus.PostConfirm);
     } catch (error) {
       console.log('new prove task error', error);
-      setMessage('Error creating new prove task.');
-      setStatus(ModalStatus.PreConfirm);
+      setMessage('Oops! Something went wrong, please try again.');
+      setStatus(ModalStatus.Error);
     }
 
     dispatch(
@@ -121,25 +134,75 @@ export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
   );
 
   const content = (
+    <Container>
+      {status === ModalStatus.PreConfirm && (
+        <>
+          <FormGroup label="Image ID (MD5):" value={md5} />
+          <FormGroup label="Public Inputs:" value={inputs} />
+          <FormGroup label="Witness Inputs:" value={witness} />
+        </>
+      )}
+
+      {status === ModalStatus.PostConfirm && (
+        <>
+          <div className="d-flex justify-content-center">
+            <Image src={Success} />
+          </div>
+          <div className="d-flex justify-content-center">
+            <CommonButton
+              className="px-4"
+              border
+              href="https://www.larona.io/profile"
+              target="_blank"
+            >
+              <span className="gradient-content">View on your Profile</span>
+            </CommonButton>
+          </div>
+        </>
+      )}
+
+      {status === ModalStatus.Error && (
+        <div className="d-flex justify-content-center">
+          <Image src={Failed} />
+        </div>
+      )}
+    </Container>
+  );
+
+  const title = (
     <>
-      <Container>
-        <FormGroup label="Image ID (MD5):" value={md5} />
-        <FormGroup label="Public Inputs:" value={inputs} />
-        <FormGroup label="Witness Inputs:" value={witness} />
-      </Container>
+      {status === ModalStatus.PreConfirm && (
+        <>
+          <span className="gradient-content">Submit </span>
+          <span>Your Game Play</span>
+        </>
+      )}
+      {status === ModalStatus.PostConfirm && (
+        <>
+          <span className="gradient-content">Successfully </span>
+          <span>submitted</span>
+        </>
+      )}
+
+      {status === ModalStatus.Error && (
+        <>
+          <span>Submit </span>
+          <span className="text-danger">failed</span>
+        </>
+      )}
     </>
   );
 
   const modalprops: ModalCommonProps = {
     buttonLabel: <CommonButton className="w-100">Submit ZK Proof</CommonButton>,
-    title: ['Submit ', 'Your Game Play'],
+    title,
     childrenClass: '',
     onConfirm: addNewProveTask,
     onClose: () => setStatus(ModalStatus.PreConfirm),
     children: content,
     valid: true,
-    message: message,
-    status: status,
+    message,
+    status,
     confirmLabel: 'Confirm',
   };
 

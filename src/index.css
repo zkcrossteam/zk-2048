@@ -33,6 +33,11 @@ html {
   );
 }
 
+.modal-content {
+  max-width: 35rem;
+  margin: 0 auto;
+}
+
 .appearance-none {
   appearance: none;
   border: none;

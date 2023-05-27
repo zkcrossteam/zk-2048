@@ -4,6 +4,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-black) !important;
   background: url('./images/bg.png') no-repeat;
+  background-size: contain;
 }
 
 code {
@@ -31,6 +32,11 @@ html {
     #20314b 0%,
     rgba(32, 49, 75, 0) 100%
   );
+}
+
+.modal-content {
+  max-width: 35rem;
+  margin: 0 auto;
 }
 
 .appearance-none {

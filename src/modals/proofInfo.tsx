@@ -91,9 +91,16 @@ export function ProofInfoModal({
     </Container>
   );
 
+  const title = (
+    <>
+      <span className="gradient-content">Proof</span>
+      <span>Information</span>
+    </>
+  );
+
   const props: ModalCommonProps = {
     buttonLabel: <button className="appearance-none">Click to show</button>,
-    title: ['Proof ', 'Information'],
+    title,
     childrenClass: '',
     onConfirm: testverify,
     valid: true,

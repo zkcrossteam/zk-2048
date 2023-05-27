@@ -1,5 +1,6 @@
 import '../styles/shepherd.scss';
 
+import { renderToStaticMarkup } from 'react-dom/server';
 import Shepherd from 'shepherd.js';
 import Step from 'shepherd.js/src/types/step';
 
@@ -32,23 +33,44 @@ const defaultStepOption: Step.StepOptions = {
   ],
 };
 
+const renderContent = (text: string, current: number, max: number = 3) =>
+  renderToStaticMarkup(
+    <>
+      <h3 className="text-white">
+        Step
+        <span className="gradient-content mx-2">{current}</span>
+        Of {max}
+      </h3>
+      <p className="text-white">{text}</p>
+    </>,
+  );
+
 const customSteps: Pick<Step.StepOptions, 'text' | 'attachTo'>[] = [
   {
-    text: 'Click button or use your keyboard to sum the potions. Each step will cost 1 score balance',
+    text: renderContent(
+      'Click button or use your keyboard to sum the potions. Each step will cost 1 score balance',
+      1,
+    ),
     attachTo: {
       element: '.lead-step-1',
       on: 'bottom',
     },
   },
   {
-    text: 'Sell the highest level potion to charge gold balance, get gold balance as high as you can to break the record',
+    text: renderContent(
+      'Sell the highest level potion to charge gold balance, get gold balance as high as you can to break the record',
+      2,
+    ),
     attachTo: {
       element: '.lead-step-2',
       on: 'right',
     },
   },
   {
-    text: 'Submit ZK Proof to update your score with ZK Proof on chain and get rewards',
+    text: renderContent(
+      'Submit ZK Proof to update your score with ZK Proof on chain and get rewards',
+      3,
+    ),
     attachTo: {
       element: '.lead-step-2',
       on: 'right',

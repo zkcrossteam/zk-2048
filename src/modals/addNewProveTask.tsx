@@ -1,5 +1,6 @@
 import './style.scss';
 
+import { BN } from 'bn.js';
 import { FC, useState } from 'react';
 import { Container, Form, Image } from 'react-bootstrap';
 import { DelphinusWeb3, withBrowerWeb3 } from 'web3subscriber/src/client';
@@ -19,7 +20,8 @@ import Failed from '../images/failed.svg';
 import Success from '../images/success.svg';
 import { ModalCommon, ModalCommonProps, ModalStatus } from './base';
 
-type NewWASMImageProps = Record<'md5' | 'inputs' | 'witness', string>;
+type NewWASMImageProps = Record<'md5' | 'inputs' | 'witness', string> &
+  Record<'highscore', number>;
 
 export function signMessage(message: string) {
   return withBrowerWeb3(
@@ -41,7 +43,12 @@ export function signMessage(message: string) {
   );
 }
 
-export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
+export function NewProveTask({
+  md5,
+  inputs,
+  witness,
+  highscore,
+}: NewWASMImageProps) {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectL1Account);
   const [message, setMessage] = useState<string>('');
@@ -89,7 +96,10 @@ export function NewProveTask({ md5, inputs, witness }: NewWASMImageProps) {
         ),
       );
 
-      const verify = contract.getWeb3Contract().methods?.verify(0, 100);
+      const verify = await contract
+        .getWeb3Contract()
+        .methods?.verify(new BN(0), new BN(highscore))
+        .send();
       console.log('verify', verify);
 
       setMessage('');

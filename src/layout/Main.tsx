@@ -37,7 +37,6 @@ export function Main() {
   const [currency, setCurrency] = useState(20);
   const [commands, setCommands] = useState<number[]>([]);
   const [highscore, setHighscore] = useState(0);
-  const [score, setScore] = useState(0);
   const [showInputsAsRaw, setShowInputsAsRaw] = useState(false);
   const account = useAppSelector(selectL1Account);
 
@@ -65,10 +64,6 @@ export function Main() {
     document.addEventListener('keydown', arrowFunction, false);
     return () => document.removeEventListener('keydown', arrowFunction, false);
   }, []);
-
-  useEffect(() => {
-    if (score > highscore) setHighscore(score);
-  }, [score, highscore]);
 
   useEffect(() => {
     if (account) tour.cancel();
@@ -143,7 +138,7 @@ export function Main() {
       board[i] = ins.getBoard(i);
     }
     setBoard([...board]);
-    setScore(board.reduce((prev, cur) => prev + (cur ? 2 ** cur : cur), 0));
+    setHighscore(board.reduce((prev, cur) => prev + (cur ? 2 ** cur : cur), 0));
     setCurrency(ins.getCurrency());
     appendCommand([k]);
   }
@@ -189,7 +184,7 @@ export function Main() {
           <Row className="justify-content-center lead-step-2">
             <Col className="d-flex justify-content-between align-items-center p-0 game-width">
               <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
-              <CurrencyDisplay tag="Score" value={score} />
+              <CurrencyDisplay tag="Score" value={currency} />
             </Col>
             <Col className="d-flex justify-content-center mt-3">
               <div className="content">

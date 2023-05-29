@@ -7,6 +7,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 
 import { useAppSelector } from '../app/hooks';
 import { CommonButton } from '../components/CommonButton';
+import { Control } from '../components/Control';
 import { CurrencyDisplay } from '../components/Currency';
 import History from '../components/History';
 import { MainNavBar } from '../components/Nav';
@@ -15,14 +16,6 @@ import One from '../images/1.png';
 import Two from '../images/2.png';
 import Three from '../images/3.png';
 import Four from '../images/4.png';
-import DownDark from '../images/dark/down.svg';
-import LeftDark from '../images/dark/left.svg';
-import RightDark from '../images/dark/right.svg';
-import UpDark from '../images/dark/up.svg';
-import DownLight from '../images/light/down.svg';
-import LeftLight from '../images/light/left.svg';
-import RightLight from '../images/light/right.svg';
-import UpLight from '../images/light/up.svg';
 import initGameInstance from '../js/g1024';
 import { NewProveTask } from '../modals/addNewProveTask';
 import { tour } from '../utils/shepherd';
@@ -235,29 +228,7 @@ export function Main() {
         </Col>
         <Col lg={3} xs={12}>
           <div className="lead-step-1 bg-gradient control rouned-pill mb-2 game-width d-flex justify-content-center pt-3 pb-4 px-5">
-            <Row>
-              <Col xs={12}>
-                <p className="text-center text-white">Controls</p>
-              </Col>
-              {[
-                [UpDark, UpLight, '12'],
-                [LeftDark, LeftLight],
-                [DownDark, DownLight],
-                [RightDark, RightLight],
-              ].map(([Dark, Light, xs], index) => (
-                <Col
-                  xs={+xs || 4}
-                  className="d-flex justify-content-center py-2"
-                >
-                  <button
-                    className="appearance-none"
-                    onClick={() => step(index)}
-                  >
-                    <img src={keyIndex === index ? Light : Dark} alt="#" />
-                  </button>
-                </Col>
-              ))}
-            </Row>
+            <Control {...{ keyIndex, step }} />
           </div>
         </Col>
       </Row>

@@ -73,8 +73,7 @@
 }
 
 .currency-display {
-  background: var(--button-gradient);
-  filter: var(--filter);
+  @extend .bg-gradient;
   border-radius: 40px;
   width: 17rem;
   height: 3.125rem;

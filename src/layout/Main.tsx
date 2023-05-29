@@ -201,9 +201,9 @@ export function Main() {
                       return (
                         <button
                           key={index}
-                          className={`appearance-none ${cellClass(
+                          className={`appearance-none board-cell-out ${cellClass(
                             index,
-                          )} board-cell-out`}
+                          )}`}
                           onClick={() => toggleSelect(index)}
                         >
                           {index === focus && <span />}

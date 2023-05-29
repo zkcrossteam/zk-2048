@@ -140,6 +140,7 @@ export function Main() {
     const ins = await initGameInstance();
     if (!ins.getCurrency()) return alert('not enough currency to proceed!');
 
+    setKeyIndex(k);
     setFocus(-1);
     ins.step(k);
     for (let i = 0; i < 16; i++) {
@@ -149,7 +150,6 @@ export function Main() {
     setHighscore(board.reduce((prev, cur) => prev + (cur ? 2 ** cur : cur), 0));
     setCurrency(ins.getCurrency());
     appendCommand([k]);
-    setKeyIndex(k);
   }
 
   async function toggleSelect(focus: number) {
@@ -220,7 +220,7 @@ export function Main() {
             </Col>
             <Col className="container-max mx-auto d-flex justify-content-between my-3">
               <CommonButton className="w-50 me-2" border onClick={sell}>
-                Sell
+                <span className="gradient-content">Sell</span>
               </CommonButton>
               <div className="w-50 ms-2">
                 <NewProveTask

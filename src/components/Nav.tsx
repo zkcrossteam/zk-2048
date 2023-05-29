@@ -23,7 +23,7 @@ export function MainNavBar({ highscore }: IProps) {
   return (
     <Navbar expand="lg" style={{ zIndex: 1000 }}>
       <Container className="justify-content-md-between">
-        <Navbar.Brand href="http://www.delphinuslab.com">
+        <Navbar.Brand href="https://www.larona.io" target="_blank">
           <img src={logo} height="30" alt="logo"></img>
         </Navbar.Brand>
 

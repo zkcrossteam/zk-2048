@@ -224,7 +224,7 @@ export function Main() {
             </Col>
           </Row>
         </Col>
-        <Col lg={3} xs={12} className="text-center">
+        <Col lg={3} xs={12} className="text-center control">
           <img className="lead-step-1" src={Control} alt="#" />
         </Col>
       </Row>

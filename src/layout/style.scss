@@ -38,8 +38,8 @@ div.content {
   width: 35rem;
   height: 35rem;
   background-size: 35rem 35rem;
-  background: linear-gradient(180deg, #20314b 0%, rgba(32, 49, 75, 0) 100%);
-  filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.4));
+  background: var(--button-gradient);
+  filter: var(--filter);
   border-radius: 20px;
   --cell-size: 7.25rem;
   --cell-margin: 1.2rem;
@@ -52,13 +52,14 @@ div.content {
   margin-right: var(--cell-margin);
 }
 
-.board-cell-out span,
-button {
+.board-cell-out {
   display: inline-block;
   height: var(--cell-size);
   width: var(--cell-size);
   border: 3px solid white;
-  border-radius: 5px;
+  background: var(--button-gradient);
+  filter: var(--filter);
+  border-radius: 20px;
 }
 
 @for $i from 1 through 17 {

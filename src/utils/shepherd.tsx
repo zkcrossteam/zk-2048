@@ -45,7 +45,7 @@ const renderContent = (text: string, current: number, max: number = 3) =>
     </>,
   );
 
-const customSteps: Pick<Step.StepOptions, 'text' | 'attachTo'>[] = [
+const customSteps: Pick<Step.StepOptions, 'text' | 'attachTo' | 'buttons'>[] = [
   {
     text: renderContent(
       'Click button or use your keyboard to sum the potions. Each step will cost 1 score balance',
@@ -75,6 +75,13 @@ const customSteps: Pick<Step.StepOptions, 'text' | 'attachTo'>[] = [
       element: '.lead-step-2',
       on: 'right',
     },
+    buttons: [
+      {
+        text: '<span class="gradient-content">Ok</span>',
+        classes: 'rounded-pill px-4 py-2 fs-5 fw-semibold border-button',
+        action: tour.next,
+      },
+    ],
   },
 ];
 

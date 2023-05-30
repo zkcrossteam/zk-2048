@@ -16,8 +16,8 @@ import { CommonBg } from '../components/CommonBg';
 import { CommonButton } from '../components/CommonButton';
 import { selectL1Account } from '../data/accountSlice';
 import { loadStatus } from '../data/statusSlice';
-import Failed from '../images/failed.svg';
-import Success from '../images/success.svg';
+import Failed from '../images/failed.png';
+import Success from '../images/success.png';
 import { ModalCommon, ModalCommonProps, ModalStatus } from './base';
 
 type NewWASMImageProps = Record<'md5' | 'inputs' | 'witness', string> &
@@ -128,7 +128,7 @@ export function NewProveTask({
     <Form.Group className="mb-3">
       <Form.Label variant="dark">{label}</Form.Label>
       <CommonBg>
-        <div className="p-3">{value}</div>
+        <div className="p-3 text-break">{value}</div>
       </CommonBg>
     </Form.Group>
   );

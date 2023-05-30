@@ -33,16 +33,15 @@ div.board-row {
 }
 
 div.content {
-  padding-left: 12px;
-  padding-top: 15px;
-  width: 500px;
-  height: 500px;
-  background-size: 500px 500px;
-  background: linear-gradient(180deg, #20314b 0%, rgba(32, 49, 75, 0) 100%);
-  filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.4));
+  padding-left: 1.2rem;
+  padding-top: 1rem;
+  width: 35rem;
+  height: 35rem;
+  background-size: 35rem 35rem;
+  @extend .bg-gradient;
   border-radius: 20px;
-  --cell-size: 110px;
-  --cell-margin: 12px;
+  --cell-size: 7.25rem;
+  --cell-margin: 1.2rem;
 }
 
 .board-cell {
@@ -52,13 +51,17 @@ div.content {
   margin-right: var(--cell-margin);
 }
 
-.board-cell-out span,
-button {
+.board-cell-out {
+  @extend .bg-gradient;
+  border-radius: 20px;
+}
+
+.board-cell-out span {
   display: inline-block;
   height: var(--cell-size);
   width: var(--cell-size);
   border: 3px solid white;
-  border-radius: 5px;
+  border-radius: 20px;
 }
 
 @for $i from 1 through 17 {
@@ -123,4 +126,14 @@ button {
 
 .icon-2048 {
   text-shadow: 0px 0px 20px rgba(0, 236, 255, 0.4);
+}
+
+.control {
+  border-radius: 20px;
+}
+
+@media screen and (min-width: 992px) {
+  .control {
+    margin-top: 4.5rem;
+  }
 }

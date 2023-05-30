@@ -7,6 +7,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 
 import { useAppSelector } from '../app/hooks';
 import { CommonButton } from '../components/CommonButton';
+import { Control } from '../components/Control';
 import { CurrencyDisplay } from '../components/Currency';
 import History from '../components/History';
 import { MainNavBar } from '../components/Nav';
@@ -15,7 +16,6 @@ import One from '../images/1.png';
 import Two from '../images/2.png';
 import Three from '../images/3.png';
 import Four from '../images/4.png';
-import Control from '../images/control.svg';
 import initGameInstance from '../js/g1024';
 import { NewProveTask } from '../modals/addNewProveTask';
 import { tour } from '../utils/shepherd';
@@ -37,7 +37,7 @@ export function Main() {
   const [currency, setCurrency] = useState(20);
   const [commands, setCommands] = useState<number[]>([]);
   const [highscore, setHighscore] = useState(0);
-  const [score, setScore] = useState(0);
+  const [keyIndex, setKeyIndex] = useState(-1);
   const [showInputsAsRaw, setShowInputsAsRaw] = useState(false);
   const account = useAppSelector(selectL1Account);
 
@@ -65,10 +65,6 @@ export function Main() {
     document.addEventListener('keydown', arrowFunction, false);
     return () => document.removeEventListener('keydown', arrowFunction, false);
   }, []);
-
-  useEffect(() => {
-    if (score > highscore) setHighscore(score);
-  }, [score, highscore]);
 
   useEffect(() => {
     if (account) tour.cancel();
@@ -137,13 +133,14 @@ export function Main() {
     const ins = await initGameInstance();
     if (!ins.getCurrency()) return alert('not enough currency to proceed!');
 
+    setKeyIndex(k);
     setFocus(-1);
     ins.step(k);
     for (let i = 0; i < 16; i++) {
       board[i] = ins.getBoard(i);
     }
     setBoard([...board]);
-    setScore(board.reduce((prev, cur) => prev + (cur ? 2 ** cur : cur), 0));
+    setHighscore(board.reduce((prev, cur) => prev + (cur ? 2 ** cur : cur), 0));
     setCurrency(ins.getCurrency());
     appendCommand([k]);
   }
@@ -189,7 +186,7 @@ export function Main() {
           <Row className="justify-content-center lead-step-2">
             <Col className="d-flex justify-content-between align-items-center p-0 game-width">
               <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
-              <CurrencyDisplay tag="Score" value={score} />
+              <CurrencyDisplay tag="Score" value={currency} />
             </Col>
             <Col className="d-flex justify-content-center mt-3">
               <div className="content">
@@ -216,7 +213,7 @@ export function Main() {
             </Col>
             <Col className="container-max mx-auto d-flex justify-content-between my-3">
               <CommonButton className="w-50 me-2" border onClick={sell}>
-                Sell
+                <span className="gradient-content">Sell</span>
               </CommonButton>
               <div className="w-50 ms-2">
                 <NewProveTask
@@ -229,8 +226,10 @@ export function Main() {
             </Col>
           </Row>
         </Col>
-        <Col lg={3} xs={12} className="text-center">
-          <img className="lead-step-1" src={Control} alt="#" />
+        <Col lg={3} xs={12}>
+          <div className="lead-step-1 bg-gradient control rouned-pill mb-2 game-width d-flex justify-content-center pt-3 pb-4 px-5">
+            <Control {...{ keyIndex, step }} />
+          </div>
         </Col>
       </Row>
 

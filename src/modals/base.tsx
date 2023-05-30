@@ -82,7 +82,7 @@ export const ModalCommon = ({
             <Modal.Title className="w-100 text-center fs-3">
               {title}
             </Modal.Title>
-            <CloseButton onClick={handleClose} />
+            <CloseButton variant="white" onClick={handleClose} />
           </Modal.Header>
           <Modal.Body className="show-grid">{children}</Modal.Body>
           <Modal.Footer className="flex-column">

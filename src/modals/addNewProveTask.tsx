@@ -128,7 +128,7 @@ export function NewProveTask({
     <Form.Group className="mb-3">
       <Form.Label variant="dark">{label}</Form.Label>
       <CommonBg>
-        <div className="p-3">{value}</div>
+        <div className="p-3 text-break">{value}</div>
       </CommonBg>
     </Form.Group>
   );

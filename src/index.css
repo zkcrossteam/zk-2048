@@ -32,6 +32,7 @@ html {
     #20314b 0%,
     rgba(32, 49, 75, 0) 100%
   );
+  --filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.4));
 }
 
 .modal-content {
@@ -107,4 +108,10 @@ html {
 
 .bg-gradient-blue {
   background: linear-gradient(90deg, #418dff 1.64%, #4bffdf 98.6%);
+}
+
+.bg-gradient {
+  background: var(--button-gradient);
+  filter: var(--filter);
+  box-shadow: 0px 10px 20px 0px #00000066;
 }

@@ -5,13 +5,11 @@ import './style.scss';
 import { Fragment, useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
-import { useAppSelector } from '../app/hooks';
 import { CommonButton } from '../components/CommonButton';
 import { CurrencyDisplay } from '../components/Currency';
 import History from '../components/History';
 import { KeyControl } from '../components/KeyControl';
 import { MainNavBar } from '../components/Nav';
-import { selectL1Account } from '../data/accountSlice';
 import One from '../images/1.png';
 import Two from '../images/2.png';
 import Three from '../images/3.png';
@@ -39,7 +37,7 @@ export function Main() {
   const [highscore, setHighscore] = useState(0);
   const [keyIndex, setKeyIndex] = useState(-1);
   const [showInputsAsRaw, setShowInputsAsRaw] = useState(false);
-  const account = useAppSelector(selectL1Account);
+  const { lastTime } = localStorage;
 
   const appendCommand = (cmds: number[]) =>
     setCommands(commands => [...commands, ...cmds]);
@@ -55,6 +53,9 @@ export function Main() {
   }
 
   useEffect(() => {
+    if (lastTime) tour.cancel();
+    else tour.start();
+
     initGameInstance().then((ins: any) => {
       for (let i = 0; i < 16; i++) {
         board[i] = ins.getBoard(i);
@@ -65,11 +66,6 @@ export function Main() {
     document.addEventListener('keydown', arrowFunction, false);
     return () => document.removeEventListener('keydown', arrowFunction, false);
   }, []);
-
-  useEffect(() => {
-    if (account) tour.cancel();
-    else tour.start();
-  }, [account]);
 
   const getWitness = () =>
     `0x${commands.map(command =>
@@ -242,7 +238,7 @@ export function Main() {
                   className="appearance-none ps-0 me-1"
                   onClick={() => setShowInputsAsRaw(!showInputsAsRaw)}
                 >
-                  <i className="bi bi-eye" />
+                  <i className="bi bi-eye gradient-content" />
                 </button>
                 <span>
                   {showInputsAsRaw ? 'Show Commands' : 'Show Raw Proof Inputs'}

@@ -23,14 +23,11 @@ export interface ModalCommonProps {
 
 export enum ModalStatus {
   PreConfirm,
+  Loading,
   Confirmed,
   PostConfirm,
   Error,
 }
-
-export const WaitingForResponseBar = () => (
-  <Spinner animation="border" variant="light" />
-);
 
 export const ModalCommon = ({
   buttonLabel,
@@ -64,6 +61,8 @@ export const ModalCommon = ({
       <div>Please connect your wallet before submitting any requests!</div>
     );
 
+  const isLoading = status === ModalStatus.Loading;
+
   return (
     <>
       <div className="modal-btn" onClick={handleShow}>
@@ -88,17 +87,24 @@ export const ModalCommon = ({
           <Modal.Footer className="flex-column">
             <Message />
 
-            {onConfirm && status === ModalStatus.PreConfirm && (
+            {onConfirm && (status === ModalStatus.PreConfirm || isLoading) && (
               <CommonButton
                 className="px-5 py-2"
                 border
-                disabled={!valid || !account?.address}
+                disabled={!valid || !account?.address || isLoading}
                 onClick={onConfirm}
               >
-                <span className="gradient-content">
-                  {!show && <WaitingForResponseBar />}
+                <div className="gradient-content d-flex align-items-center">
+                  {isLoading && (
+                    <Spinner
+                      className="me-2"
+                      as="span"
+                      animation="border"
+                      style={{ color: '#4BFFDF' }}
+                    />
+                  )}
                   {confirmLabel}
-                </span>
+                </div>
               </CommonButton>
             )}
           </Modal.Footer>

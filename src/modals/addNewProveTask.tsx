@@ -66,9 +66,8 @@ export function NewProveTask({
 
     let signature: string;
     try {
-      setMessage('Waiting for signature...');
+      setStatus(ModalStatus.Loading);
       signature = await signMessage(msgString);
-      setMessage('Submitting new prove task...');
     } catch (e: unknown) {
       console.log('error signing message', e);
       setStatus(ModalStatus.Error);
@@ -133,9 +132,11 @@ export function NewProveTask({
     </Form.Group>
   );
 
+  const isLoading = status === ModalStatus.Loading;
+
   const content = (
     <Container>
-      {status === ModalStatus.PreConfirm && (
+      {(status === ModalStatus.PreConfirm || isLoading) && (
         <>
           <FormGroup label="Image ID (MD5):" value={md5} />
           <FormGroup label="Public Inputs:" value={inputs} />
@@ -171,7 +172,7 @@ export function NewProveTask({
 
   const title = (
     <>
-      {status === ModalStatus.PreConfirm && (
+      {(status === ModalStatus.PreConfirm || isLoading) && (
         <>
           <span className="gradient-content">Submit </span>
           <span>Your Game Play</span>
@@ -193,17 +194,22 @@ export function NewProveTask({
     </>
   );
 
+  const onClose = () => {
+    setStatus(ModalStatus.PreConfirm);
+    setMessage('');
+  };
+
   const modalprops: ModalCommonProps = {
     buttonLabel: <CommonButton className="w-100">Submit ZK Proof</CommonButton>,
     title,
     childrenClass: '',
     onConfirm: addNewProveTask,
-    onClose: () => setStatus(ModalStatus.PreConfirm),
+    onClose,
     children: content,
     valid: true,
     message,
     status,
-    confirmLabel: 'Confirm',
+    confirmLabel: isLoading ? 'Confirming' : 'Confirm',
   };
 
   return ModalCommon(modalprops);

@@ -37,7 +37,7 @@ div.content {
   padding-top: 1rem;
   width: 35rem;
   height: 35rem;
-  background-size: 35rem 35rem;
+  background-size: cover;
   @extend .bg-gradient;
   border-radius: 20px;
   --cell-size: 7.25rem;
@@ -130,10 +130,8 @@ div.content {
 
 .control {
   border-radius: 20px;
-}
 
-@media screen and (min-width: 992px) {
-  .control {
+  @media screen and (min-width: 992px) {
     margin-top: 4.5rem;
   }
 }

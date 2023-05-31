@@ -132,8 +132,10 @@
 }
 
 .border-button {
-  @extend .border-box;
-  &:before {
-    background: linear-gradient(90deg, #4da1ff 0%, #4dffdf 100%);
-  }
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  background-image: linear-gradient(0deg, #05050f, #05050f),
+    linear-gradient(90deg, #4da1ff 0%, #4dffdf 100%);
 }

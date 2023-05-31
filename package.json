@@ -84,6 +84,7 @@
     "prepack": "husky install",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "dev": "npm run build && npm run start",
     "test": "lint-staged",
     "eject": "react-app-rewired eject",
     "asbuild:untouched": "asc assembly/index.ts -b build/untouched.wasm -t build/untouched.wat --validate --sourceMap --debug",

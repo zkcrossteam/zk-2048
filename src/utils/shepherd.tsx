@@ -86,3 +86,6 @@ const customSteps: Pick<Step.StepOptions, 'text' | 'attachTo' | 'buttons'>[] = [
 ];
 
 tour.addSteps(customSteps.map(step => ({ ...defaultStepOption, ...step })));
+
+for (const event of ['complete', 'cancel'])
+  tour.on(event, () => (localStorage.lastTime = Date.now()));

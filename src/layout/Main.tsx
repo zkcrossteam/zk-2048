@@ -6,6 +6,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
 import { CommonButton } from '../components/CommonButton';
+import { Control } from '../components/Control';
 import { CurrencyDisplay } from '../components/Currency';
 import History from '../components/History';
 import { KeyControl } from '../components/KeyControl';

@@ -177,16 +177,19 @@ export function Main() {
     <Container className="justify-content-center mb-4">
       <MainNavBar highscore={highscore} />
 
-      <Row className="mt-3 ">
-        <Col lg={3} />
-        <Col lg={6} xs={12}>
+      <Row className="mt-3">
+        <Col xl={3} />
+        <Col xl={6} xs={12}>
           <Row className="justify-content-center lead-step-2">
-            <Col className="d-flex justify-content-between align-items-center p-0 game-width">
+            <Col
+              xs={12}
+              className="d-flex justify-content-between align-items-center p-0 game-width"
+            >
               <h2 className="fs-1 fw-bold gradient-content icon-2048">2048</h2>
               <CurrencyDisplay tag="Score" value={currency} />
             </Col>
-            <Col className="d-flex justify-content-center mt-3">
-              <div className="content">
+            <Col xs={12} className="d-flex justify-content-center mt-3">
+              <div className="content d-flex justify-content-center">
                 {Array.from(new Array(4), (_, r) => (
                   <div className="board-row" key={r}>
                     {Array.from(new Array(4), (_, c) => {
@@ -208,7 +211,10 @@ export function Main() {
                 ))}
               </div>
             </Col>
-            <Col className="container-max mx-auto d-flex justify-content-between my-3">
+            <Col
+              xs={12}
+              className="container-max mx-auto d-flex justify-content-between my-3"
+            >
               <CommonButton className="w-50 me-2" border onClick={handleSell}>
                 <span className="gradient-content">Sell</span>
               </CommonButton>
@@ -223,28 +229,26 @@ export function Main() {
             </Col>
           </Row>
         </Col>
-        <Col lg={3} xs={12}>
-          <div className="lead-step-1 bg-gradient control rouned-pill mb-2 game-width d-flex justify-content-center pt-3 pb-4 px-5">
+        <Col xl={3} xs={12} className="d-flex justify-content-center">
+          <div className="lead-step-1 bg-gradient control rouned-pill mb-2 game-width pt-3 pb-4 px-5">
             <KeyControl value={keyIndex} onChange={handleStep} />
           </div>
         </Col>
       </Row>
 
-      <Row className="justify-content-center overflow-breakword my-4">
-        <Col lg={6} xs={12} className="game-inputs border-box rounded-4">
-          <Row className="py-3 border-content rounded-4">
+      <div className="game-inputs border-box rounded-4 container-max overflow-breakword my-4 mx-auto">
+        <div className="border-content">
+          <Row className="px-3 py-3 rounded-4">
             <Col>
-              <div>
-                <button
-                  className="appearance-none ps-0 me-1"
-                  onClick={() => setShowInputsAsRaw(!showInputsAsRaw)}
-                >
-                  <i className="bi bi-eye gradient-content" />
-                </button>
-                <span>
-                  {showInputsAsRaw ? 'Show Commands' : 'Show Raw Proof Inputs'}
-                </span>
-              </div>
+              <button
+                className="appearance-none ps-0 me-1"
+                onClick={() => setShowInputsAsRaw(!showInputsAsRaw)}
+              >
+                <i className="bi bi-eye gradient-content" />
+              </button>
+              <span>
+                {showInputsAsRaw ? 'Show Commands' : 'Show Raw Proof Inputs'}
+              </span>
             </Col>
             <Col className="text-end">
               {showInputsAsRaw ? (
@@ -257,8 +261,8 @@ export function Main() {
               )}
             </Col>
           </Row>
-        </Col>
-      </Row>
+        </div>
+      </div>
 
       <div className="rounded-4 border-box container-max mx-auto text-center">
         <div className="border-content py-3">

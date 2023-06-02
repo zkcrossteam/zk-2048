@@ -113,7 +113,6 @@ div.content {
 
 .game-inputs {
   border-radius: 20px;
-  max-width: 560px !important;
   color: #4e78b8;
   .border-content {
     border-radius: 20px;
@@ -129,6 +128,7 @@ div.content {
 }
 
 .control {
+  max-height: 14rem;
   border-radius: 20px;
 
   @media screen and (min-width: 992px) {

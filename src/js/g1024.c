@@ -243,7 +243,7 @@ void sell(int n) {
     require(board[i]<=board[n]);
   }
   require(board[n] > 0);
-  currency += 1 << (board[n] - 1);
+  currency += 1 << (board[n]);
   board[n] = 0;
 }
 

@@ -19,15 +19,9 @@ nav .modal-btn {
   display: inline-block;
 }
 
-div.board-row {
-  padding: 0px;
-  margin: 0px;
-  height: var(--cell-size);
-  margin-bottom: 10px;
-}
 
 .game-width {
-  --game-width: 500px;
+  --game-width: 35rem;
 
   max-width: var(--game-width) !important;
 }
@@ -42,36 +36,41 @@ div.content {
   border-radius: 20px;
   --cell-size: 7.25rem;
   --cell-margin: 1.2rem;
-}
 
-.board-cell {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  margin-right: var(--cell-margin);
-}
+  div.board-row {
+    height: var(--cell-size);
+    margin-bottom: 10px !important;
+  }
 
-.board-cell-out {
-  @extend .bg-gradient;
-  border-radius: 20px;
-}
-
-.board-cell-out span {
-  display: inline-block;
-  height: var(--cell-size);
-  width: var(--cell-size);
-  border: 3px solid white;
-  border-radius: 20px;
-}
-
-@for $i from 1 through 17 {
-  .board-cell-#{$i} {
+  .board-cell {
     display: inline-block;
     height: var(--cell-size);
     width: var(--cell-size);
     margin-right: var(--cell-margin);
-    background-image: url('../images/' + $i + '.png');
-    background-size: contain;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+  
+  .board-cell-out {
+    @extend .bg-gradient;
+    border-radius: 20px;
+  }
+
+  @for $i from 1 through 17 {
+    .board-cell-#{$i} {
+      display: inline-block;
+      height: var(--cell-size);
+      width: var(--cell-size);
+      margin-right: var(--cell-margin);
+      background-image: url('../images/' + $i + '.png');
+      background-size: contain;
+    }
+  
+    .board-cell-#{$i}.active {
+      border: 5px solid white;
+    }
   }
 }
 

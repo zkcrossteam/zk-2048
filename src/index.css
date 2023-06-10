@@ -5,6 +5,7 @@ body {
   background-color: var(--bg-black) !important;
   background: url('./images/bg.png') no-repeat;
   background-size: contain;
+  background-position: center top;
 }
 
 code {
@@ -33,6 +34,7 @@ html {
     rgba(32, 49, 75, 0) 100%
   );
   --filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.4));
+  min-width: 35rem;
 }
 
 .modal-content {

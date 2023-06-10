@@ -6,9 +6,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
 import { CommonButton } from '../components/CommonButton';
-import { Control } from '../components/Control';
 import { CurrencyDisplay } from '../components/Currency';
-import History from '../components/History';
 import { KeyControl } from '../components/KeyControl';
 import { MainNavBar } from '../components/Nav';
 import One from '../images/1.png';
@@ -35,7 +33,7 @@ export function Main() {
   const [focus, setFocus] = useState(-1);
   const [currency, setCurrency] = useState(20);
   const [commands, setCommands] = useState<number[]>([]);
-  const [highscore, setHighscore] = useState(0);
+  const [highscore, setHighscore] = useState(currency);
   const [keyIndex, setKeyIndex] = useState(-1);
   const [showInputsAsRaw, setShowInputsAsRaw] = useState(false);
   const { lastTime } = localStorage;
@@ -53,6 +51,12 @@ export function Main() {
     }
   }
 
+  const setCurrencyAndHighscore = (ins: any) => {
+    const newCurrency = ins.getCurrency();
+    setCurrency(newCurrency);
+    setHighscore(highscore => Math.max(newCurrency, highscore));
+  };
+
   useEffect(() => {
     if (lastTime) tour.cancel();
     else tour.start();
@@ -62,7 +66,7 @@ export function Main() {
         board[i] = ins.getBoard(i);
       }
       setBoard([...board]);
-      setCurrency(ins.getCurrency());
+      setCurrencyAndHighscore(ins);
     });
     document.addEventListener('keydown', arrowFunction, false);
     return () => document.removeEventListener('keydown', arrowFunction, false);
@@ -101,27 +105,25 @@ export function Main() {
         }
       }
 
-      switch (commands[i]) {
-        case 0:
-          icon = <i className="bi bi-arrow-up mx-1"></i>;
-          break;
-        case 1:
-          icon = <i className="bi bi-arrow-left mx-1"></i>;
-          break;
-        case 2:
-          icon = <i className="bi bi-arrow-down mx-1"></i>;
-          break;
-        case 3:
-          icon = <i className="bi bi-arrow-right mx-1"></i>;
-          break;
-        case 4:
-          icon = <i className="bi bi-cash-stack mx-1"></i>;
-          break;
+      const iconNames = [
+        'arrow-up',
+        'arrow-left',
+        'arrow-down',
+        'arrow-right',
+        'cash-stack',
+      ];
+      const command = commands[i];
 
-        default:
-          icon = <span>{commands[i]}</span>;
-      }
-      icons.push(icon);
+      icons.push(
+        command >= 0 && command < 5 ? (
+          <i
+            className={`bi bi-${iconNames[command]} mx-1`}
+            key={i + '-' + command}
+          />
+        ) : (
+          <span>{command}</span>
+        ),
+      );
     }
     return icons;
   }
@@ -137,8 +139,7 @@ export function Main() {
       board[i] = ins.getBoard(i);
     }
     setBoard([...board]);
-    setHighscore(board.reduce((prev, cur) => prev + (cur ? 2 ** cur : cur), 0));
-    setCurrency(ins.getCurrency());
+    setCurrencyAndHighscore(ins);
     appendCommand([index]);
   }
 
@@ -159,7 +160,7 @@ export function Main() {
         board[i] = ins.getBoard(i);
       }
       setBoard([...board]);
-      setCurrency(ins.getCurrency());
+      setCurrencyAndHighscore(ins);
 
       appendCommand([4, focus]);
       setFocus(-1);
@@ -189,9 +190,9 @@ export function Main() {
               <CurrencyDisplay tag="Score" value={currency} />
             </Col>
             <Col xs={12} className="d-flex justify-content-center mt-3">
-              <div className="content d-flex justify-content-center">
+              <div className="content d-flex justify-content-center flex-column flex-shrink-0">
                 {Array.from(new Array(4), (_, r) => (
-                  <div className="board-row" key={r}>
+                  <div className="m-0 p-0 flex-nowrap board-row" key={r}>
                     {Array.from(new Array(4), (_, c) => {
                       const index = r * 4 + c;
 
@@ -200,11 +201,9 @@ export function Main() {
                           key={index}
                           className={`appearance-none board-cell-out ${cellClass(
                             index,
-                          )}`}
+                          )}${index === focus ? ' active' : ''}`}
                           onClick={() => toggleSelect(index)}
-                        >
-                          {index === focus && <span />}
-                        </button>
+                        />
                       );
                     })}
                   </div>
@@ -289,10 +288,6 @@ export function Main() {
             <span className="ms-2">...</span>
           </div>
         </div>
-      </div>
-
-      <div className="my-4">
-        <History md5="77DA9B5A42FABD295FD67CCDBDF2E348" />
       </div>
     </Container>
   );

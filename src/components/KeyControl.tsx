@@ -26,7 +26,11 @@ export const KeyControl: FC<KeyControlProps> = ({ value, onChange }) => (
       [DownDark, DownLight],
       [RightDark, RightLight],
     ].map(([Dark, Light, xs], index) => (
-      <Col xs={+xs || 4} className="d-flex justify-content-center py-2">
+      <Col
+        xs={+xs || 4}
+        className="d-flex justify-content-center py-2"
+        key={Dark}
+      >
         <button className="appearance-none" onClick={() => onChange(index)}>
           <img src={value === index ? Light : Dark} alt="#" />
         </button>

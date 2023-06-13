@@ -69,7 +69,8 @@ div.content {
     }
   
     .board-cell-#{$i}.active {
-      border: 5px solid white;
+      border: 1px solid #4afadc;
+      filter: drop-shadow(0px 0px 5px #49f2da) !important;
     }
   }
 }
@@ -132,5 +133,11 @@ div.content {
 
   @media screen and (min-width: 992px) {
     margin-top: 4.5rem;
+  }
+}
+
+.tutorial-btn:hover {
+  i, span {
+    @extend .gradient-content;
   }
 }

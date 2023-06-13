@@ -64,6 +64,24 @@
     }
   }
 
+  .dropdown-user {
+    .dropdown-toggle::after {
+      content: none;
+    }
+
+    .dropdown-menu {
+      background-color: var(--bg-black);
+
+      .dropdown-item {
+        color: #4e78b8;
+
+        &:hover {
+          background-color: var(--bg-black);
+        }
+      }
+    }
+  }
+
   .connect {
     background: linear-gradient(90deg, #418dff 1.64%, #4bffdf 98.6%);
     border-radius: 30px;
@@ -136,6 +154,6 @@
   border-radius: 16px;
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
-  background-image: linear-gradient(0deg, #05050f, #05050f),
+  background-image: linear-gradient(0deg, var(--bg-black), var(--bg-black)),
     linear-gradient(90deg, #4da1ff 0%, #4dffdf 100%);
 }

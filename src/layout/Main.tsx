@@ -212,7 +212,7 @@ export function Main() {
             </Col>
             <Col
               xs={12}
-              className="container-max mx-auto d-flex justify-content-between my-3"
+              className="container-max mx-auto d-flex justify-content-between my-3 lead-step-3"
             >
               <CommonButton className="w-50 me-2" border onClick={handleSell}>
                 <span className="gradient-content">Sell</span>
@@ -228,10 +228,17 @@ export function Main() {
             </Col>
           </Row>
         </Col>
-        <Col xl={3} xs={12} className="d-flex justify-content-center">
+        <Col xl={3} xs={12} className="d-flex flex-column align-items-center">
           <div className="lead-step-1 bg-gradient control rouned-pill mb-2 game-width pt-3 pb-4 px-5">
             <KeyControl value={keyIndex} onChange={handleStep} />
           </div>
+          <button
+            className="appearance-none mt-3 tutorial-btn fw-semibold fs-5"
+            onClick={tour.start}
+          >
+            <i className="bi bi-tools me-2" />
+            <span>Game tutorial</span>
+          </button>
         </Col>
       </Row>
 

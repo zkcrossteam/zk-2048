@@ -72,7 +72,7 @@ const customSteps: Pick<Step.StepOptions, 'text' | 'attachTo' | 'buttons'>[] = [
       3,
     ),
     attachTo: {
-      element: '.lead-step-2',
+      element: '.lead-step-3',
       on: 'right',
     },
     buttons: [

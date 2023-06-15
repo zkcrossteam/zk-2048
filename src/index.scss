@@ -117,3 +117,18 @@ html {
   filter: var(--filter);
   box-shadow: 0px 10px 20px 0px #00000066;
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+
+  &-track {
+    background: #1a2740;
+    border-radius: 4px;
+  }
+
+  &-thumb {
+    background: #4e78b8;
+    border-radius: 4px;
+  }
+}

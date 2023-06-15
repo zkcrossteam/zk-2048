@@ -77,7 +77,7 @@
     "arrowParens": "avoid"
   },
   "lint-staged": {
-    "*.{html,md,less,json,yml,js,ts,tsx}": "prettier --write",
+    "*.{html,md,less,css,json,yml,js,ts,tsx}": "prettier --write",
     "*.{js,jsx,ts,tsx}": "eslint --fix"
   },
   "scripts": {

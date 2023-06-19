@@ -35,7 +35,7 @@ export function ProofInfoModal({
           address,
           { from: account!.address },
         );
-        const args = parseArgs(public_inputs).map(x => x.toString(10));
+        const args = parseArgs(public_inputs).map(x => x?.toString(10) || '');
         const result = await verify_contract.methods
           .verify(aggregateProof, instancesBN, auxBN, [args])
           .send();

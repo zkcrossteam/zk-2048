@@ -161,3 +161,19 @@
 .form-group-item {
   max-height: 7rem;
 }
+
+.key-control {
+  $list: 'up', 'left', 'down', 'right';
+
+  @each $item in $list {
+    &-#{$item} {
+      width: 60px;
+      height: 60px;
+      @extend .background-contain;
+      background-image: url('../images/dark/#{$item}.svg');
+      &:hover {
+        background-image: url('../images/light/#{$item}.svg');
+      }
+    }
+  }
+}

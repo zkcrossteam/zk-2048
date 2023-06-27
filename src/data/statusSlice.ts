@@ -8,7 +8,7 @@ import {
 
 import { RootState } from '../app/store';
 
-const initialState: StatusState = {
+const initialState: Omit<StatusState, 'config'> = {
   tasks: [],
   loaded: false,
   statistics: {

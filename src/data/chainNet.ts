@@ -8,7 +8,7 @@ export const chainNet = {
     symbol: 'tBNB',
     decimals: 18,
   },
-  rpcUrls: ['https://endpoints.omniatech.io/v1/bsc/testnet/public'],
+  rpcUrls: ['https://bsc-testnet.publicnode.com'],
   blockExplorerUrls: ['https://testnet.bscscan.com'],
 };
 

@@ -73,9 +73,9 @@ export function Main() {
   }, []);
 
   const getWitness = () =>
-    `0x${commands.map(command =>
-      command.toString(16).padStart(2, '0'),
-    )}:bytes-packed`;
+    `0x${commands
+      .map(command => command.toString(16).padStart(2, '0'))
+      .join('')}:bytes-packed`;
 
   const getURI = () =>
     `${commands.length}:i64-0x${commands.map(command =>
@@ -219,7 +219,7 @@ export function Main() {
               </CommonButton>
               <div className="w-50 ms-2">
                 <NewProveTask
-                  md5="77DA9B5A42FABD295FD67CCDBDF2E348"
+                  md5="63715F93C83BD315345DFDE9A6E0F814"
                   inputs={`${commands.length}:i64`}
                   witness={getWitness()}
                   highscore={highscore}

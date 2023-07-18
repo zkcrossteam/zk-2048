@@ -3,7 +3,7 @@ import { ZkWasmServiceHelper } from 'zkwasm-service-helper';
 
 import { RootState } from '../app/store';
 
-export const resturl = 'https://www.larona.io/proxy-api/explorer';
+export const resturl = 'https://zkwasm-explorer.delphinuslab.com:8090';
 export const zkwasmHelper = new ZkWasmServiceHelper(resturl, '', '');
 export const storageKey = 'customURLs';
 

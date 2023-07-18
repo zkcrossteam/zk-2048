@@ -73,9 +73,9 @@ export function Main() {
   }, []);
 
   const getWitness = () =>
-    `0x${commands.map(command =>
-      command.toString(16).padStart(2, '0'),
-    )}:bytes-packed`;
+    `0x${commands
+      .map(command => command.toString(16).padStart(2, '0'))
+      .join('')}:bytes-packed`;
 
   const getURI = () =>
     `${commands.length}:i64-0x${commands.map(command =>

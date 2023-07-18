@@ -16,7 +16,7 @@ import { CommonButton } from '../components/CommonButton';
 import { abiAndAddress } from '../data/abiAndAddress';
 import { selectL1Account } from '../data/accountSlice';
 import { switchNet } from '../data/chainNet';
-import { loadStatus } from '../data/statusSlice';
+import { addProvingTask, loadStatus } from '../data/statusSlice';
 import Failed from '../images/failed.png';
 import Success from '../images/success.png';
 import { ModalCommon, ModalCommonProps, ModalStatus } from './base';
@@ -90,6 +90,8 @@ export function NewProveTask({
     const task = await prepareNewProveTask();
 
     try {
+      await dispatch(addProvingTask(task));
+
       const contract = await withBrowerWeb3(async web3 =>
         web3.getContract(
           abiAndAddress.gameSoulbound.abi,

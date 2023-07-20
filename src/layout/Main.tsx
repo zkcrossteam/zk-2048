@@ -144,27 +144,30 @@ export function Main() {
   }
 
   async function toggleSelect(focus: number) {
-    setFocus(focus);
+    setFocus(oldValue => (oldValue === focus ? -1 : focus));
   }
 
   async function handleSell() {
     const ins = await initGameInstance();
-    if (focus !== -1) {
-      let focusValue = ins.getBoard(focus);
-      for (let i = 0; i < 16; i++) {
-        if (ins.getBoard(i) > focusValue)
-          return alert('can only sell highest value block');
-      }
-      ins.sell(focus);
-      for (let i = 0; i < 16; i++) {
-        board[i] = ins.getBoard(i);
-      }
-      setBoard([...board]);
-      setCurrencyAndHighscore(ins);
 
-      appendCommand([4, focus]);
-      setFocus(-1);
-    }
+    if (focus === -1)
+      return alert('Please select the highest value block to sell');
+
+    const focusValue = ins.getBoard(focus);
+
+    for (let i = 0; i < 16; i++)
+      if (ins.getBoard(i) > focusValue)
+        return alert('can only sell highest value block');
+
+    ins.sell(focus);
+
+    for (let i = 0; i < 16; i++) board[i] = ins.getBoard(i);
+
+    setBoard([...board]);
+    setCurrencyAndHighscore(ins);
+
+    appendCommand([4, focus]);
+    setFocus(-1);
   }
 
   function restartGame() {

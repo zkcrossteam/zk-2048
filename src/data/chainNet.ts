@@ -1,15 +1,15 @@
 import { DelphinusWeb3 } from 'web3subscriber/src/client';
 
 export const chainNet = {
-  chainId: 97,
-  chainName: 'Binance Smart Chain Testnet',
+  chainId: 5,
+  chainName: 'Goerli test network',
   nativeCurrency: {
-    name: 'Binance Chain Native Token',
-    symbol: 'tBNB',
+    name: 'GoerliETH',
+    symbol: 'GoerliETH',
     decimals: 18,
   },
-  rpcUrls: ['https://bsc-testnet.publicnode.com'],
-  blockExplorerUrls: ['https://testnet.bscscan.com'],
+  rpcUrls: ['https://goerli.infura.io/v3/'],
+  blockExplorerUrls: ['https://goerli.etherscan.io'],
 };
 
 export const switchNet = async (web3: DelphinusWeb3) => {

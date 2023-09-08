@@ -1,6 +1,5 @@
 import './style.scss';
 
-import { BN } from 'bn.js';
 import { FC, useState } from 'react';
 import { Container, Form, Image } from 'react-bootstrap';
 import { DelphinusWeb3, withBrowerWeb3 } from 'web3subscriber/src/client';
@@ -13,10 +12,9 @@ import {
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { CommonBg } from '../components/CommonBg';
 import { CommonButton } from '../components/CommonButton';
-import { abiAndAddress } from '../data/abiAndAddress';
 import { selectL1Account } from '../data/accountSlice';
 import { switchNet } from '../data/chainNet';
-import { addProvingTask, loadStatus } from '../data/statusSlice';
+import { addProofTask, loadStatus } from '../data/statusSlice';
 import Failed from '../images/failed.png';
 import Success from '../images/success.png';
 import { ModalCommon, ModalCommonProps, ModalStatus } from './base';
@@ -90,21 +88,7 @@ export function NewProveTask({
     const task = await prepareNewProveTask();
 
     try {
-      await dispatch(addProvingTask(task));
-
-      const contract = await withBrowerWeb3(async web3 =>
-        web3.getContract(
-          abiAndAddress.gameSoulbound.abi,
-          abiAndAddress.gameSoulbound.address,
-          task.user_address,
-        ),
-      );
-
-      const verify = await contract
-        .getWeb3Contract()
-        .methods?.verify(new BN(0), new BN(highscore))
-        .send();
-      console.log('verify', verify);
+      await dispatch(addProofTask(task));
 
       setMessage('');
       setStatus(ModalStatus.PostConfirm);

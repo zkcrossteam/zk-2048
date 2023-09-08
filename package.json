@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
-    "axios": "^1.2.1",
     "bn.js": "^5.2.1",
     "bootstrap": "^5.3.0",
     "bootstrap-icons": "^1.10.3",
@@ -14,6 +13,7 @@
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "form-data": "^4.0.0",
+    "koajax": "^0.9.4",
     "node-sass": "^7.0.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",

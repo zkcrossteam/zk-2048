@@ -24,7 +24,6 @@ export interface ModalCommonProps {
 export enum ModalStatus {
   PreConfirm,
   Loading,
-  Confirmed,
   PostConfirm,
   Error,
 }

@@ -17,6 +17,7 @@ import { switchNet } from '../data/chainNet';
 import { addProofTask, loadStatus } from '../data/statusSlice';
 import Failed from '../images/failed.png';
 import Success from '../images/success.png';
+import { RequestOutput } from '../sdk/task';
 import { ModalCommon, ModalCommonProps, ModalStatus } from './base';
 
 type NewWASMImageProps = Record<'md5' | 'inputs' | 'witness', string> &
@@ -52,6 +53,7 @@ export function NewProveTask({
   const account = useAppSelector(selectL1Account);
   const [message, setMessage] = useState<string>('');
   const [status, setStatus] = useState<ModalStatus>(ModalStatus.PreConfirm);
+  const [uuid, setUuid] = useState<string>('');
 
   const prepareNewProveTask = async function () {
     const info: ProvingParams = {
@@ -88,7 +90,9 @@ export function NewProveTask({
     const task = await prepareNewProveTask();
 
     try {
-      await dispatch(addProofTask(task));
+      const { payload } = await dispatch(addProofTask(task));
+
+      setUuid((payload as RequestOutput).uuid);
 
       setMessage('');
       setStatus(ModalStatus.PostConfirm);
@@ -144,10 +148,10 @@ export function NewProveTask({
             <CommonButton
               className="px-4"
               border
-              href="https://www.larona.io/profile"
+              href={`https://scan.zkcross.org/request/${uuid}`}
               target="_blank"
             >
-              <span className="gradient-content">View on your Profile</span>
+              <span className="gradient-content">View on ZKC Explorer</span>
             </CommonButton>
           </div>
         </>

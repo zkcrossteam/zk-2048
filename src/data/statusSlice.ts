@@ -40,11 +40,14 @@ export const addProvingTask = createAsyncThunk(
 );
 
 export const addProofTask = createAsyncThunk(
-  'status/addProveTask',
+  'status/addProofTask',
   async (task: WithSignature<ProvingParams>) => {
-    const { body } = await zkcServerClient.post('task/proof', task);
+    const { body } = await zkcServerClient.post<{ uuid: string }>(
+      'task/proof',
+      task,
+    );
 
-    return body;
+    return body!;
   },
 );
 
@@ -58,10 +61,14 @@ export const statusSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(loadStatus.fulfilled, (state, { payload }) => {
-      state.tasks = payload;
-      state.loaded = true;
-    });
+    builder
+      .addCase(loadStatus.fulfilled, (state, { payload }) => {
+        state.tasks = payload;
+        state.loaded = true;
+      })
+      .addCase(addProofTask.rejected, (_, { error }) => {
+        throw new Error(error?.name);
+      });
   },
 });
 

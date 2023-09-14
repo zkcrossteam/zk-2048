@@ -6,6 +6,15 @@ export interface Base extends Record<'createdAt' | 'updatedAt', string> {
   id?: string | number;
 }
 
+export interface ErrorBaseData
+  extends Record<
+    'type' | 'title' | 'detail' | 'traceId' | 'instance' | 'message',
+    string
+  > {
+  status: number;
+  body?: any;
+}
+
 export const zkcServerClient = new HTTPClient({
   baseURI: ZkcServerUrl,
   responseType: 'json',

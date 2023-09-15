@@ -70,8 +70,8 @@ export function MainNavBar({ highscore }: IProps) {
   return (
     <Navbar variant="dark" expand="lg" style={{ zIndex: 1000 }}>
       <Container className="justify-content-md-between">
-        <Navbar.Brand href="https://www.larona.io" target="_blank">
-          <img src={logo} height="30" alt="logo"></img>
+        <Navbar.Brand href="https://www.zkcross.org" target="_blank">
+          <img src={logo} height="50" alt="logo"></img>
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

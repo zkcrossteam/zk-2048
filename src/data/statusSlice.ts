@@ -76,7 +76,7 @@ export const statusSlice = createSlice({
         state.loaded = true;
       })
       .addCase(addProofTask.rejected, (_, { error }) => {
-        throw error;
+        throw new Error(error?.name);
       });
   },
 });

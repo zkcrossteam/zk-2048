@@ -7,7 +7,8 @@ import {
 } from 'zkwasm-service-helper';
 
 import { RootState } from '../app/store';
-import { zkcServerClient } from './base';
+import { RequestOutput } from '../sdk/task';
+import { ErrorBaseData, zkcServerClient } from './base';
 
 const initialState: Omit<StatusState, 'config'> = {
   tasks: [],
@@ -42,12 +43,20 @@ export const addProvingTask = createAsyncThunk(
 export const addProofTask = createAsyncThunk(
   'status/addProofTask',
   async (task: WithSignature<ProvingParams>) => {
-    const { body } = await zkcServerClient.post<{ uuid: string }>(
-      'task/proof',
-      task,
-    );
+    try {
+      const { body } = await zkcServerClient.post<RequestOutput>(
+        'task/proof',
+        task,
+      );
 
-    return body!;
+      return body!;
+    } catch (error) {
+      const { body } = error as ErrorBaseData;
+
+      throw body?.body.includes('Insufficient funds for user')
+        ? new Error(body.body)
+        : error;
+    }
   },
 );
 

@@ -54,6 +54,7 @@ export function NewProveTask({
   const [message, setMessage] = useState<string>('');
   const [status, setStatus] = useState<ModalStatus>(ModalStatus.PreConfirm);
   const [uuid, setUuid] = useState<string>('');
+  const [isInsufficientError, setIsInsufficientError] = useState(false);
 
   const prepareNewProveTask = async function () {
     const info: ProvingParams = {
@@ -72,8 +73,7 @@ export function NewProveTask({
     } catch (e: unknown) {
       console.log('error signing message', e);
       setStatus(ModalStatus.Error);
-      setMessage('Oops! Something went wrong, please try again.');
-      throw Error('Unsigned Transaction');
+      throw new Error('Unsigned Transaction');
     }
 
     const task: WithSignature<ProvingParams> = {
@@ -97,8 +97,12 @@ export function NewProveTask({
       setMessage('');
       setStatus(ModalStatus.PostConfirm);
     } catch (error) {
-      console.log('new prove task error', error);
-      setMessage('Oops! Something went wrong, please try again.');
+      const { message } = error as Error;
+
+      if (message?.includes('Insufficient funds for user')) {
+        setIsInsufficientError(true);
+      }
+
       setStatus(ModalStatus.Error);
     }
 
@@ -139,28 +143,36 @@ export function NewProveTask({
         </>
       )}
 
-      {status === ModalStatus.PostConfirm && (
+      {[ModalStatus.PostConfirm, ModalStatus.Error].includes(status) && (
         <>
           <div className="d-flex justify-content-center">
-            <Image src={Success} />
+            <Image
+              src={ModalStatus.PostConfirm === status ? Success : Failed}
+            />
           </div>
           <div className="d-flex justify-content-center">
             <CommonButton
               className="px-4"
               border
-              href={`https://scan.zkcross.org/request/${uuid}`}
+              href={
+                ModalStatus.PostConfirm === status
+                  ? `https://scan.zkcross.org/request/${uuid}`
+                  : isInsufficientError
+                  ? 'https://account.zkcross.org/'
+                  : ''
+              }
               target="_blank"
             >
-              <span className="gradient-content">View on ZKC Explorer</span>
+              <span className="gradient-content">
+                {ModalStatus.PostConfirm === status
+                  ? 'View on ZKC Explorer'
+                  : isInsufficientError
+                  ? 'Insufficient ZKC token, please TopUp ZKC at first!'
+                  : 'Oops! Something went wrong.'}
+              </span>
             </CommonButton>
           </div>
         </>
-      )}
-
-      {status === ModalStatus.Error && (
-        <div className="d-flex justify-content-center">
-          <Image src={Failed} />
-        </div>
       )}
     </Container>
   );
@@ -192,6 +204,8 @@ export function NewProveTask({
   const onClose = () => {
     setStatus(ModalStatus.PreConfirm);
     setMessage('');
+    setUuid('');
+    setIsInsufficientError(false);
   };
 
   const modalprops: ModalCommonProps = {

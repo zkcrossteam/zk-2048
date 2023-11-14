@@ -222,7 +222,7 @@ export function Main() {
               </CommonButton>
               <div className="w-50 ms-2">
                 <NewProveTask
-                  md5="63715F93C83BD315345DFDE9A6E0F814"
+                  md5="77DA9B5A42FABD295FD67CCDBDF2E348"
                   inputs={`${commands.length}:i64`}
                   witness={getWitness()}
                   highscore={highscore}

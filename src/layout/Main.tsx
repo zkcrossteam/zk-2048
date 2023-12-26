@@ -1,5 +1,5 @@
-import 'bootswatch/dist/slate/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootswatch/dist/slate/bootstrap.min.css';
 import './style.scss';
 
 import { Fragment, useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import { CommonButton } from '../components/CommonButton';
 import { CurrencyDisplay } from '../components/Currency';
 import { KeyControl } from '../components/KeyControl';
 import { MainNavBar } from '../components/Nav';
+import { ZK_MD5 } from '../data/base';
 import One from '../images/1.png';
 import Two from '../images/2.png';
 import Three from '../images/3.png';
@@ -16,8 +17,6 @@ import Four from '../images/4.png';
 import initGameInstance from '../js/g1024';
 import { NewProveTask } from '../modals/addNewProveTask';
 import { tour } from '../utils/shepherd';
-
-import { ZK_MD5 } from '../data/base';
 
 const DirectionKeys = [
   'ArrowUp',

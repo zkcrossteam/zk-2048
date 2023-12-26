@@ -17,6 +17,8 @@ import initGameInstance from '../js/g1024';
 import { NewProveTask } from '../modals/addNewProveTask';
 import { tour } from '../utils/shepherd';
 
+import { ZK_MD5 } from '../data/base';
+
 const DirectionKeys = [
   'ArrowUp',
   'ArrowLeft',
@@ -222,7 +224,7 @@ export function Main() {
               </CommonButton>
               <div className="w-50 ms-2">
                 <NewProveTask
-                  md5="77DA9B5A42FABD295FD67CCDBDF2E348"
+                  md5={ZK_MD5}
                   inputs={`${commands.length}:i64`}
                   witness={getWitness()}
                   highscore={highscore}

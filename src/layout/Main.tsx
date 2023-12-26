@@ -1,5 +1,5 @@
-import 'bootswatch/dist/slate/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootswatch/dist/slate/bootstrap.min.css';
 import './style.scss';
 
 import { Fragment, useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import { CommonButton } from '../components/CommonButton';
 import { CurrencyDisplay } from '../components/Currency';
 import { KeyControl } from '../components/KeyControl';
 import { MainNavBar } from '../components/Nav';
+import { ZK_MD5 } from '../data/base';
 import One from '../images/1.png';
 import Two from '../images/2.png';
 import Three from '../images/3.png';
@@ -222,7 +223,7 @@ export function Main() {
               </CommonButton>
               <div className="w-50 ms-2">
                 <NewProveTask
-                  md5="77DA9B5A42FABD295FD67CCDBDF2E348"
+                  md5={ZK_MD5}
                   inputs={`${commands.length}:i64`}
                   witness={getWitness()}
                   highscore={highscore}

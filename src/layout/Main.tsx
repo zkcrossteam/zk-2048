@@ -4,6 +4,7 @@ import './style.scss';
 
 import { Fragment, useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import { ZKCWasmService } from 'zkc-sdk';
 
 import { CommonButton } from '../components/CommonButton';
 import { CurrencyDisplay } from '../components/Currency';
@@ -14,9 +15,23 @@ import One from '../images/1.png';
 import Two from '../images/2.png';
 import Three from '../images/3.png';
 import Four from '../images/4.png';
-import initGameInstance from '../js/g1024';
 import { NewProveTask } from '../modals/addNewProveTask';
 import { tour } from '../utils/shepherd';
+
+export const wasmURL = new URL('../js/g1024.wasm', import.meta.url);
+
+/**
+ * use type instead of interface here
+ */
+export type G1024Export = {
+  getBoard: (index: number) => number;
+  getCurrency: () => number;
+  sell: (n: number) => any;
+  setBoard: (index: number, b: number) => any;
+  setCurrency: (n: number) => any;
+  step: (direction: number) => any;
+  zkmain: () => number;
+};
 
 const DirectionKeys = [
   'ArrowUp',
@@ -62,12 +77,12 @@ export function Main() {
     if (lastTime) tour.cancel();
     else tour.start();
 
-    initGameInstance().then((ins: any) => {
+    ZKCWasmService.loadWasm<G1024Export>(wasmURL).then(({ exports }) => {
       for (let i = 0; i < 16; i++) {
-        board[i] = ins.getBoard(i);
+        board[i] = exports.getBoard(i);
       }
       setBoard([...board]);
-      setCurrencyAndHighscore(ins);
+      setCurrencyAndHighscore(exports);
     });
     document.addEventListener('keydown', arrowFunction, false);
     return () => document.removeEventListener('keydown', arrowFunction, false);
@@ -130,17 +145,18 @@ export function Main() {
   }
 
   async function handleStep(index: number) {
-    const ins = await initGameInstance();
-    if (!ins.getCurrency()) return alert('not enough currency to proceed!');
+    const { exports } = await ZKCWasmService.loadWasm<G1024Export>(wasmURL);
+
+    if (!exports.getCurrency()) return alert('not enough currency to proceed!');
 
     setKeyIndex(index);
     setFocus(-1);
-    ins.step(index);
+    exports.step(index);
     for (let i = 0; i < 16; i++) {
-      board[i] = ins.getBoard(i);
+      board[i] = exports.getBoard(i);
     }
     setBoard([...board]);
-    setCurrencyAndHighscore(ins);
+    setCurrencyAndHighscore(exports);
     appendCommand([index]);
   }
 
@@ -149,23 +165,23 @@ export function Main() {
   }
 
   async function handleSell() {
-    const ins = await initGameInstance();
+    const { exports } = await ZKCWasmService.loadWasm<G1024Export>(wasmURL);
 
     if (focus === -1)
       return alert('Please select the highest value block to sell');
 
-    const focusValue = ins.getBoard(focus);
+    const focusValue = exports.getBoard(focus);
 
     for (let i = 0; i < 16; i++)
-      if (ins.getBoard(i) > focusValue)
+      if (exports.getBoard(i) > focusValue)
         return alert('can only sell highest value block');
 
-    ins.sell(focus);
+    exports.sell(focus);
 
-    for (let i = 0; i < 16; i++) board[i] = ins.getBoard(i);
+    for (let i = 0; i < 16; i++) board[i] = exports.getBoard(i);
 
     setBoard([...board]);
-    setCurrencyAndHighscore(ins);
+    setCurrencyAndHighscore(exports);
 
     appendCommand([4, focus]);
     setFocus(-1);
